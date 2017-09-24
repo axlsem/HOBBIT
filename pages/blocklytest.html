@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+	
+    <title>Simplifying HOBBIT</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="../bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- MetisMenu CSS -->
+    <!-- <link href="../bower_components/metisMenu/dist/metisMenu.min.css" rel="stylesheet"> -->
+
+    <!-- Custom CSS -->
+    <link href="../dist/css/sb-admin-2.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="../bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Include Blocky -->
+    <script src="../blockly/blockly_compressed.js"></script>
+    <script src="../blockly/blocks_compressed.js"></script>
+    <script src="../blockly/javascript_compressed.js"></script>
+    <script src="../blockly/python_compressed.js"></script>
+    <script src="../blockly/php_compressed.js"></script>
+    <script src="../blockly/msg/js/en.js"></script>
+
+    <!-- Ace editor -->
+    <script src="../ace-builds/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+
+    <!-- Ubuntu fonts -->
+    <!-- <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Ubuntu:regular,bold&subset=Latin"> -->
+    <link rel="stylesheet" type="text/css" href="assets/css/ubuntu.css">
+    <style>body { font-family: Ubuntu, sans-serif; }</style>
+
+
+</head>
+
+<body onload="restorelocal()">
+
+    <div id="wrapper">
+
+        <!-- Navigation -->
+        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="../index.html">Simplifying HOBBIT</a>
+            </div>
+            <!-- /.navbar-header -->
+
+            <ul class="nav navbar-top-links navbar-right">
+                <li class="dropdown">
+
+                    <ul style="padding-top:10px;">
+						<img style="height:30px;" src="img/hobbitlogo.png"/>
+						<img src="img/acinlogo.png"/>
+						<img style="width:30px;" src="img/tu_logo_kp.png"/>
+                    </ul>
+                </li>
+                <!-- /.dropdown -->
+            </ul>
+            <!-- /.navbar-top-links -->
+
+            <div class="navbar-default sidebar" role="navigation">
+                <div class="sidebar-nav navbar-collapse">
+                    <ul class="nav" id="side-menu">
+
+						<ul class="nav nav-second-level">
+							<li>
+								<a id="save_to_file_button" name="save_to_file_button" href="#" onclick='ExecutionLogicModule.save_code();'>Save code in file</a>
+							</li>
+							<li>
+								<a id="save_to_file_button" name="save_to_file_button" href="#" onclick='ExecutionLogicModule.save_to_file();'>Save workspace</a>
+							</li>
+							<li>
+								<a id="load_from_file_button" name="load_from_file_button" href="#" onclick='ExecutionLogicModule.load_from_file();'>Load workspace</a>
+							</li>
+							<li>
+								<a id="clean_ws_button" name="clean_ws_button" href="#" onclick='ExecutionLogicModule.clean_ws();'>Clean workspace</a>
+							</li>
+						</ul>
+                            <!-- /.nav-second-level -->
+                        
+
+                        
+                    </ul>
+                </div>
+                <!-- /.sidebar-collapse -->
+            </div>
+            <!-- /.navbar-static-side -->
+        </nav>
+
+        <!-- Page Content -->
+        <div id="page-wrapper">
+          <div class="">
+              <!-- Nav tabs -->
+              <ul class="nav nav-tabs">
+                  <li class="active"><a href="#home" data-toggle="tab" onclick="show_blockly();">Blocks</a>
+                  </li>
+                  <li><a href="#profile" data-toggle="tab" onclick="hide_blockly();">Python code</a>
+                  </li>
+              </ul>
+
+              <!-- Tab panes -->
+              <div class="tab-content">
+                  <div class="tab-pane fade in active" id="home">
+                    <div id="blocklyArea" style="height:100vh;"></div>
+                  </div>
+                  <div class="tab-pane fade" id="profile">
+                      <div id="editor" style="width:100%; height:100vh;">
+
+                        function foo(items) {
+                          var x = "All this is syntax highlighted";
+                          return x;
+                      }
+                      </div>
+                  </div>
+              </div>
+          </div>
+        </div>
+        <!-- /#page-wrapper -->
+    </div>
+    <!-- /#wrapper -->
+
+    <div id="blocklyDiv" style="position: absolute"></div>
+
+    <xml id="toolbox" style="display: none">
+	´<category id="catHOBBIT" name="HOBBIT" colour="360">
+		<block type="hobbit_move"></block>
+			<!-- <value name="speed"> -->
+				<!-- <shadow type="math_number"> -->
+				  <!-- <field name="NUM">0</field> -->
+				<!-- </shadow> -->
+			<!-- </value> -->
+		
+		<!-- <block type="rotate_ROS"></block> -->
+		<!-- <block type="head_ROS"></block> -->
+		<!-- <block type="emotions_ROS"></block> -->
+		<!-- <block type="ROS_service"> -->
+			<!-- <value name="service_name"> -->
+			  <!-- <shadow type="text"> -->
+				<!-- <field name="TEXT">/MMUI</field> -->
+			  <!-- </shadow> -->
+			<!-- </value> -->
+			<!-- <value name="service_type"> -->
+			  <!-- <shadow type="text"> -->
+				<!-- <field name="TEXT">Request</field> -->
+			  <!-- </shadow> -->
+			<!-- </value> -->
+		<!-- </block> -->
+		<!-- <block type="ROS_publisher"> -->
+			<!-- <value name="topic_name"> -->
+			  <!-- <shadow type="text"> -->
+				<!-- <field name="TEXT">/DiscreteMotionCmd</field> -->
+			  <!-- </shadow> -->
+			<!-- </value> -->
+			<!-- <value name="message_type"> -->
+			  <!-- <shadow type="text"> -->
+				<!-- <field name="TEXT">std_msgs/String</field> -->
+			  <!-- </shadow> -->
+			<!-- </value> -->
+			<!-- <value name="message"> -->
+			  <!-- <shadow type="text"> -->
+				<!-- <field name="TEXT">move 1.5</field> -->
+			  <!-- </shadow> -->
+			<!-- </value> -->
+		<!-- </block> -->
+		<!-- <!-- <block type="HOBBIT_paralist"></block> -->
+		<!-- <!-- <block type="HOBBIT_Request_Parameter"> -->
+			<!-- <!-- <value name="req_par_name"> -->
+			  <!-- <!-- <shadow type="text"> -->
+				<!-- <!-- <field name="TEXT"></field> -->
+			  <!-- <!-- </shadow> -->
+			<!-- <!-- </value> -->
+			<!-- <!-- <value name="req_par_value"> -->
+			  <!-- <!-- <shadow type="text"> -->
+				<!-- <!-- <field name="TEXT"></field> -->
+			  <!-- <!-- </shadow> -->
+			<!-- <!-- </value> -->
+		<!-- <!-- </block> -->
+	</category>
+	<category id="catLogi}" name="Logic" colour="210">
+	  <block type="controls_if"></block>
+      <block type="logic_compare"></block>
+      <block type="logic_operation"></block>
+      <block type="logic_negate"></block>
+      <block type="logic_boolean"></block>
+      <block type="logic_null"></block>
+      <block type="logic_ternary"></block>
+    </category>
+    <category id="catLoop" name="Loop" colour="120">
+      <block type="controls_repeat_ext">
+        <value name="TIMES">
+          <shadow type="math_number">
+            <field name="NUM">10</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="controls_whileUntil"></block>
+      <block type="controls_for">
+        <value name="FROM">
+          <shadow type="math_number">
+            <field name="NUM">1</field>
+          </shadow>
+        </value>
+        <value name="TO">
+          <shadow type="math_number">
+            <field name="NUM">10</field>
+          </shadow>
+        </value>
+        <value name="BY">
+          <shadow type="math_number">
+            <field name="NUM">1</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="controls_forEach"></block>
+      <block type="controls_flow_statements"></block>
+    </category>
+    <category id="catMath" name="Math" colour="230">
+      <block type="math_number"></block>
+      <block type="math_arithmetic">
+        <value name="A">
+          <shadow type="math_number">
+            <field name="NUM">1</field>
+          </shadow>
+        </value>
+        <value name="B">
+          <shadow type="math_number">
+            <field name="NUM">1</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="math_single">
+        <value name="NUM">
+          <shadow type="math_number">
+            <field name="NUM">9</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="math_trig">
+        <value name="NUM">
+          <shadow type="math_number">
+            <field name="NUM">45</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="math_constant"></block>
+      <block type="math_number_property">
+        <value name="NUMBER_TO_CHECK">
+          <shadow type="math_number">
+            <field name="NUM">0</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="math_round">
+        <value name="NUM">
+          <shadow type="math_number">
+            <field name="NUM">3.1</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="math_on_list"></block>
+      <block type="math_modulo">
+        <value name="DIVIDEND">
+          <shadow type="math_number">
+            <field name="NUM">64</field>
+          </shadow>
+        </value>
+        <value name="DIVISOR">
+          <shadow type="math_number">
+            <field name="NUM">10</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="math_constrain">
+        <value name="VALUE">
+          <shadow type="math_number">
+            <field name="NUM">50</field>
+          </shadow>
+        </value>
+        <value name="LOW">
+          <shadow type="math_number">
+            <field name="NUM">1</field>
+          </shadow>
+        </value>
+        <value name="HIGH">
+          <shadow type="math_number">
+            <field name="NUM">100</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="math_random_int">
+        <value name="FROM">
+          <shadow type="math_number">
+            <field name="NUM">1</field>
+          </shadow>
+        </value>
+        <value name="TO">
+          <shadow type="math_number">
+            <field name="NUM">100</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="math_random_float"></block>
+    </category>
+    <category id="catText" name="Text" colour="160">
+      <block type="text"></block>
+      <block type="text_join"></block>
+      <block type="text_append">
+        <value name="TEXT">
+          <shadow type="text"></shadow>
+        </value>
+      </block>
+      <block type="text_length">
+        <value name="VALUE">
+          <shadow type="text">
+            <field name="TEXT">abc</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="text_isEmpty">
+        <value name="VALUE">
+          <shadow type="text">
+            <field name="TEXT"></field>
+          </shadow>
+        </value>
+      </block>
+      <block type="text_indexOf">
+        <value name="VALUE">
+          <block type="variables_get">
+            <field name="VAR">{textVariable}</field>
+          </block>
+        </value>
+        <value name="FIND">
+          <shadow type="text">
+            <field name="TEXT">abc</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="text_charAt">
+        <value name="VALUE">
+          <block type="variables_get">
+            <field name="VAR">{textVariable}</field>
+          </block>
+        </value>
+      </block>
+      <block type="text_getSubstring">
+        <value name="STRING">
+          <block type="variables_get">
+            <field name="VAR">{textVariable}</field>
+          </block>
+        </value>
+      </block>
+      <block type="text_changeCase">
+        <value name="TEXT">
+          <shadow type="text">
+            <field name="TEXT">abc</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="text_trim">
+        <value name="TEXT">
+          <shadow type="text">
+            <field name="TEXT">abc</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="text_print">
+        <value name="TEXT">
+          <shadow type="text">
+            <field name="TEXT">abc</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="text_prompt_ext">
+        <value name="TEXT">
+          <shadow type="text">
+            <field name="TEXT">abc</field>
+          </shadow>
+        </value>
+      </block>
+    </category>
+    <category id="catLists" name="Lists" colour="260">
+      <block type="lists_create_with">
+        <mutation items="0"></mutation>
+      </block>
+      <block type="lists_create_with"></block>
+      <block type="lists_repeat">
+        <value name="NUM">
+          <shadow type="math_number">
+            <field name="NUM">5</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="lists_length"></block>
+      <block type="lists_isEmpty"></block>
+      <block type="lists_indexOf">
+        <value name="VALUE">
+          <block type="variables_get">
+            <field name="VAR">{listVariable}</field>
+          </block>
+        </value>
+      </block>
+      <block type="lists_getIndex">
+        <value name="VALUE">
+          <block type="variables_get">
+            <field name="VAR">{listVariable}</field>
+          </block>
+        </value>
+      </block>
+      <block type="lists_setIndex">
+        <value name="LIST">
+          <block type="variables_get">
+            <field name="VAR">{listVariable}</field>
+          </block>
+        </value>
+      </block>
+      <block type="lists_getSublist">
+        <value name="LIST">
+          <block type="variables_get">
+            <field name="VAR">{listVariable}</field>
+          </block>
+        </value>
+      </block>
+      <block type="lists_split">
+        <value name="DELIM">
+          <shadow type="text">
+            <field name="TEXT">,</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="lists_sort"></block>
+    </category>
+    <category id="{catColour}" name="Colour" colour="20">
+      <block type="colour_picker"></block>
+      <block type="colour_random"></block>
+      <block type="colour_rgb">
+        <value name="RED">
+          <shadow type="math_number">
+            <field name="NUM">100</field>
+          </shadow>
+        </value>
+        <value name="GREEN">
+          <shadow type="math_number">
+            <field name="NUM">50</field>
+          </shadow>
+        </value>
+        <value name="BLUE">
+          <shadow type="math_number">
+            <field name="NUM">0</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="colour_blend">
+        <value name="COLOUR1">
+          <shadow type="colour_picker">
+            <field name="COLOUR">#ff0000</field>
+          </shadow>
+        </value>
+        <value name="COLOUR2">
+          <shadow type="colour_picker">
+            <field name="COLOUR">#3333ff</field>
+          </shadow>
+        </value>
+        <value name="RATIO">
+          <shadow type="math_number">
+            <field name="NUM">0.5</field>
+          </shadow>
+        </value>
+      </block>
+    </category>
+
+	<category id="catVariables" custom="VARIABLE" name="Variables"></category>
+    <category id="catFunctions" custom="PROCEDURE" name="Functions"></category>
+    
+	</xml>
+
+
+    <!-- jQuery -->
+    <script src="../bower_components/jquery/dist/jquery.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="../bower_components/metisMenu/dist/metisMenu.min.js"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="../dist/js/sb-admin-2.js"></script>
+
+    <!-- Code execution logic -->
+    <script src="./js/execution_logic.js"></script>
+
+<!-- ACE editor configuration -->
+<script type="text/javascript">
+  document.getElementById('editor').style.fontSize='16px';
+</script>
+
+<script>
+  var blocklyArea = document.getElementById('blocklyArea');
+  var blocklyDiv = document.getElementById('blocklyDiv');
+  var workspace = Blockly.inject(blocklyDiv,
+    {toolbox: document.getElementById('toolbox'),
+       scrollbars: true,
+       rtl: false,
+       zoom:
+           {enabled: true,
+            controls: true,
+            wheel: true,
+            maxScale: 4,
+            minScale: .25,
+            scaleSpeed: 1.1
+           },
+       grid:
+           {spacing: 25,
+            length: 3,
+            colour: '#ccc',
+            snap: false},
+       trashcan: true});
+
+  var onresize = function(e) {
+  // Compute the absolute coordinates and dimensions of blocklyArea.
+  var element = blocklyArea;
+  var x = 0;
+  var y = 0;
+  do {
+    x += element.offsetLeft;
+    y += element.offsetTop;
+    element = element.offsetParent;
+  } while (element);
+  // Position blocklyDiv over blocklyArea.
+  blocklyDiv.style.left = x + 'px';
+  blocklyDiv.style.top = y + 'px';
+  blocklyDiv.style.width = blocklyArea.offsetWidth + 'px';
+  <!-- blocklyDiv.style.height = blocklyArea.offsetHeight  + 'px'; -->
+  blocklyDiv.style.height = '100%';
+  };
+  window.addEventListener('resize', onresize, false);
+  onresize();
+</script>
+
+<script>
+  function tojavascript(){
+      Blockly.JavaScript.addReservedWords('code');
+      var code = Blockly.JavaScript.workspaceToCode(workspace);
+      try {
+        //eval(code);
+        alert(code);
+      } catch (e) {
+        alert(e);
+      }
+  };
+
+  function tophp(){
+      Blockly.JavaScript.addReservedWords('code');
+      var code = Blockly.PHP.workspaceToCode(workspace);
+      try {
+        //eval(code);
+        alert(code);
+      } catch (e) {
+        alert(e);
+      }
+  };
+
+  function topython(){
+      Blockly.Python.addReservedWords('code');
+      var code = Blockly.Python.workspaceToCode(workspace);
+      try {
+        //eval(code);
+        alert(code);
+      } catch (e) {
+        alert(e);
+      }
+  };
+
+  // hide blockly and show the code
+  function hide_blockly() {
+      document.getElementById("blocklyDiv").style.display = 'none';
+      document.getElementById("blocklyArea").style.display = 'none';
+      // onresize();
+      window.dispatchEvent(new Event('resize'));
+
+      // show the code
+      Blockly.Python.addReservedWords('code');
+      var code = Blockly.Python.workspaceToCode(workspace);
+
+      var editor = ace.edit("editor");
+      editor.setTheme("ace/theme/chrome");
+      editor.getSession().setMode("ace/mode/python");
+      editor.getSession().setUseWrapMode(true);
+      editor.setShowPrintMargin(false);
+      editor.setValue(code);
+  };
+
+  function show_blockly() {
+      document.getElementById("blocklyDiv").style.display = 'block';
+      document.getElementById("blocklyArea").style.display = 'block';
+      window.location.reload(true);
+      // alert("resizing");
+      // window.dispatchEvent(new Event('resize'));
+  };
+</script>
+
+<script type="text/javascript">
+
+  // restore at the beginning.
+  // This is launched after the page has finished loading
+  function restorelocal(){
+    var xml_text = localStorage.getItem("blocks_cache");
+    try {
+      var xml = Blockly.Xml.textToDom(xml_text);
+      Blockly.Xml.domToWorkspace(workspace, xml);
+
+      automate_localstorage();
+    }
+    catch(err) {
+        // alert(err);
+        console.log(err);
+        automate_localstorage();
+    }
+
+    // Launch websockets
+    ExecutionLogicModule.launch_websockets();
+
+  }
+
+  function automate_localstorage(){
+      localstorage();
+      setTimeout(automate_localstorage, 1000);
+  }
+
+  // Save stuff on local storage
+  function localstorage() {
+    var xml = Blockly.Xml.workspaceToDom(workspace);
+    var xml_text = Blockly.Xml.domToText(xml);
+    localStorage.setItem("blocks_cache", xml_text);
+    var xml_text_stored = localStorage.getItem("blocks_cache");
+  }
+
+</script>
+
+</body>
+
+</html>
