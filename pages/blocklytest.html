@@ -144,16 +144,17 @@
 
     <xml id="toolbox" style="display: none">
 	´<category id="catHOBBIT" name="HOBBIT" colour="360">
-		<block type="hobbit_move"></block>
-			<!-- <value name="speed"> -->
-				<!-- <shadow type="math_number"> -->
-				  <!-- <field name="NUM">0</field> -->
-				<!-- </shadow> -->
-			<!-- </value> -->
-		
+		<block type="hobbit_move">
+			<value name="speed">
+				<shadow type="math_number">
+				  <field name="NUM">0</field>
+				</shadow>
+			</value>
+		</block>
+		<block type="hobbit_head"></block>
+		<block type="hobbit_emo"></block>
+		<block type="ROS_publisher"></block>
 		<!-- <block type="rotate_ROS"></block> -->
-		<!-- <block type="head_ROS"></block> -->
-		<!-- <block type="emotions_ROS"></block> -->
 		<!-- <block type="ROS_service"> -->
 			<!-- <value name="service_name"> -->
 			  <!-- <shadow type="text"> -->

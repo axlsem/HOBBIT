@@ -364,3 +364,14 @@ Blockly.Python.CreatePublisher = function() {
 	
 	return fct;
 }
+
+/**
+ * Import rospy, create publisher fuction and initialization of ROS node.
+ */
+Blockly.Python.InitROS = function() {
+	
+	Blockly.Python.definitions_['import_rospy'] = 'import rospy';
+	Blockly.Python.definitions_['defPublisher'] = Blockly.Python.CreatePublisher();
+	Blockly.Python.definitions_['rospy_init_node'] = 'rospy.init_node(\'demo\', anonymous=True)';
+
+}
