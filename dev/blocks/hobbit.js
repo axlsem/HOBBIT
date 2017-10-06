@@ -202,19 +202,66 @@ Blockly.Blocks['hobbit_emo'] = {
   }
 };
 
+// Blockly.Blocks['ROS_publisher'] = {
+  // init: function() {
+    // this.jsonInit({
+      // "message0": "PUBLISH %1 topic name %2 message %3 message type %4",
+      // "args0": [
+		// {
+		  // "type": "input_dummy"
+		// },
+		// {
+		  // "type": "input_value",
+		  // "name": "topic_name",
+		  // "align": "RIGHT"
+		// },
+		// {
+		  // "type": "input_value",
+		  // "name": "message",
+		  // "align": "RIGHT"
+		// },
+		// {
+		  // "type": "field_dropdown",
+		  // "name": "message_type",
+		  // "options": [
+			// [
+			  // "String",
+			  // "String"
+			// ],
+			// [
+			  // "Bool",
+			  // "Bool"
+			// ],
+			// [
+			  // "Float64",
+			  // "Float64"
+			// ],
+			// [
+			  // "Int64",
+			  // "Int64"
+			// ],
+			// [
+			  // "UInt64",
+			  // "UInt64"
+			// ]
+		  // ]
+		// }
+      // ],
+	  // "inputsInline": false,
+      // "previousStatement": null,
+	  // "nextStatement": null,
+	  // "colour": Blockly.Constants.hobbit.HUE,
+	  // "tooltip": "Create publisher for ROS topics",
+	  // "helpUrl": ""
+    // });
+  // }
+// };
+
 Blockly.Blocks['ROS_publisher'] = {
   init: function() {
     this.jsonInit({
-      "message0": "PUBLISH %1 topic name %2 message %3 message type %4",
+      "message0": "Publish %1 from type %2 %3 to topic %4",
       "args0": [
-		{
-		  "type": "input_dummy"
-		},
-		{
-		  "type": "input_value",
-		  "name": "topic_name",
-		  "align": "RIGHT"
-		},
 		{
 		  "type": "input_value",
 		  "name": "message",
@@ -245,9 +292,19 @@ Blockly.Blocks['ROS_publisher'] = {
 			  "UInt64"
 			]
 		  ]
+		},
+		{
+		  "type": "input_dummy",
+		  "align": "RIGHT"
+		},
+		{
+		  "type": "input_value",
+		  "name": "topic_name",
+		  "check": "String",
+		  "align": "RIGHT"
 		}
       ],
-	  "inputsInline": false,
+	  "inputsInline": true,
       "previousStatement": null,
 	  "nextStatement": null,
 	  "colour": Blockly.Constants.hobbit.HUE,
