@@ -8,5 +8,6 @@ xcopy D:\_Diplomarbeit\HOBBIT\blockly\blocks_compressed.js D:\_Diplomarbeit\HOBB
 xcopy D:\_Diplomarbeit\HOBBIT\blockly\python_compressed.js D:\_Diplomarbeit\HOBBIT\dev /Y
 xcopy D:\_Diplomarbeit\HOBBIT\blockly\blocks\hobbit.js D:\_Diplomarbeit\HOBBIT\dev\blocks\hobbit.js /Y
 xcopy D:\_Diplomarbeit\HOBBIT\blockly\core D:\_Diplomarbeit\HOBBIT\dev\core /Y
-xcopy D:\_Diplomarbeit\HOBBIT\blockly\msg D:\_Diplomarbeit\HOBBIT\dev\msg /Y
+xcopy D:\_Diplomarbeit\HOBBIT\blockly\msg D:\_Diplomarbeit\HOBBIT\dev\msg /Y /S
 xcopy D:\_Diplomarbeit\HOBBIT\blockly\generators D:\_Diplomarbeit\HOBBIT\dev\generators /Y
+xcopy D:\_Diplomarbeit\HOBBIT\blockly\generators\python D:\_Diplomarbeit\HOBBIT\dev\generators\python /Y

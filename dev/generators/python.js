@@ -139,6 +139,12 @@ Blockly.Python.ORDER_OVERRIDES = [
 ];
 
 /**
+ * Constants for ROS and HOBBIT custom blocks.
+ */
+Blockly.Python.PublisherFctName = 'demoPublisher';
+Blockly.Python.TimeDelay = 3;
+
+/**
  * Initialise the database of variable names.
  * @param {!Blockly.Workspace} workspace Workspace to generate code from.
  */
@@ -185,7 +191,6 @@ Blockly.Python.finish = function(code) {
     if (def.match(/^(from\s+\S+\s+)?import\s+\S+/)) {
       imports.push(def);
     } else if (name.match("rospy_spin")||(name.match("rospy_init_node"))) {
-		console.log(def);
 		first_lines.push(def);
 		
 	} else {
@@ -199,7 +204,8 @@ Blockly.Python.finish = function(code) {
   
   var allDefs = imports.join('\n') + '\n\n' + definitions.join('\n\n');
   var MainCheck = "if __name__ == '__main__':\n\ttry:\n";
-  var CodeIndent = Blockly.Python.prefixLines(first_lines.join('\n\n') + "\n" + code, "\t\t");
+  // var CodeIndent = Blockly.Python.prefixLines(first_lines.join('\n\n') + "\n" + code, "\t\t");
+  var CodeIndent = Blockly.Python.prefixLines(code, "\t\t");
   var ExceptPass = "\n\texcept rospy.ROSInterruptException:\n\t\tpass"
   return allDefs.replace(/\n\n+/g, '\n\n').replace(/\n*$/, '\n\n\n') + MainCheck + CodeIndent + ExceptPass;
 };
@@ -357,8 +363,9 @@ Blockly.Python.UpdateImport = function(import_package,imports) {
  */
 Blockly.Python.CreatePublisher = function() {
 	var fct = "";
-	fct += "def MyPublisher(topic, message, message_type):\n";
+	fct += "def "+Blockly.Python.PublisherFctName+"(topic, message, message_type):\n";
 	fct += "	pub = rospy.Publisher(topic, message_type, queue_size=10)\n";
+	fct += "	rospy.init_node(\'demo\', anonymous=True)\n";
 	fct += "	rospy.loginfo(message)\n";
 	fct += "	pub.publish(message)\n";
 	
@@ -371,7 +378,6 @@ Blockly.Python.CreatePublisher = function() {
 Blockly.Python.InitROS = function() {
 	
 	Blockly.Python.definitions_['import_rospy'] = 'import rospy';
+	Blockly.Python.definitions_['import_time'] = 'import time';
 	Blockly.Python.definitions_['defPublisher'] = Blockly.Python.CreatePublisher();
-	Blockly.Python.definitions_['rospy_init_node'] = 'rospy.init_node(\'demo\', anonymous=True)';
-
 }
