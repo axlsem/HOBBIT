@@ -202,12 +202,13 @@ Blockly.Python.finish = function(code) {
   delete Blockly.Python.functionNames_;
   Blockly.Python.variableDB_.reset();
   
+  var PythonHeader = "#!/usr/bin/env python\n";
   var allDefs = imports.join('\n') + '\n\n' + definitions.join('\n\n');
   var MainCheck = "if __name__ == '__main__':\n\ttry:\n";
   // var CodeIndent = Blockly.Python.prefixLines(first_lines.join('\n\n') + "\n" + code, "\t\t");
   var CodeIndent = Blockly.Python.prefixLines(code, "\t\t");
   var ExceptPass = "\n\texcept rospy.ROSInterruptException:\n\t\tpass"
-  return allDefs.replace(/\n\n+/g, '\n\n').replace(/\n*$/, '\n\n\n') + MainCheck + CodeIndent + ExceptPass;
+  return PythonHeader+allDefs.replace(/\n\n+/g, '\n\n').replace(/\n*$/, '\n\n\n') + MainCheck + CodeIndent + ExceptPass;
 };
 
 /**

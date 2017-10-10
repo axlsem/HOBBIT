@@ -304,7 +304,7 @@ var ExecutionLogicModule = (function () {
 	
 	save_code: function() {
 		
-		var pycode = "#!/usr/bin/env python\n";
+		var pycode = "";
 		pycode += Blockly.Python.workspaceToCode(workspace);
 		
 		var textToSave = pycode;
@@ -321,22 +321,6 @@ var ExecutionLogicModule = (function () {
 		document.body.appendChild(downloadLink);
 	 
 		downloadLink.click();
-	  
-      // var filename = 'blockly_workspace.xml';
-      // var xml = Blockly.Xml.workspaceToDom(workspace);
-      // var xml_text = Blockly.Xml.domToText(xml);
-      // var blob = new Blob([xml_text], {type: 'text/xml'});
-      // if (window.navigator.msSaveOrOpenBlob) {
-          // window.navigator.msSaveBlob(blob, filename);
-      // } else {
-          // var elem = window.document.createElement('a');
-          // elem.href = window.URL.createObjectURL(blob);
-          // elem.download = filename;
-          // document.body.appendChild(elem);
-          // elem.click();
-          // document.body.removeChild(elem);
-      // }
-      // console.log("Workspace saved.");
     },
 
     end_execution: function() {
