@@ -40,7 +40,7 @@ Blockly.Python['hobbit_move'] = function(block) {
   code += "\nmessage = Twist()\n";
   code += "message.linear.x = "+dropdown_direction+value_speed+"\n";
   code += Blockly.Python.PublisherFctName+"(\'/cmd_vel\', message, Twist)\n";
-  code += "time.sleep("+Blockly.Python.TimeDelay+")\n";
+  // code += "time.sleep("+Blockly.Python.TimeDelay+")\n";
  
   return code;
 };
@@ -54,7 +54,7 @@ Blockly.Python['hobbit_head'] = function(block) {
   var code = "";
   code += "\nmessage = \"" + dropdown_head_position.toString() + "\"\n";
   code += Blockly.Python.PublisherFctName+"(\'/head/move\', message, String)\n";
-  code += "time.sleep("+Blockly.Python.TimeDelay+")\n";
+  // code += "time.sleep("+Blockly.Python.TimeDelay+")\n";
 	
   return code;
 };
@@ -68,7 +68,7 @@ Blockly.Python['hobbit_emo'] = function(block) {
   var code = "";
   code += "\nmessage = \"" + dropdown_emotion.toString() + "\"\n";
   code += Blockly.Python.PublisherFctName+"(\'/head/emo\', message, String)\n";
-  code += "time.sleep("+Blockly.Python.TimeDelay+")\n";
+  // code += "time.sleep("+Blockly.Python.TimeDelay+")\n";
   
   return code;
 };
@@ -84,7 +84,7 @@ Blockly.Python['ROS_publisher'] = function(block) {
   var code = "";
   code += "\nmessage = " + value_message.toString() + "\n";
   code += Blockly.Python.PublisherFctName+"("+value_topic_name.toString()+", message,"+value_message_type.toString()+")\n";
-  code += "time.sleep("+Blockly.Python.TimeDelay+")\n";
+  // code += "time.sleep("+Blockly.Python.TimeDelay+")\n";
 
   return code;
 };
