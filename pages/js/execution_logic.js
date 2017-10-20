@@ -323,6 +323,14 @@ var ExecutionLogicModule = (function () {
 		downloadLink.click();
     },
 
+	run_code: function() {
+			
+		var sys = require('sys')
+		var exec = require('child_process').exec;
+		function puts(error, stdout, stderr) { sys.puts(stdout) }
+		exec("ls -la", puts);
+    },
+
     end_execution: function() {
       var end_button = document.getElementById(END_BUTTON_ID);
       var launch_button = document.getElementById(LAUNCH_BUTTON_ID);
