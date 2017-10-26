@@ -35,7 +35,7 @@ Blockly.Python['hobbit_turn'] = function(block) {
 
 	Blockly.Python.InitROS();
 
-	code += "\nmessage = Twist()\n";
+	code += "\message = Twist()\n";
 	code += "message.angular.x = "+value_angle+"\n";
 	code += Blockly.Python.NodeName+'.publishTopic(\'/cmd_vel\', Twist, message)\n';
 
@@ -50,7 +50,7 @@ Blockly.Python['hobbit_move'] = function(block) {
 
 	Blockly.Python.InitROS();  
 
-	code += "\nmessage = Twist()\n";
+	code += "\message = Twist()\n";
 	code += "message.linear.x = "+dropdown_direction+value_speed+"\n";
 	code += Blockly.Python.NodeName+'.publishTopic(\'/cmd_vel\', Twist, message)\n';
 
@@ -63,7 +63,7 @@ Blockly.Python['hobbit_head'] = function(block) {
 	Blockly.Python.InitROS();
 
 	var code = "";
-	code += "\nmessage = \'" + dropdown_head_position.toString() + "\'\n";
+	code += "\message = \'" + dropdown_head_position.toString() + "\'\n";
 	code += Blockly.Python.NodeName+'.publishTopic(\'/head/move\', String, message)\n';
 
 	return code;
@@ -75,7 +75,7 @@ Blockly.Python['hobbit_emo'] = function(block) {
 	Blockly.Python.InitROS();
 
 	var code = "";
-	code += "\nmessage = \'" + dropdown_emotion.toString() + "\'\n";
+	code += "\message = \'" + dropdown_emotion.toString() + "\'\n";
 	code += Blockly.Python.NodeName+'.publishTopic(\'/head/emo\', String, message)\n';
 
 	return code;
@@ -89,8 +89,49 @@ Blockly.Python['ROS_publisher'] = function(block) {
 	Blockly.Python.InitROS();
 
 	var code = "";
-	code += "\nmessage = " + value_message.toString() + "\n";
+	code += "\message = " + value_message.toString() + "\n";
 	code += Blockly.Python.NodeName+'.publishTopic('+value_topic_name+', '+value_message_type+', message)\n';
 
 	return code;
+};
+
+Blockly.Python['hobbit_yes_no'] = function(block) {
+	var value_text = Blockly.Python.valueToCode(block, 'text', Blockly.Python.ORDER_ATOMIC);
+	var dropdown_yes_no = block.getFieldValue('yes_no');
+	
+	Blockly.Python.InitROS();
+
+	var code = "";
+	code += Blockly.Python.NodeName+'.askYesNoQuestion('+value_text+',\''+dropdown_yes_no+'\')';
+
+	return [code, Blockly.Python.ORDER_NONE];
+};
+
+Blockly.Python['hobbit_user_input'] = function(block) {
+	var value_text = Blockly.Python.valueToCode(block, 'text', Blockly.Python.ORDER_ATOMIC);
+	
+	Blockly.Python.InitROS();
+
+	var code = "";
+	code += Blockly.Python.NodeName+'.getUserInput('+value_text+')';
+
+	return [code, Blockly.Python.ORDER_NONE];
+};
+
+Blockly.Python['hobbit_call_service'] = function(block) {
+	var value_service_name = Blockly.Python.valueToCode(block, 'service_name', Blockly.Python.ORDER_ATOMIC);
+	var value_service_type = Blockly.Python.valueToCode(block, 'service_type', Blockly.Python.ORDER_ATOMIC);
+	var dropdown_has_parameters = block.getFieldValue('has_parameters');
+	var value_service_parameters = Blockly.Python.valueToCode(block, 'service_parameters', Blockly.Python.ORDER_ATOMIC);
+	
+	if (dropdown_has_parameters == 'no_params') {
+		value_service_parameters = 'None';
+	}
+	
+	Blockly.Python.InitROS();
+
+	var code = "";
+	code += Blockly.Python.NodeName+'.callService('+value_service_name+','+value_service_type+','+value_service_parameters+')';
+
+	return [code, Blockly.Python.ORDER_NONE];
 };

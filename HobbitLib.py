@@ -80,7 +80,7 @@ class HobbitNode:
 			WaitUntilPositionReached(message)
 	
 			
-	def callService(ServiceName,ServiceType,args):
+	def callService(self,ServiceName,ServiceType,args):
 		try:
 			ParameterList = []
 			if args:
@@ -105,3 +105,39 @@ class HobbitNode:
 		except rospy.ROSInterruptException, e:
 			print "Service did not process request: %s"%str(e)
 			return None
+			
+	def askYesNoQuestion(self,text,desiredAnswer):
+		parr = []
+		p = Parameter('type','D_YES_NO')
+		parr.append(p)
+		p = Parameter('text',text)
+		parr.append(p)
+		p = Parameter('speak',text)
+		parr.append(p)
+		p = Parameter('Repetitions','3')
+		parr.append(p)
+		p = Parameter('Timeout','15')
+		parr.append(p)
+		
+		h = Header()
+		h.stamp = rospy.Time.now()
+
+		resp = self.callService('/MMUI','Request',(h,'0','create',parr))
+		
+		return resp.params[0].value is desiredAnswer
+		
+	def getUserInput(self,text):
+		parr = []
+        p = Parameter('type', 'D_NAME')
+        parr.append(p)
+        p = Parameter('text', text)
+        parr.append(p)
+        p = Parameter('Timeout', '30')
+        parr.append(p)
+        
+		h = Header()
+		h.stamp = rospy.Time.now()
+
+		resp = self.callService('/MMUI','Request',(h,'0','create',parr))
+		
+		return resp.params[1].value

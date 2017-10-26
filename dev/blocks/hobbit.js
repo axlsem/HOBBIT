@@ -34,6 +34,154 @@ goog.require('Blockly.Blocks');
  */
 Blockly.Constants.hobbit.HUE = 360;
 
+Blockly.Blocks['hobbit_user_input'] = {
+  init: function() {
+    this.jsonInit({
+      "type": "hobbit_user_input",
+      "message0": "user's response to %1",
+      "args0": [
+        {	
+		  "type": "input_value",
+		  "name": "text",
+		  "check": "String"
+		}
+      ],
+      "inputsInline": true,
+	  "output": "String",
+	  "colour": Blockly.Constants.hobbit.HUE,
+	  "tooltip": "Get user's input.",
+	  "helpUrl": ""
+    });
+  }
+};
+
+Blockly.Blocks['hobbit_yes_no'] = {
+  init: function() {
+    this.jsonInit({
+      "type": "hobbit_yes_no",
+      "message0": "user responds to %1 with %2",
+      "args0": [
+        {	
+		  "type": "input_value",
+		  "name": "text",
+		  "check": "String"
+		},
+		{	
+		  "type": "field_dropdown",
+		  "name": "yes_no",
+		  "options": [
+			[
+			  "yes",
+			  "D_YES"
+			],
+			[
+			  "no",
+			  "D_NO"
+			]
+		  ]
+		}
+      ],
+      "inputsInline": true,
+	  "output": "Boolean",
+	  "colour": Blockly.Constants.hobbit.HUE,
+	  "tooltip": "Ask a question and wait for user response (yes/no).",
+	  "helpUrl": ""
+    });
+  }
+};
+
+Blockly.Blocks['hobbit_call_service'] = {
+  init: function() {
+    this.jsonInit({
+      "type": "hobbit_call_service",
+      "message0": "response from service %1 from type %2 called with %3",
+      "args0": [
+        {
+		  "type": "input_value",
+		  "name": "service_name",
+		  "check": "String"
+		},
+		{
+		  "type": "input_value",
+		  "name": "service_type",
+		  "check": "String"
+		},
+		{
+		  "type": "field_dropdown",
+		  "name": "has_parameters",
+		  "options": [
+			[
+			  "parameters",
+			  "params"
+			],
+			[
+			  "no parameters",
+			  "no_params"
+			]
+		  ]
+		}
+      ],
+      "inputsInline": true,
+	  "output": null,
+	  "colour": Blockly.Constants.hobbit.HUE,
+	  "tooltip": "Get response from service.",
+	  "helpUrl": "",
+	  "mutator": "hobbit_service_has_parameters"
+    });
+  }
+};
+
+Blockly.Constants.hobbit.SERVICE_HAS_PARAMETERS_MUTATOR_MIXIN = {
+  /**
+   * Create XML to represent whether the 'divisorInput' should be present.
+   * @return {Element} XML storage element.
+   * @this Blockly.Block
+   */
+  mutationToDom: function() {
+    var container = document.createElement('mutation');
+    var parametersInput = (this.getFieldValue('has_parameters') == 'params');
+    container.setAttribute('parameters_input', parametersInput);
+    return container;
+  },
+  /**
+   * Parse XML to restore the 'divisorInput'.
+   * @param {!Element} xmlElement XML storage element.
+   * @this Blockly.Block
+   */
+  domToMutation: function(xmlElement) {
+    var parametersInput = (xmlElement.getAttribute('parameters_input') == 'true');
+    this.updateShape_(parametersInput);
+  },
+  /**
+   * Modify this block to have (or not have) an input for 'is divisible by'.
+   * @param {boolean} divisorInput True if this block has a divisor input.
+   * @private
+   * @this Blockly.Block
+   */
+  updateShape_: function(parameters) {
+    // Add or remove a Value Input.
+    var inputExists = this.getInput('service_parameters');
+    if (parameters) {
+      if (!inputExists) {
+        this.appendValueInput('service_parameters');
+      }
+    } else if (inputExists) {
+      this.removeInput('service_parameters');
+    }
+  }
+};
+
+Blockly.Constants.hobbit.SERVICE_HAS_PARAMETERS_MUTATOR_EXTENSION = function() {
+  this.getField('has_parameters').setValidator(function(option) {
+    var parametersInput = (option == 'parameters');
+    this.sourceBlock_.updateShape_(parametersInput);
+  });
+};
+
+Blockly.Extensions.registerMutator('hobbit_service_has_parameters',
+  Blockly.Constants.hobbit.SERVICE_HAS_PARAMETERS_MUTATOR_MIXIN,
+  Blockly.Constants.hobbit.SERVICE_HAS_PARAMETERS_MUTATOR_EXTENSION);
+
 Blockly.Blocks['hobbit_turn'] = {
   init: function() {
     this.jsonInit({
@@ -54,7 +202,6 @@ Blockly.Blocks['hobbit_turn'] = {
     });
   }
 };
-
 
 Blockly.Blocks['hobbit_move'] = {
   init: function() {

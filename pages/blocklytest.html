@@ -163,7 +163,39 @@
 		</block>
 		<block type="hobbit_head"></block>
 		<block type="hobbit_emo"></block>
-		<block type="ROS_publisher"></block>
+		<block type="hobbit_yes_no">
+			<value name="text">
+				<shadow type="text">
+				  <field name="TEXT"></field>
+				</shadow>
+			</value>
+		</block>
+		<block type="hobbit_user_input">
+			<value name="text">
+				<shadow type="text">
+				  <field name="TEXT"></field>
+				</shadow>
+			</value>
+		</block>
+		<block type="ROS_publisher">
+			<value name="topic_name">
+				<shadow type="text">
+				  <field name="TEXT"></field>
+				</shadow>
+			</value>
+		</block>
+		<block type="hobbit_call_service">
+			<value name="service_name">
+				<shadow type="text">
+				  <field name="TEXT"></field>
+				</shadow>
+			</value>
+			<value name="service_type">
+				<shadow type="text">
+				  <field name="TEXT"></field>
+				</shadow>
+			</value>
+		</block>
 		<!-- <block type="rotate_ROS"></block> -->
 		<!-- <block type="ROS_service"> -->
 			<!-- <value name="service_name"> -->
