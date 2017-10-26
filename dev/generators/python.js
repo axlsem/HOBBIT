@@ -143,6 +143,7 @@ Blockly.Python.ORDER_OVERRIDES = [
  */
 Blockly.Python.PublisherFctName = 'demoPublisher';
 Blockly.Python.TimeDelay = 1;
+Blockly.Python.NodeName = 'DemoNode'
 
 /**
  * Initialise the database of variable names.
@@ -369,7 +370,7 @@ Blockly.Python.CreatePublisher = function() {
 	fct += "	pub = rospy.Publisher(topic, message_type, queue_size=10)\n";
 	// fct += "	rospy.init_node(\'demo\', anonymous=True)\n";
 	fct += "	rate.sleep()\n";
-	fct += "	rospy.loginfo(message)\n";
+	// fct += "	rospy.loginfo(message)\n";
 	fct += "	pub.publish(message)\n";
 	fct += "	rate.sleep()";
 	
@@ -381,7 +382,8 @@ Blockly.Python.CreatePublisher = function() {
  */
 Blockly.Python.InitROS = function() {
 	
-	Blockly.Python.definitions_['import_rospy'] = 'import rospy';
-	Blockly.Python.definitions_['rospy_init_node'] = "rospy.init_node(\'demo\', anonymous=True)\n";
-	Blockly.Python.definitions_['defPublisher'] = Blockly.Python.CreatePublisher();
+	// Blockly.Python.definitions_['import_rospy'] = 'import rospy';
+	Blockly.Python.definitions_['import_hobbitlib'] = 'import HobbitLib';
+	Blockly.Python.definitions_['rospy_init_node'] = Blockly.Python.NodeName+' = HobbitLib.HobbitNode(\''+Blockly.Python.NodeName+'\')';
+	// Blockly.Python.definitions_['defPublisher'] = Blockly.Python.CreatePublisher();
 }
