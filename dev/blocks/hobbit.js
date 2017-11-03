@@ -139,7 +139,7 @@ Blockly.Constants.hobbit.SERVICE_HAS_PARAMETERS_MUTATOR_MIXIN = {
    */
   mutationToDom: function() {
     var container = document.createElement('mutation');
-    var parametersInput = (this.getFieldValue('has_parameters') == 'params');
+    var parametersInput = (this.getFieldValue('has_parameters') == "params");
     container.setAttribute('parameters_input', parametersInput);
     return container;
   },

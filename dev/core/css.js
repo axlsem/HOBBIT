@@ -165,7 +165,7 @@ Blockly.Css.CONTENT = [
     'box-shadow: 4px 4px 20px 1px rgba(0,0,0,.15);',
     'color: #000;',
     'display: none;',
-    'font-family: sans-serif;',
+    'font-family: Helvetica Neue, Helvetica, Arial;',
     'font-size: 9pt;',
     'opacity: 0.9;',
     'padding: 2px;',
@@ -275,7 +275,7 @@ Blockly.Css.CONTENT = [
   '.blocklyText {',
     'cursor: default;',
     'fill: #fff;',
-    'font-family: sans-serif;',
+    'font-family: Helvetica Neue, Helvetica, Arial;',
     'font-size: 11pt;',
   '}',
 
@@ -386,7 +386,7 @@ Blockly.Css.CONTENT = [
   '.blocklyHtmlInput {',
     'border: none;',
     'border-radius: 4px;',
-    'font-family: sans-serif;',
+    'font-family: Helvetica Neue, Helvetica, Arial;',
     'height: 100%;',
     'margin: 0;',
     'outline: none;',
@@ -507,7 +507,8 @@ Blockly.Css.CONTENT = [
 
   /* Category tree in Toolbox. */
   '.blocklyToolboxDiv {',
-    'background-color: #ddd;',
+    'background-color: #dee7ec;',
+    'padding-left: 5px;',
     'overflow-x: visible;',
     'overflow-y: auto;',
     'position: absolute;',
@@ -600,7 +601,7 @@ Blockly.Css.CONTENT = [
 
   '.blocklyTreeLabel {',
     'cursor: default;',
-    'font-family: sans-serif;',
+    'font-family: Helvetica Neue, Helvetica, Arial;',
     'font-size: 16px;',
     'padding: 0 3px;',
     'vertical-align: middle;',
