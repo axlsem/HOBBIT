@@ -417,12 +417,18 @@
 	
 	</xml>
 	
-	<script src="./js/blockly_compressed.js"></script>
-	<script src="./js/blocks_compressed.js"></script>
-	<script src="./js/python_compressed.js"></script>
-	<script src="./js/msg/js/en.js"></script>
+	<!-- <script src="./js/blockly_compressed.js"></script> -->
+	<!-- <script src="./js/blocks_compressed.js"></script> -->
+	<!-- <script src="./js/python_compressed.js"></script> -->
+	<!-- <script src="./js/msg/js/en.js"></script> -->
+	
+	<script src="../blockly/blockly_compressed.js"></script>
+	<script src="../blockly/blocks_compressed.js"></script>
+	<script src="../blockly/python_compressed.js"></script>
+	<script src="../blockly/msg/js/en.js"></script>
+	
 	<script src="./ace-builds/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="./js/jquery.min.js"></script>
 
 </body>
 
@@ -448,7 +454,7 @@
             length: 3,
             colour: '#ccc',
             snap: true},
-       trashcan: true});
+       trashcan: false});
 	   
   var onresize = function(e) {
     // Compute the absolute coordinates and dimensions of blocklyArea.
@@ -522,12 +528,35 @@
   };
   
   function load_demo() {
-      var can_load_file = false;
-      if (workspace.getAllBlocks().length > 0) {
-        can_load_file = confirm("Current workspace is not empty. Do you want to override it?");
-      } else {
-        can_load_file = true;
-      }
+		var can_load_file = false;
+		if (workspace.getAllBlocks().length > 0) {
+			can_load_file = confirm("Current workspace is not empty. Do you want to override it?");
+		} else {
+			can_load_file = true;
+		}
+		
+		<!-- if (can_load_file == true) { -->
+			<!-- var filename = prompt("Please enter demo name", "Demo"); -->
+
+			<!-- if (filename == null || filename == "") { -->
+				<!-- console.log('Cancelled') -->
+			<!-- } else { -->
+				<!-- $.post("/load", -->
+					<!-- { -->
+					  <!-- filename: filename+'.xml' -->
+					<!-- },function(data, status){ -->
+						<!-- if (status=="success") { -->
+							<!-- workspace.clear(); -->
+							<!-- var xml = Blockly.Xml.textToDom(data); -->
+							<!-- Blockly.Xml.domToWorkspace(xml, workspace); -->
+							<!-- console.log(workspace); -->
+
+						<!-- } else { -->
+							<!-- alert("Something went wrong!"); -->
+						<!-- } -->
+				<!-- }); -->
+			<!-- } -->
+		<!-- } -->
 
       if (true == can_load_file) {
         var input_field_name = 'load_workspace_from_file_input';

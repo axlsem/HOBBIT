@@ -186,7 +186,12 @@ Blockly.Python.finish = function(code) {
   var imports = [];
   var definitions = [];
   var first_lines = [];
-  var header = [];
+  var PythonHeader = "";
+  var allDefs = "";
+  var MainCheck = "";
+  var CodeIndent = "";
+  var ExceptPass = "";
+  
   for (var name in Blockly.Python.definitions_) {
     var def = Blockly.Python.definitions_[name];
     if (def.match(/^(from\s+\S+\s+)?import\s+\S+/)) {
@@ -203,12 +208,15 @@ Blockly.Python.finish = function(code) {
   delete Blockly.Python.functionNames_;
   Blockly.Python.variableDB_.reset();
   
-  var PythonHeader = "#!/usr/bin/env python\n";
-  var allDefs = imports.join('\n') + '\n\n' + definitions.join('\n\n');
-  var MainCheck = "if __name__ == '__main__':\n\ttry:\n";
-  var CodeIndent = Blockly.Python.prefixLines(first_lines.join('\n\n') + "\n" + code, "\t\t");
-  // var CodeIndent = Blockly.Python.prefixLines(code, "\t\t");
-  var ExceptPass = "\n\texcept rospy.ROSInterruptException:\n\t\tpass"
+  if (code != "") {
+	PythonHeader = "#!/usr/bin/env python\n";
+	allDefs = imports.join('\n') + '\n\n' + definitions.join('\n\n');
+	MainCheck = "if __name__ == '__main__':\n\ttry:\n";
+	CodeIndent = Blockly.Python.prefixLines(first_lines.join('\n\n') + "\n" + code, "\t\t");
+	// CodeIndent = Blockly.Python.prefixLines(code, "\t\t");
+	ExceptPass = "\n\texcept rospy.ROSInterruptException:\n\t\tpass";
+  }
+  
   return PythonHeader+allDefs.replace(/\n\n+/g, '\n\n').replace(/\n*$/, '\n\n\n') + MainCheck + CodeIndent + ExceptPass;
 };
 
