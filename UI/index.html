@@ -86,6 +86,20 @@
 		</block>
 		<block type="hobbit_head"></block>
 		<block type="hobbit_emo"></block>
+		<block type="hobbit_show_info">
+			<value name="text">
+				<shadow type="text">
+				  <field name="TEXT"></field>
+				</shadow>
+			</value>
+		</block>
+		<block type="hobbit_show_info_confirm">
+			<value name="text">
+				<shadow type="text">
+				  <field name="TEXT"></field>
+				</shadow>
+			</value>
+		</block>
 		<block type="hobbit_yes_no">
 			<value name="text">
 				<shadow type="text">
@@ -454,7 +468,7 @@
             length: 3,
             colour: '#ccc',
             snap: true},
-       trashcan: false});
+       trashcan: true});
 	   
   var onresize = function(e) {
     // Compute the absolute coordinates and dimensions of blocklyArea.
@@ -627,8 +641,10 @@
     };
 	
 	function clear_ws() {
-      workspace.clear();
-      console.log("Workspace cleaned.");
+	if (confirm("Do you really want to clear workspace?") == true) {
+		workspace.clear();
+		console.log("Workspace cleaned.");
+	}
     }
 </script>
 <script type="text/javascript">

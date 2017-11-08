@@ -118,6 +118,28 @@ Blockly.Python['hobbit_user_input'] = function(block) {
 	return [code, Blockly.Python.ORDER_NONE];
 };
 
+Blockly.Python['hobbit_show_info'] = function(block) {
+	var value_text = Blockly.Python.valueToCode(block, 'text', Blockly.Python.ORDER_ATOMIC);
+	
+	Blockly.Python.InitROS();
+
+	var code = "";
+	code += Blockly.Python.NodeName+'.showInfo('+value_text+')';
+
+	return [code, Blockly.Python.ORDER_NONE];
+};
+
+Blockly.Python['hobbit_show_info_confirm'] = function(block) {
+	var value_text = Blockly.Python.valueToCode(block, 'text', Blockly.Python.ORDER_ATOMIC);
+	
+	Blockly.Python.InitROS();
+
+	var code = "";
+	code += Blockly.Python.NodeName+'.showInfoOK('+value_text+')';
+
+	return [code, Blockly.Python.ORDER_NONE];
+};
+
 Blockly.Python['hobbit_call_service'] = function(block) {
 	var value_service_name = Blockly.Python.valueToCode(block, 'service_name', Blockly.Python.ORDER_ATOMIC);
 	var value_service_type = Blockly.Python.valueToCode(block, 'service_type', Blockly.Python.ORDER_ATOMIC);

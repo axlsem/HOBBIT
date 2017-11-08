@@ -34,6 +34,50 @@ goog.require('Blockly.Blocks');
  */
 Blockly.Constants.hobbit.HUE = 360;
 
+Blockly.Blocks['hobbit_show_info_confirm'] = {
+  init: function() {
+    this.jsonInit({
+      "type": "hobbit_show_info",
+      "message0": "show info %1 and wait for confirmation",
+      "args0": [
+        {	
+		  "type": "input_value",
+		  "name": "text",
+		  "check": "String"
+		}
+      ],
+      "inputsInline": true,
+	  "previousStatement": null,
+	  "nextStatement": null,
+	  "colour": Blockly.Constants.hobbit.HUE,
+	  "tooltip": "Show text on tablet and wait for confirmation.",
+	  "helpUrl": ""
+    });
+  }
+};
+
+Blockly.Blocks['hobbit_show_info'] = {
+  init: function() {
+    this.jsonInit({
+      "type": "hobbit_show_info",
+      "message0": "show info %1",
+      "args0": [
+        {	
+		  "type": "input_value",
+		  "name": "text",
+		  "check": "String"
+		}
+      ],
+      "inputsInline": true,
+	  "previousStatement": null,
+	  "nextStatement": null,
+	  "colour": Blockly.Constants.hobbit.HUE,
+	  "tooltip": "Show text on tablet.",
+	  "helpUrl": ""
+    });
+  }
+};
+
 Blockly.Blocks['hobbit_user_input'] = {
   init: function() {
     this.jsonInit({
