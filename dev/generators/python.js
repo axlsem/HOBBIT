@@ -390,8 +390,12 @@ Blockly.Python.CreatePublisher = function() {
  */
 Blockly.Python.InitROS = function() {
 	
-	// Blockly.Python.definitions_['import_rospy'] = 'import rospy';
-	Blockly.Python.definitions_['import_hobbitlib'] = 'import HobbitLib';
+	Blockly.Python.definitions_['import_rospy'] = 'import rospy';
+	Blockly.Python.definitions_['from_tf2_msgs.msg_import_*'] = 'from tf2_msgs.msg import *';
+	Blockly.Python.definitions_['from_geometry_msgs.msg_import_*'] = 'from geometry_msgs.msg import *';
+	Blockly.Python.definitions_['from_std_msgs.msg_import_*'] = 'from std_msgs.msg import *';
+	Blockly.Python.definitions_['from_hobbit_msgs.msg_import_*'] = 'from hobbit_msgs.msg import *';
+	Blockly.Python.definitions_['from_hobbit_msgs.srv_import_*'] = 'from hobbit_msgs.srv import *';
 	Blockly.Python.definitions_['rospy_init_node'] = Blockly.Python.NodeName+' = HobbitLib.HobbitNode(\''+Blockly.Python.NodeName+'\')';
 	// Blockly.Python.definitions_['defPublisher'] = Blockly.Python.CreatePublisher();
 }

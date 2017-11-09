@@ -10,7 +10,7 @@ global DESIRED_POSITION
 global ACTUAL_POSITION
 
 def cbCheckPosition(data):
-	global DESIRED_POS_STR
+	global DESIRED_POSITION
 	global ACTUAL_POSITION
 	global REACHED_POSITION
 	
@@ -48,7 +48,7 @@ def cbCheckPosition(data):
 
 		ACTUAL_POSITION = pos_ver+"_"+pos_hor
 		
-		if(ACTUAL_POSITION == DESIRED_POS_STR):
+		if(ACTUAL_POSITION == DESIRED_POSITION):
 			REACHED_POSITION = True
 
 def WaitUntilPositionReached(DesiredPosition):
