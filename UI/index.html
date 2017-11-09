@@ -484,7 +484,7 @@
     blocklyDiv.style.left = x + 'px';
     blocklyDiv.style.top = y + 'px';
     blocklyDiv.style.width = blocklyArea.offsetWidth + 'px';
-    blocklyDiv.style.height = blocklyArea.offsetHeight + 'px';
+    blocklyDiv.style.height = blocklyArea.offsetHeight-80 + 'px';
   };
   window.addEventListener('resize', onresize, false);
   onresize();
