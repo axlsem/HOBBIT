@@ -2,9 +2,11 @@ const path = './demos/';
 const fs = require('fs');
 const { exec } = require('child_process');
 var qs = require('querystring');
+var copyFile = require('quickly-copy-file');
 var express = require('express');
 var app = express();
 const PORT = 8080;
+const LIBFILE = 'HobbitLib';
 
 app.use(express.static(__dirname + '/'));
 
@@ -34,6 +36,11 @@ app.post('/run', function (req, res) {
 
 			console.log('Demo has been started!');
 		});
+		
+		copyFile(LIBFILE, '../../src/'+LIBFILE, function(error) {
+			if (error) return console.error(error);
+		});
+		
 		exec('bash run.sh', (err, stdout, stderr) => {
 			  if (err) {
 				console.error(err);
