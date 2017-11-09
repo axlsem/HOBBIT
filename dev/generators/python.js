@@ -390,6 +390,7 @@ Blockly.Python.CreatePublisher = function() {
  */
 Blockly.Python.InitROS = function() {
 	
+	Blockly.Python.definitions_['import_HobbitLib'] = 'import HobbitLib';
 	Blockly.Python.definitions_['import_rospy'] = 'import rospy';
 	Blockly.Python.definitions_['from_tf2_msgs.msg_import_*'] = 'from tf2_msgs.msg import *';
 	Blockly.Python.definitions_['from_geometry_msgs.msg_import_*'] = 'from geometry_msgs.msg import *';
