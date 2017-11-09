@@ -32,11 +32,11 @@ Blockly.Python['hobbit_turn'] = function(block) {
 	var value_angle = Blockly.Python.valueToCode(block, 'angle', Blockly.Python.ORDER_ATOMIC);
 	var code = "";
 	var message;
-
+	var value_angle_deg = value_angle/Math.PI*180;
 	Blockly.Python.InitROS();
 
 	code += "\message = Twist()\n";
-	code += "message.angular.x = "+value_angle+"\n";
+	code += "message.angular.z = "+value_angle_deg+"\n";
 	code += Blockly.Python.NodeName+'.publishTopic(\'/cmd_vel\', Twist, message)\n';
 
 	return code;
@@ -102,7 +102,7 @@ Blockly.Python['hobbit_yes_no'] = function(block) {
 	Blockly.Python.InitROS();
 
 	var code = "";
-	code += Blockly.Python.NodeName+'.askYesNoQuestion('+value_text+',\''+dropdown_yes_no+'\')';
+	code += Blockly.Python.NodeName+'.askYesNoQuestion('+value_text+',\''+dropdown_yes_no+'\')\n';
 
 	return [code, Blockly.Python.ORDER_NONE];
 };
@@ -113,7 +113,7 @@ Blockly.Python['hobbit_user_input'] = function(block) {
 	Blockly.Python.InitROS();
 
 	var code = "";
-	code += Blockly.Python.NodeName+'.getUserInput('+value_text+')';
+	code += Blockly.Python.NodeName+'.getUserInput('+value_text+')\n';
 
 	return [code, Blockly.Python.ORDER_NONE];
 };
@@ -124,7 +124,7 @@ Blockly.Python['hobbit_show_info'] = function(block) {
 	Blockly.Python.InitROS();
 
 	var code = "";
-	code += Blockly.Python.NodeName+'.showInfo('+value_text+')';
+	code += Blockly.Python.NodeName+'.showInfo('+value_text+')\n';
 
 	return [code, Blockly.Python.ORDER_NONE];
 };
@@ -135,7 +135,7 @@ Blockly.Python['hobbit_show_info_confirm'] = function(block) {
 	Blockly.Python.InitROS();
 
 	var code = "";
-	code += Blockly.Python.NodeName+'.showInfoOK('+value_text+')';
+	code += Blockly.Python.NodeName+'.showInfoOK('+value_text+')\n';
 
 	return [code, Blockly.Python.ORDER_NONE];
 };
@@ -153,7 +153,7 @@ Blockly.Python['hobbit_call_service'] = function(block) {
 	Blockly.Python.InitROS();
 
 	var code = "";
-	code += Blockly.Python.NodeName+'.callService('+value_service_name+','+value_service_type+','+value_service_parameters+')';
+	code += Blockly.Python.NodeName+'.callService('+value_service_name+','+value_service_type+','+value_service_parameters+')\n';
 
 	return [code, Blockly.Python.ORDER_NONE];
 };

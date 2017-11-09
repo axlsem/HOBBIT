@@ -28,18 +28,17 @@ app.post('/run', function (req, res) {
 
 	req.on('end', function () {
 		var post = qs.parse(body);
-		fs.writeFile(post.filename, post.code, (err) => {  
+		fs.writeFile('/home/demo/catkin_ws/src/hokuyo_node/test/'+post.filename, post.code, (err) => {  
 			if (err) throw err;
 
 			console.log('Demo has been started!');
 		});
-		// exec('run.sh', (err, stdout, stderr) => {
-			  // if (err) {
-				// console.error(err);
-				// return;
-			  // }
-			  // console.log(stdout);
-			// });
+		exec('run.sh', (err, stdout, stderr) => {
+			  if (err) {
+				console.error(err);
+				return;
+			  }
+			});
 	});
 	
 	res.statusCode = 200;
