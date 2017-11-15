@@ -102,7 +102,7 @@ Blockly.Python['hobbit_yes_no'] = function(block) {
 	Blockly.Python.InitROS();
 
 	var code = "";
-	code += Blockly.Python.NodeName+'.askYesNoQuestion('+value_text+',\''+dropdown_yes_no+'\')\n';
+	code += Blockly.Python.NodeName+'.askYesNoQuestion('+value_text+',\''+dropdown_yes_no+'\')';
 
 	return [code, Blockly.Python.ORDER_NONE];
 };
@@ -113,7 +113,7 @@ Blockly.Python['hobbit_user_input'] = function(block) {
 	Blockly.Python.InitROS();
 
 	var code = "";
-	code += Blockly.Python.NodeName+'.getUserInput('+value_text+')\n';
+	code += Blockly.Python.NodeName+'.getUserInput('+value_text+')';
 
 	return [code, Blockly.Python.ORDER_NONE];
 };
@@ -126,7 +126,7 @@ Blockly.Python['hobbit_show_info'] = function(block) {
 	var code = "";
 	code += Blockly.Python.NodeName+'.showInfo('+value_text+')\n';
 
-	return [code, Blockly.Python.ORDER_NONE];
+	return code;
 };
 
 Blockly.Python['hobbit_show_info_confirm'] = function(block) {
@@ -137,7 +137,7 @@ Blockly.Python['hobbit_show_info_confirm'] = function(block) {
 	var code = "";
 	code += Blockly.Python.NodeName+'.showInfoOK('+value_text+')\n';
 
-	return [code, Blockly.Python.ORDER_NONE];
+	return code;
 };
 
 Blockly.Python['hobbit_call_service'] = function(block) {

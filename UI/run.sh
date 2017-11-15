@@ -1,2 +1,2 @@
-chmod +x /home/demo/catkin_ws/src/hokuyo_node/test/run.py
-rosrun hokuyo_node run.py
+chmod +x ../../src/run.py
+rosrun hobbit_blockly run.py
