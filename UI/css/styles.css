@@ -92,9 +92,7 @@ li {
 }
 
 .current {
-
 	color: #006699;
-
 }
 
 section {
@@ -118,6 +116,23 @@ section {
 	height: 80px;
 }
 
+.nav-save-dropdown-content {
+	display: none;
+	position: absolute;
+	background: #fff;
+	border: 5px solid #dee7ec;
+	padding: 10, 20px;
+}
+
+.dropdown-element {
+	display: block;
+	margin: 12px;
+}
+
+.nav-save-dropdown:hover .nav-save-dropdown-content {
+    display: block;
+}
+
 /*MEDIA QUERY*/
 @media only screen and (max-width : 745px) {
 
@@ -133,7 +148,7 @@ section {
 
 	}
 
-	nav ul, nav:active ul { 
+	nav ul, nav:active ul {
 
 		display: none;
 		position: absolute;
