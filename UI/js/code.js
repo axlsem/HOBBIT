@@ -101,7 +101,7 @@ function save_demo_robot() {
 	}
 };
 
-function load_demo() {
+function load_demo_locally() {
 	var can_load_file = false;
 	if (workspace.getAllBlocks().length > 0) {
 		can_load_file = confirm("Current workspace is not empty. Do you want to override it?");
@@ -179,7 +179,7 @@ var run_btn = document.getElementById("nav-run");
 var code_btn = document.getElementById("nav-code");
 var save_robot_btn = document.getElementById("nav-save-robot");
 var save_locally_btn = document.getElementById("nav-save-locally");
-var load_btn = document.getElementById("nav-load");
+var load_locally_btn = document.getElementById("nav-load-locally");
 var clear_btn = document.getElementById("nav-clear");
 
 logo.onclick = show_blockly;
@@ -188,7 +188,7 @@ run_btn.onclick = run_code;
 code_btn.onclick = hide_blockly;
 save_robot_btn.onclick = save_demo_robot;
 save_locally_btn.onclick = save_demo_locally;
-load_btn.onclick = load_demo;
+load_locally_btn.onclick = load_demo_locally;
 clear_btn.onclick = clear_ws;
 
 /* Blockly */
