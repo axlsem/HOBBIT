@@ -453,34 +453,3 @@
 </body>
 
 </html>
-<script type="text/javascript">
-  // restore at the beginning.
-  // This is launched after the page has finished loading
-  function restorelocal(){
-    var xml_text = localStorage.getItem("blocks_cache");
-    try {
-      var xml = Blockly.Xml.textToDom(xml_text);
-      Blockly.Xml.domToWorkspace(workspace, xml);
-
-      automate_localstorage();
-    }
-    catch(err) {
-        // alert(err);
-        console.log(err);
-        automate_localstorage();
-    }
-  }
-
-  function automate_localstorage(){
-      localstorage();
-      setTimeout(automate_localstorage, 1000);
-  }
-
-  // Save stuff on local storage
-  function localstorage() {
-    var xml = Blockly.Xml.workspaceToDom(workspace);
-    var xml_text = Blockly.Xml.domToText(xml);
-    localStorage.setItem("blocks_cache", xml_text);
-    var xml_text_stored = localStorage.getItem("blocks_cache");
-  }
-</script>

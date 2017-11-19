@@ -101,7 +101,7 @@ function save_demo_robot() {
 	}
 };
 
-function load_demo_locally() {
+function load_demo_robot() {
 	var can_load_file = false;
 	if (workspace.getAllBlocks().length > 0) {
 		can_load_file = confirm("Current workspace is not empty. Do you want to override it?");
@@ -109,28 +109,37 @@ function load_demo_locally() {
 		can_load_file = true;
 	}
 	
-	<!-- if (can_load_file == true) { -->
-		<!-- var filename = prompt("Please enter demo name", "Demo"); -->
+	if (can_load_file == true) {
+		var filename = prompt("Please enter demo name", "Demo");
 
-		<!-- if (filename == null || filename == "") { -->
-			<!-- console.log('Cancelled') -->
-		<!-- } else { -->
-			<!-- $.post("/load", -->
-				<!-- { -->
-				  <!-- filename: filename+'.xml' -->
-				<!-- },function(data, status){ -->
-					<!-- if (status=="success") { -->
-						<!-- workspace.clear(); -->
-						<!-- var xml = Blockly.Xml.textToDom(data); -->
-						<!-- Blockly.Xml.domToWorkspace(xml, workspace); -->
-						<!-- console.log(workspace); -->
+		if (filename == null || filename == "") {
+			console.log('Cancelled')
+		} else {
+			$.post("/load",
+				{
+				  filename: filename+'.xml'
+				},function(data, status){
+					if (status=="success") {
+						workspace.clear();
+						var xml = Blockly.Xml.textToDom(data.result);
+						Blockly.Xml.domToWorkspace(xml, workspace);
+						console.log("Loading workspace from Hobbit.");
 
-					<!-- } else { -->
-						<!-- alert("Something went wrong!"); -->
-					<!-- } -->
-			<!-- }); -->
-		<!-- } -->
-	<!-- } -->
+					} else {
+						alert("Something went wrong!");
+					}
+			});
+		}
+	}
+}
+
+function load_demo_locally() {
+	var can_load_file = false;
+	if (workspace.getAllBlocks().length > 0) {
+		can_load_file = confirm("Current workspace is not empty. Do you want to override it?");
+	} else {
+		can_load_file = true;
+	}
 
   if (true == can_load_file) {
 	var input_field_name = 'load_workspace_from_file_input';
@@ -179,6 +188,7 @@ var run_btn = document.getElementById("nav-run");
 var code_btn = document.getElementById("nav-code");
 var save_robot_btn = document.getElementById("nav-save-robot");
 var save_locally_btn = document.getElementById("nav-save-locally");
+var load_robot_btn = document.getElementById("nav-load-robot");
 var load_locally_btn = document.getElementById("nav-load-locally");
 var clear_btn = document.getElementById("nav-clear");
 
@@ -188,6 +198,7 @@ run_btn.onclick = run_code;
 code_btn.onclick = hide_blockly;
 save_robot_btn.onclick = save_demo_robot;
 save_locally_btn.onclick = save_demo_locally;
+load_robot_btn.onclick = load_demo_robot;
 load_locally_btn.onclick = load_demo_locally;
 clear_btn.onclick = clear_ws;
 
@@ -237,3 +248,32 @@ var blocklyArea = document.getElementById('blocklyArea');
 
 /* ACE editor */
 document.getElementById('editor').style.fontSize='16px';
+
+/* Reload */
+function restorelocal(){
+    var xml_text = localStorage.getItem("blocks_cache");
+    try {
+      var xml = Blockly.Xml.textToDom(xml_text);
+      Blockly.Xml.domToWorkspace(workspace, xml);
+
+      automate_localstorage();
+    }
+    catch(err) {
+        // alert(err);
+        console.log(err);
+        automate_localstorage();
+    }
+  }
+
+  function automate_localstorage(){
+      localstorage();
+      setTimeout(automate_localstorage, 1000);
+  }
+
+  // Save stuff on local storage
+  function localstorage() {
+    var xml = Blockly.Xml.workspaceToDom(workspace);
+    var xml_text = Blockly.Xml.domToText(xml);
+    localStorage.setItem("blocks_cache", xml_text);
+    var xml_text_stored = localStorage.getItem("blocks_cache");
+  }
