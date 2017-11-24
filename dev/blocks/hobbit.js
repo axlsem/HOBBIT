@@ -230,12 +230,26 @@ Blockly.Blocks['hobbit_turn'] = {
   init: function() {
     this.jsonInit({
       "type": "hobbit_turn",
-      "message0": "turn %1 degrees",
+      "message0": "turn %1 degrees %2",
       "args0": [
         {
 		  "type": "input_value",
 		  "name": "angle",
 		  "check": "Number"
+		},
+		{
+		  "type": "field_dropdown",
+		  "name": "direction",
+		  "options": [
+			[
+			  "left",
+			  "+"
+			],
+			[
+			  "right",
+			  "-"
+			]
+		  ]
 		}
       ],
       "previousStatement": null,
@@ -264,7 +278,7 @@ Blockly.Blocks['hobbit_move'] = {
 		  "options": [
 			[
 			  "forward",
-			  ""
+			  "+"
 			],
 			[
 			  "backward",

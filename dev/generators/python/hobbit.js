@@ -30,13 +30,20 @@ goog.require('Blockly.Python');
 
 Blockly.Python['hobbit_turn'] = function(block) {
 	var value_angle = Blockly.Python.valueToCode(block, 'angle', Blockly.Python.ORDER_ATOMIC);
+	var dropdown_direction = block.getFieldValue('direction');
+	
 	var code = "";
 	var message;
-	var value_angle_deg = value_angle/Math.PI*180;
+	var value_angle_deg = value_angle/180*Math.PI;
+	
+	if(isNaN(value_angle_deg)) {
+		alert("Please enter a number greater zero!")
+	}
+	
 	Blockly.Python.InitROS();
 
 	code += "\message = Twist()\n";
-	code += "message.angular.z = "+value_angle_deg+"\n";
+	code += "message.angular.z = "+dropdown_direction+value_angle_deg+"\n";
 	code += Blockly.Python.NodeName+'.publishTopic(\'/cmd_vel\', Twist, message)\n';
 
 	return code;

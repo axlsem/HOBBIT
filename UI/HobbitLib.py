@@ -124,36 +124,36 @@ class HobbitNode:
 
 		resp = self.callService('/MMUI','Request',(h,'0','create',parr))
 		
-		return resp.params[0].value is desiredAnswer
+		return resp.params[0].value == desiredAnswer
 		
 	def getUserInput(self,text):
 		parr = []
-        p = Parameter('type', 'D_NAME')
-        parr.append(p)
-        p = Parameter('text', text)
-        parr.append(p)
-        p = Parameter('Timeout', '30')
-        parr.append(p)
-        
+		p = Parameter('type', 'D_NAME')
+		parr.append(p)
+		p = Parameter('text', text)
+		parr.append(p)
+		p = Parameter('Timeout', '30')
+		parr.append(p)
+
 		h = Header()
 		h.stamp = rospy.Time.now()
 
 		resp = self.callService('/MMUI','Request',(h,'0','create',parr))
-		
+
 		return resp.params[1].value
 		
 	def showInfo(self,text):
 		parr = []
 		p = Parameter('type', 'D_PLAIN')
-        parr.append(p)
-        p = Parameter('text', text)
-        parr.append(p)
-        p = Parameter('Timeout', '15')
-        parr.append(p)
-        p = Parameter('Repetitions', '1')
-        parr.append(p)
-        p = Parameter('wait', 1	)
-        parr.append(p)
+		parr.append(p)
+		p = Parameter('text', text)
+		parr.append(p)
+		p = Parameter('Timeout', '15')
+		parr.append(p)
+		p = Parameter('Repetitions', '1')
+		parr.append(p)
+		p = Parameter('wait', '1')
+		parr.append(p)
 		
 		h = Header()
 		h.stamp = rospy.Time.now()
@@ -163,15 +163,15 @@ class HobbitNode:
 	def showInfoOK(self,text):
 		parr = []
 		p = Parameter('type', 'D_OK')
-        parr.append(p)
-        p = Parameter('text', text)
-        parr.append(p)
-        p = Parameter('Timeout', '15')
-        parr.append(p)
-        p = Parameter('Repetitions', '3')
-        parr.append(p)
-        p = Parameter('wait', 1	)
-        parr.append(p)
+		parr.append(p)
+		p = Parameter('text', text)
+		parr.append(p)
+		p = Parameter('Timeout', '15')
+		parr.append(p)
+		p = Parameter('Repetitions', '3')
+		parr.append(p)
+		p = Parameter('wait', 1	)
+		parr.append(p)
 		
 		h = Header()
 		h.stamp = rospy.Time.now()
