@@ -60,7 +60,7 @@ Blockly.Css.styleSheet_ = null;
  * @type {string}
  * @private
  */
-Blockly.Css.mediaPath_ = '';
+Blockly.Css.mediaPath_ = '../img';
 
 /**
  * Inject the CSS into the DOM.  This is preferable over using a regular CSS

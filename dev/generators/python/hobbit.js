@@ -35,11 +35,7 @@ Blockly.Python['hobbit_turn'] = function(block) {
 	var code = "";
 	var message;
 	var value_angle_deg = value_angle/180*Math.PI;
-	
-	if(isNaN(value_angle_deg)) {
-		alert("Please enter a number greater zero!")
-	}
-	
+
 	Blockly.Python.InitROS();
 
 	code += "\message = Twist()\n";
