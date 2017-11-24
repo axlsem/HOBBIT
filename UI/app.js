@@ -7,7 +7,7 @@ var express = require('express');
 var app = express();
 // const PORT = 3000;
 const PORT = Number(process.argv.slice(2));
-const LIBFILE = 'HobbitLib';
+// const LIBFILE = 'HobbitLib';
 
 app.use(express.static(__dirname + '/'));
 
@@ -42,12 +42,12 @@ app.post('/run', function (req, res) {
 			// if (error) return console.error(error);
 		// });
 		
-		// exec('bash run.sh', (err, stdout, stderr) => {
-			  // if (err) {
-				// console.error(err);
-				// return;
-			  // }
-			// });
+		exec('bash run.sh', (err, stdout, stderr) => {
+			  if (err) {
+				console.error(err);
+				return;
+			  }
+			});
 	});
 	
 	res.statusCode = 200;
