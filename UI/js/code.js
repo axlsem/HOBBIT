@@ -274,6 +274,7 @@ var blocklyArea = document.getElementById('blocklyArea');
        scrollbars: true,
 	   sounds: false,
        rtl: false,
+	   media:'../img/media/',
        zoom:
            {enabled: true,
             controls: true,
