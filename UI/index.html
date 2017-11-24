@@ -5,17 +5,15 @@
 <head>
 
 	<meta charset="utf-8">
-
-	<title>Simplifying Hobbit</title>
+	
+	<title>Hobbit Blockly</title>
 
 	<meta name="description" content="Simplifying Hobbit">
-
 	<meta name="author" content="Alexander Semeliker (TU Wien)">
-
 	<meta name="viewport" content="width=device-width; initial-scale=1; maximum-scale=1">
 
 	<link rel="stylesheet" href="css/styles.css">
-		
+	<link rel="shortcut icon" href="img/favicon.ico" />
 
 	<!--[if IE]> <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
 
@@ -45,7 +43,7 @@
 				</li>
 				<li class="nav-save-dropdown"><a id="nav-load">Load</a>
 					<div class="nav-save-dropdown-content">
-						<a id="nav-load-robot" class="dropdown-element">from Hobbit</a>
+						<a id="nav-show-demolist" class="dropdown-element">from Hobbit</a>
 						<a id="nav-load-locally" class="dropdown-element">from local file</a>
 					</div>
 				</li>
@@ -56,6 +54,18 @@
 		</nav>
 
 	</header>
+	
+	<div id="load-hobbit-modal" class="modal">
+	  <div id="load-hobbit-modal-content" class="modal-content">
+		<span class="close">&times;</span>
+		<div class="select">
+			<select id="list-demofiles"></select>
+		</div>
+		<ul>
+			<li><a id="nav-load-robot">Load</a></li>
+		</ul>
+	  </div>
+	</div>
 
 	<section>
 		<table id="table-content">
@@ -76,9 +86,10 @@
 			</tbody>
 		</table>
 	</section>
-	
-	<div id="blocklyDiv" style="position: absolute"></div>
 		
+	<div id="blocklyDiv" style="position: absolute"></div>
+	
+
 	<xml id="toolbox" style="display: none">
 	<category id="catHobbit" name="Hobbit" colour="360">
 		<block type="hobbit_move">
@@ -437,8 +448,8 @@
 	  </block>
 	</category>
 
-	<category id="catVariables" custom="VARIABLE" name="Variables"></category>
-	<category id="catFunctions" custom="PROCEDURE" name="Functions"></category>
+	<category id="catVariables" custom="VARIABLE" name="Variables" colour="330"></category>
+	<category id="catFunctions" custom="PROCEDURE" name="Functions" colour="290"></category>
 	
 	</xml>
 	

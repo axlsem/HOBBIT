@@ -115,6 +115,35 @@ app.post('/load', function (req, res) {
 	
 });
 
+app.post('/demolist', function (req, res) {
+	var body = '';
+	
+	req.on('error', function (err) {
+		console.error(err);
+	});
+	
+	req.on('data', function (data) {
+		body += data;
+
+		if (body.length > 1e6)
+			req.connection.destroy();
+	});
+
+	req.on('end', function () {
+		var post = qs.parse(body);
+		
+		data = fs.readdirSync('./demos/');
+		console.log(data);
+		res.status(200).send({"result": data});
+		
+		// fs.readFile('./demos/'+post.filename, 'utf8', function (err,data) {
+			// if (err) throw err;
+			// res.status(200).send({"result": data});
+		// });
+	});
+	
+});
+
 app.listen(PORT,'0.0.0.0', function () {
   console.log('Listening on port '+PORT+'!');
 });

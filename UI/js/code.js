@@ -101,17 +101,62 @@ function save_demo_robot() {
 	}
 };
 
+function list_demofiles(files) {
+	var demolist = document.getElementById("list-demofiles");
+	
+	$("#list-demofiles").empty();
+	
+	var el = document.createElement("option");
+	el.textContent = "Select Demo";
+	el.value = i;
+	demolist.appendChild(el);
+
+	for(var i = 0; i < files.length; i++) {
+		var opt = files[i].slice(0,-4);
+		var el = document.createElement("option");
+		el.textContent = opt;
+		el.value = i+1;
+		demolist.appendChild(el);
+	};
+
+};
+
+function show_demolist() {
+	var hobbit_modal = document.getElementById("load-hobbit-modal");
+	hobbit_modal.style.display = 'block';
+	
+	$.post("/demolist",
+		{
+		},function(data, status){
+			if (status=="success") {
+				list_demofiles(data.result);
+
+			} else {
+				alert("Something went wrong!");
+			}
+	});	
+};
+
 function load_demo_robot() {
 	var can_load_file = false;
+
+	var demolist = document.getElementById("list-demofiles");
+	var demo_selected = demolist.options.selectedIndex;
+	
+	if (demo_selected == 0) {
+		alert("Select a demo!");
+		return;
+	}
+	else {
+		var filename = demolist.options[demo_selected].text;
+	}
 	if (workspace.getAllBlocks().length > 0) {
 		can_load_file = confirm("Current workspace is not empty. Do you want to override it?");
 	} else {
 		can_load_file = true;
 	}
 	
-	if (can_load_file == true) {
-		var filename = prompt("Please enter demo name", "Demo");
-
+	if (can_load_file == true) {	
 		if (filename == null || filename == "") {
 			console.log('Cancelled')
 		} else {
@@ -124,6 +169,7 @@ function load_demo_robot() {
 						var xml = Blockly.Xml.textToDom(data.result);
 						Blockly.Xml.domToWorkspace(xml, workspace);
 						console.log("Loading workspace from Hobbit.");
+						close_load_modal();
 
 					} else {
 						alert("Something went wrong!");
@@ -131,7 +177,7 @@ function load_demo_robot() {
 			});
 		}
 	}
-}
+};
 
 function load_demo_locally() {
 	var can_load_file = false;
@@ -140,6 +186,7 @@ function load_demo_locally() {
 	} else {
 		can_load_file = true;
 	}
+	
 
   if (true == can_load_file) {
 	var input_field_name = 'load_workspace_from_file_input';
@@ -179,7 +226,12 @@ function clear_ws() {
 		workspace.clear();
 		console.log("Workspace cleaned.");
 	}
-    };
+};
+
+function close_load_modal() {
+	var modal = document.getElementById("load-hobbit-modal");
+    modal.style.display = "none";
+}
 
 /* Buttons */
 var logo = document.getElementById("logo");
@@ -188,9 +240,11 @@ var run_btn = document.getElementById("nav-run");
 var code_btn = document.getElementById("nav-code");
 var save_robot_btn = document.getElementById("nav-save-robot");
 var save_locally_btn = document.getElementById("nav-save-locally");
+var show_demolist_btn = document.getElementById("nav-show-demolist");
 var load_robot_btn = document.getElementById("nav-load-robot");
 var load_locally_btn = document.getElementById("nav-load-locally");
 var clear_btn = document.getElementById("nav-clear");
+var modal_close_btn = document.getElementsByClassName("close")[0];
 
 logo.onclick = show_blockly;
 home_btn.onclick = show_blockly;
@@ -198,9 +252,19 @@ run_btn.onclick = run_code;
 code_btn.onclick = hide_blockly;
 save_robot_btn.onclick = save_demo_robot;
 save_locally_btn.onclick = save_demo_locally;
+show_demolist_btn.onclick = show_demolist;
 load_robot_btn.onclick = load_demo_robot;
 load_locally_btn.onclick = load_demo_locally;
 clear_btn.onclick = clear_ws;
+modal_close_btn.onclick = close_load_modal;
+
+
+var load_hobbit_modal = document.getElementById("load-hobbit-modal");
+window.onclick = function(event) {
+    if (event.target == load_hobbit_modal) {
+        load_hobbit_modal.style.display = "none";
+    }
+}
 
 /* Blockly */
 var blocklyArea = document.getElementById('blocklyArea');

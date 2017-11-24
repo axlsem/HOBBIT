@@ -5,7 +5,8 @@ var qs = require('querystring');
 // var copyFile = require('quickly-copy-file');
 var express = require('express');
 var app = express();
-const PORT = 3000;
+// const PORT = 3000;
+const PORT = Number(process.argv.slice(2));
 const LIBFILE = 'HobbitLib';
 
 app.use(express.static(__dirname + '/'));
@@ -41,12 +42,12 @@ app.post('/run', function (req, res) {
 			// if (error) return console.error(error);
 		// });
 		
-		exec('bash run.sh', (err, stdout, stderr) => {
-			  if (err) {
-				console.error(err);
-				return;
-			  }
-			});
+		// exec('bash run.sh', (err, stdout, stderr) => {
+			  // if (err) {
+				// console.error(err);
+				// return;
+			  // }
+			// });
 	});
 	
 	res.statusCode = 200;
@@ -115,6 +116,29 @@ app.post('/load', function (req, res) {
 	
 });
 
+app.post('/demolist', function (req, res) {
+	var body = '';
+	
+	req.on('error', function (err) {
+		console.error(err);
+	});
+	
+	req.on('data', function (data) {
+		body += data;
+
+		if (body.length > 1e6)
+			req.connection.destroy();
+	});
+
+	req.on('end', function () {
+		var post = qs.parse(body);
+		
+		data = fs.readdirSync('./demos/');
+		res.status(200).send({"result": data});
+	});
+	
+});
+
 app.listen(PORT,'0.0.0.0', function () {
-  console.log('Listening on port '+PORT+'!');
+  console.log('Hobbit blockly is now running at port '+PORT+'!');
 });

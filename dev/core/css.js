@@ -524,10 +524,10 @@ Blockly.Css.CONTENT = [
   '}',
 
   '.blocklyTreeRow {',
-    'height: 22px;',
-    'line-height: 22px;',
-    'margin-bottom: 3px;',
-    'padding-right: 8px;',
+    'height: 45px;',
+    'line-height: 45px;',
+    'margin-bottom: 15px;',
+    'padding-right: 35px;',
     'white-space: nowrap;',
   '}',
 
@@ -602,8 +602,9 @@ Blockly.Css.CONTENT = [
   '.blocklyTreeLabel {',
     'cursor: default;',
     'font-family: Helvetica Neue, Helvetica, Arial;',
-    'font-size: 16px;',
-    'padding: 0 3px;',
+    'font-size: 1.05em;',
+	'color: #444;',
+    'padding: 0;',
     'vertical-align: middle;',
   '}',
 
