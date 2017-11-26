@@ -170,7 +170,7 @@ class HobbitNode:
 		parr.append(p)
 		p = Parameter('Repetitions', '3')
 		parr.append(p)
-		p = Parameter('wait', 1	)
+		p = Parameter('wait', '1')
 		parr.append(p)
 		
 		h = Header()

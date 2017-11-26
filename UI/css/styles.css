@@ -91,7 +91,8 @@ li {
 
 }
 
-.current {
+.current,
+.current:hover {
 	color: #006699;
 }
 
