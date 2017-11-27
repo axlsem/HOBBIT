@@ -15,6 +15,8 @@ function hide_blockly() {
 	document.getElementById("editor").style.display = 'block';
 	document.getElementById("nav-code").setAttribute("class", "current");
 	document.getElementById("nav-home").removeAttribute("class");
+	document.getElementById("icon-blocks").setAttribute("class", "icon-blocks-passive");
+	document.getElementById("icon-code").setAttribute("class", "icon-code-current");
 
 	// onresize();
 	window.dispatchEvent(new Event('resize'));
