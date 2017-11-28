@@ -9,13 +9,11 @@ var app = express();
 const PORT = Number(process.argv.slice(2));
 // const LIBFILE = 'HobbitLib';
 
-app.use(express.static(__dirname + '/'));
-
-app.get('/', function (req, res) {
+function loadIndex(req, res) {
 	res.sendFile('./index.html', { root: __dirname });
-});
+};
 
-app.post('/run', function (req, res) {
+function runCode(req, res) {
 	var body = '';
 	
 	req.on('error', function (err) {
@@ -62,9 +60,9 @@ app.post('/run', function (req, res) {
 	
 	res.statusCode = 200;
 	res.end();
-});
+};
 
-app.post('/save', function (req, res) {
+function saveWorkspace(req, res) {
 	var body = '';
 	
 	req.on('error', function (err) {
@@ -99,9 +97,9 @@ app.post('/save', function (req, res) {
 		res.status(200).send({"result": can_be_saved});
 	});
 	
-});
+};
 
-app.post('/load', function (req, res) {
+function loadDemo(req, res) {
 	var body = '';
 	
 	req.on('error', function (err) {
@@ -124,9 +122,9 @@ app.post('/load', function (req, res) {
 		});
 	});
 	
-});
+}
 
-app.post('/demolist', function (req, res) {
+function showDemolist(req, res) {
 	var body = '';
 	
 	req.on('error', function (err) {
@@ -147,7 +145,15 @@ app.post('/demolist', function (req, res) {
 		res.status(200).send({"result": data});
 	});
 	
-});
+}
+
+app.use(express.static(__dirname + '/'));
+
+app.get('/', loadIndex);
+app.post('/run', runCode);
+app.post('/save', saveWorkspace);
+app.post('/load', loadDemo);
+app.post('/demolist', showDemolist);
 
 app.listen(PORT,'0.0.0.0', function () {
   console.log('Hobbit blockly is now running at port '+PORT+'!');
