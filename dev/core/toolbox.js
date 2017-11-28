@@ -404,9 +404,9 @@ Blockly.Toolbox.prototype.addColour_ = function(opt_tree) {
         var border = 'none';
       }
       if (this.workspace_.RTL) {
-        element.style.borderRight = border;
-      } else {
         element.style.borderLeft = border;
+      } else {
+        element.style.borderRight = border;
       }
     }
     this.addColour_(child);

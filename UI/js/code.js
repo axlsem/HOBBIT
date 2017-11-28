@@ -3,6 +3,7 @@ function show_blockly() {
 	document.getElementById("blocklyDiv").style.display = 'block';
 	document.getElementById("blocklyArea").style.display = 'block';
 	document.getElementById("nav-home").setAttribute("class", "current");
+	document.getElementById("nav-home").parentElement.setAttribute("class", "border-current");
 
 	window.location.reload(true);
 	// alert("resizing");
@@ -14,7 +15,9 @@ function hide_blockly() {
 	document.getElementById("blocklyArea").style.display = 'none';
 	document.getElementById("editor").style.display = 'block';
 	document.getElementById("nav-code").setAttribute("class", "current");
+	document.getElementById("nav-code").parentElement.setAttribute("class", "border-current");
 	document.getElementById("nav-home").removeAttribute("class");
+	document.getElementById("nav-home").parentElement.removeAttribute("class");
 	document.getElementById("icon-blocks").setAttribute("class", "icon-blocks-passive");
 	document.getElementById("icon-code").setAttribute("class", "icon-code-current");
 

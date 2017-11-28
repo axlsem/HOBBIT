@@ -1,6 +1,6 @@
 const path = './demos/';
 const fs = require('fs');
-const { exec } = require('child_process');
+const { execSync } = require('child_process');
 var qs = require('querystring');
 // var copyFile = require('quickly-copy-file');
 var express = require('express');
@@ -42,12 +42,22 @@ app.post('/run', function (req, res) {
 			// if (error) return console.error(error);
 		// });
 		
-		exec('bash run.sh', (err, stdout, stderr) => {
+		// exec('bash run.sh', (err, stdout, stderr) => {
+			  // if (err) {
+				// console.error(err);
+				// return;
+			  // }
+			// });
+		console.log('start');
+		execSync('start test.bat', (err, stdout, stderr) => {
 			  if (err) {
 				console.error(err);
 				return;
 			  }
 			});
+		console.log('end');
+			
+		
 	});
 	
 	res.statusCode = 200;
