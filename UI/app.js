@@ -1,12 +1,22 @@
 const path = './demos/';
 const fs = require('fs');
-const { execSync } = require('child_process');
+const { exec } = require('child_process');
+const PORT = process.env.port || 3000;
+// const PORT = Number(process.argv.slice(2));
+
 var qs = require('querystring');
-// var copyFile = require('quickly-copy-file');
 var express = require('express');
 var app = express();
-// const PORT = 3000;
-const PORT = Number(process.argv.slice(2));
+var locked = false;
+var cmd = '';
+var param = String(process.argv.slice(2));
+
+if (param == 'dev') {
+	cmd = 'start test.bat';
+} else {
+	cmd = 'bash run.sh';
+}
+// var copyFile = require('quickly-copy-file');
 // const LIBFILE = 'HobbitLib';
 
 function loadIndex(req, res) {
@@ -15,6 +25,7 @@ function loadIndex(req, res) {
 
 function runCode(req, res) {
 	var body = '';
+	var feedback = '';
 	
 	req.on('error', function (err) {
 		console.error(err);
@@ -28,38 +39,32 @@ function runCode(req, res) {
 	});
 
 	req.on('end', function () {
-		var post = qs.parse(body);
-		// fs.writeFile('/home/demo/catkin_ws/src/hokuyo_node/test/'+post.filename, post.code, (err) => { 
-		fs.writeFile('../../src/'+post.filename, post.code, (err) => {
-			if (err) throw err;
-
-			console.log('Demo has been started!');
-		});
-		
-		// copyFile(LIBFILE, '../../src/'+LIBFILE, function(error) {
-			// if (error) return console.error(error);
-		// });
-		
-		// exec('bash run.sh', (err, stdout, stderr) => {
-			  // if (err) {
-				// console.error(err);
-				// return;
-			  // }
-			// });
-		console.log('start');
-		execSync('start test.bat', (err, stdout, stderr) => {
-			  if (err) {
-				console.error(err);
-				return;
-			  }
+		if (!locked) {
+			locked = true;
+			feedback = "Demo is now running!";
+			var post = qs.parse(body);
+			// fs.writeFile('/home/demo/catkin_ws/src/hokuyo_node/test/'+post.filename, post.code, (err) => { 
+			fs.writeFile('../../src/'+post.filename, post.code, (err) => {
+				if (err) throw err;
 			});
-		console.log('end');
 			
-		
+			// copyFile(LIBFILE, '../../src/'+LIBFILE, function(error) {
+				// if (error) return console.error(error);
+			// });
+
+			exec(cmd, (err, stdout, stderr) => {
+					locked = false;
+					if (err) {
+					console.error(err);
+					return;
+				  }
+				});				
+		} else {
+			feedback = "Another demo is already running!";
+			// res.status(200).send({"result": feedback});
+		}
+	res.status(200).send({"result": feedback});
 	});
-	
-	res.statusCode = 200;
-	res.end();
 };
 
 function saveWorkspace(req, res) {
@@ -156,5 +161,5 @@ app.post('/load', loadDemo);
 app.post('/demolist', showDemolist);
 
 app.listen(PORT,'0.0.0.0', function () {
-  console.log('Hobbit blockly is now running at port '+PORT+'!');
+  console.log('Hobbit blockly is now listening to port '+PORT+'!');
 });

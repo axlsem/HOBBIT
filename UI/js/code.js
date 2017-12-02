@@ -46,7 +46,7 @@ function run_code() {
 			  filename: "run.py"
 			},function(data, status){
 				if (status=="success") {
-					alert("Demo is now running!");
+					alert(data.result);
 				} else {
 					alert("Something went wrong!");
 				}
@@ -262,7 +262,6 @@ load_robot_btn.onclick = load_demo_robot;
 load_locally_btn.onclick = load_demo_locally;
 clear_btn.onclick = clear_ws;
 modal_close_btn.onclick = close_load_modal;
-
 
 var load_hobbit_modal = document.getElementById("load-hobbit-modal");
 window.onclick = function(event) {
