@@ -1,0 +1,194 @@
+/* NAV HEADER */
+.icon-clear-passive {
+	background: url(../img/clear-icon.png) no-repeat left;
+	padding-left: 20px;
+	height: 20px;
+}
+
+.icon-clear-passive:hover {
+	background: url(../img/clear-icon-current.png) no-repeat left;
+}
+
+.icon-load-passive {
+	background: url(../img/load-icon.png) no-repeat left;
+	padding-left: 20px;
+	height: 20px;
+}
+
+.icon-load-passive:hover {
+	background: url(../img/load-icon-current.png) no-repeat left;
+}
+
+.icon-save-passive {
+	background: url(../img/save-icon.png) no-repeat left;
+	padding-left: 20px;
+	height: 20px;
+}
+
+.icon-save-passive:hover {
+	background: url(../img/save-icon-current.png) no-repeat left;
+}
+
+.icon-run-passive {
+	background: url(../img/run-icon.png) no-repeat left;
+	padding-left: 20px;
+	height: 20px;
+}
+
+.icon-run-passive:hover {
+	background: url(../img/run-icon-current.png) no-repeat left;
+}
+
+.icon-blocks-passive {
+	background: url(../img/blocks-icon.png) no-repeat left;
+	padding-left: 22px;
+	height: 20px;
+}
+
+.icon-blocks-current {
+	background: url(../img/blocks-icon-current.png) no-repeat left;
+	padding-left: 22px;
+	height: 20px;
+}
+
+.icon-blocks-current:hover {
+	background: url(../img/blocks-icon-current.png) no-repeat left;
+}
+
+.icon-blocks-passive:hover {
+	background: url(../img/blocks-icon-current.png) no-repeat left;
+}
+
+.icon-code-passive {
+	background: url(../img/code-icon.png) no-repeat left;
+	padding-left: 22px;
+	height: 20px;
+}
+
+.icon-code-current {
+	background: url(../img/code-icon-current.png) no-repeat left;
+	padding-left: 22px;
+	height: 20px;
+}
+
+.icon-code-current:hover {
+	background: url(../img/code-icon-current.png) no-repeat left;
+}
+
+.icon-code-passive:hover {
+	background: url(../img/code-icon-current.png) no-repeat left;
+}
+
+/* RESPONSIVE MENU ICON */
+#menu-icon {
+
+	display: hidden;
+	width: 40px;
+	height: 40px;
+	background: #8fbee5 url(../img/menu-icon.png) center;
+
+}
+
+a:hover#menu-icon {
+
+	background-color: #006699;
+	border-radius: 4px 4px 0 0;
+
+}
+
+/* BLOCKLY TOOLBOX */
+[id=':1.label'] {
+	background: url(../img/tb-hobbit.png) no-repeat left;
+	background-size: 20px 20px;
+	padding-left: 25px;
+}
+
+.blocklyTreeSelected [id=':1.label'] {
+	background: url(../img/tb-hobbit-sel.png) no-repeat left;
+	background-size: 20px 20px;
+	padding-left: 25px;
+}
+
+[id=':2.label'] {
+	background: url(../img/tb-logic.png) no-repeat left;
+	background-size: 20px 20px;
+	padding-left: 25px;
+}
+
+.blocklyTreeSelected [id=':2.label'] {
+	background: url(../img/tb-logic-sel.png) no-repeat left;
+	background-size: 20px 20px;
+	padding-left: 25px;
+}
+
+[id=':3.label'] {
+	background: url(../img/tb-loop.png) no-repeat left;
+	background-size: 20px 20px;
+	padding-left: 25px;
+}
+
+.blocklyTreeSelected [id=':3.label'] {
+	background: url(../img/tb-loop-sel.png) no-repeat left;
+	background-size: 20px 20px;
+	padding-left: 25px;
+}
+
+[id=':4.label'] {
+	background: url(../img/tb-math.png) no-repeat left;
+	background-size: 20px 20px;
+	padding-left: 25px;
+}
+
+.blocklyTreeSelected [id=':4.label'] {
+	background: url(../img/tb-math-sel.png) no-repeat left;
+	background-size: 20px 20px;
+	padding-left: 25px;
+}
+
+[id=':5.label'] {
+	background: url(../img/tb-text.png) no-repeat left;
+	background-size: 20px 20px;
+	padding-left: 25px;
+}
+
+.blocklyTreeSelected [id=':5.label'] {
+	background: url(../img/tb-text-sel.png) no-repeat left;
+	background-size: 20px 20px;
+	padding-left: 25px;
+}
+
+[id=':6.label'] {
+	background: url(../img/tb-list.png) no-repeat left;
+	background-size: 20px 20px;
+	padding-left: 25px;
+}
+
+.blocklyTreeSelected [id=':6.label'] {
+	background: url(../img/tb-list-sel.png) no-repeat left;
+	background-size: 20px 20px;
+	padding-left: 25px;
+}
+
+[id=':7.label'] {
+	background: url(../img/tb-variables.png) no-repeat left;
+	background-size: 20px 20px;
+	padding-left: 25px;
+}
+
+.blocklyTreeSelected [id=':7.label'] {
+	background: url(../img/tb-variables-sel.png) no-repeat left;
+	background-size: 20px 20px;
+	padding-left: 25px;
+}
+
+[id=':8.label'] {
+	background: url(../img/tb-functions.png) no-repeat left;
+	background-size: 20px 20px;
+	padding-left: 25px;
+}
+
+.blocklyTreeSelected [id=':8.label'] {
+	background: url(../img/tb-functions-sel.png) no-repeat left;
+	background-size: 20px 20px;
+	padding-left: 25px;
+}

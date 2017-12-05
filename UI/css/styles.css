@@ -61,101 +61,6 @@ nav {
 	
 }
 
-.icon-clear-passive {
-	background: url(../img/clear-icon.png) no-repeat left;
-	padding-left: 20px;
-	height: 20px;
-}
-
-.icon-clear-passive:hover {
-	background: url(../img/clear-icon-current.png) no-repeat left;
-}
-
-.icon-load-passive {
-	background: url(../img/load-icon.png) no-repeat left;
-	padding-left: 20px;
-	height: 20px;
-}
-
-.icon-load-passive:hover {
-	background: url(../img/load-icon-current.png) no-repeat left;
-}
-
-.icon-save-passive {
-	background: url(../img/save-icon.png) no-repeat left;
-	padding-left: 20px;
-	height: 20px;
-}
-
-.icon-save-passive:hover {
-	background: url(../img/save-icon-current.png) no-repeat left;
-}
-
-.icon-run-passive {
-	background: url(../img/run-icon.png) no-repeat left;
-	padding-left: 20px;
-	height: 20px;
-}
-
-.icon-run-passive:hover {
-	background: url(../img/run-icon-current.png) no-repeat left;
-}
-
-.icon-blocks-passive {
-	background: url(../img/blocks-icon.png) no-repeat left;
-	padding-left: 22px;
-	height: 20px;
-}
-
-.icon-blocks-current {
-	background: url(../img/blocks-icon-current.png) no-repeat left;
-	padding-left: 22px;
-	height: 20px;
-}
-
-.icon-blocks-current:hover {
-	background: url(../img/blocks-icon-current.png) no-repeat left;
-}
-
-.icon-blocks-passive:hover {
-	background: url(../img/blocks-icon-current.png) no-repeat left;
-}
-
-.icon-code-passive {
-	background: url(../img/code-icon.png) no-repeat left;
-	padding-left: 22px;
-	height: 20px;
-}
-
-.icon-code-current {
-	background: url(../img/code-icon-current.png) no-repeat left;
-	padding-left: 22px;
-	height: 20px;
-}
-
-.icon-code-current:hover {
-	background: url(../img/code-icon-current.png) no-repeat left;
-}
-
-.icon-code-passive:hover {
-	background: url(../img/code-icon-current.png) no-repeat left;
-}
-
-#menu-icon {
-
-	display: hidden;
-	width: 40px;
-	height: 40px;
-	background: #8fbee5 url(../img/menu-icon.png) center;
-
-}
-
-a:hover#menu-icon {
-
-	background-color: #006699;
-	border-radius: 4px 4px 0 0;
-
-}
 
 ul {
 
@@ -274,6 +179,7 @@ select {
 	font-size: 0.9em;
 	appearance: none;
 }
+
 
 /*MEDIA QUERY*/
 @media only screen and (max-width : 822px) {

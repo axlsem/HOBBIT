@@ -314,6 +314,8 @@ var blocklyArea = document.getElementById('blocklyArea');
   onresize();
   Blockly.svgResize(workspace);
   
+  var blocklyAreaHeightAct = $("#blocklyArea").height();
+  $("#blocklyArea").height(blocklyAreaHeightAct - 80);
 
 /* ACE editor */
 document.getElementById('editor').style.fontSize='16px';
