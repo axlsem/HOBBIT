@@ -6,8 +6,6 @@ function show_blockly() {
 	document.getElementById("nav-home").parentElement.setAttribute("class", "border-current");
 
 	window.location.reload(true);
-	// alert("resizing");
-	// window.dispatchEvent(new Event('resize'));
 };
 
 function hide_blockly() {
@@ -316,9 +314,11 @@ var blocklyArea = document.getElementById('blocklyArea');
   
   var blocklyAreaHeightAct = $("#blocklyArea").height();
   $("#blocklyArea").height(blocklyAreaHeightAct - 80);
-
-/* ACE editor */
-document.getElementById('editor').style.fontSize='16px';
+  
+  /* ACE editor */
+  document.getElementById('editor').style.fontSize='16px';
+  var editorHeightAct = $("#editor").height();
+  $("#editor").height(editorHeightAct - 80);
 
 /* Reload */
 function restorelocal(){

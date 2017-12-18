@@ -154,15 +154,13 @@ section {
     cursor: pointer;
 }
 
-.select {
+.selectdiv {
 	display: block;
 	width: 20em;
 	height: 3em;
 	line-height: 2.5;
-	appearance: none;
 	overflow: hidden;
 	background: #f9f9f9;
-	color: #555;
 	border: 5px solid #dee7ec;
 }
 
@@ -172,13 +170,33 @@ select {
 	height: 100%;
 	margin: 0;
 	padding: 0 0 0 .5em;
-	color: #555;
 	cursor: pointer;
 	border: 0 !important;
 	font-family: Helvetica Neue, Helvetica, Arial;
-	font-size: 0.9em;
-	appearance: none;
+	font-size: 0.9em;    
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	color: gray;
+	background-image:
+	  linear-gradient(45deg, transparent 50%, gray 50%),
+	  linear-gradient(135deg, gray 50%, transparent 50%),
+	  linear-gradient(to right, #ccc, #ccc);
+	background-position:
+	  calc(100% - 20px) calc(1em + 5px),
+	  calc(100% - 15px) calc(1em + 5px),
+	  calc(100% - 2.5em) 0.8em;
+	background-size:
+	  5px 5px,
+	  5px 5px,
+	  1px 1.5em;
+	background-repeat: no-repeat;
 }
+
+/* select.minimal {
+  } */
 
 
 /*MEDIA QUERY*/
@@ -224,7 +242,4 @@ select {
 		display: block;
 
 	}
-	
-.:1:hover {
-	background-color: #000;
 }

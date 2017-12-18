@@ -60,8 +60,7 @@ function runCode(req, res) {
 				  }
 				});				
 		} else {
-			feedback = "Another demo is already running!";
-			// res.status(200).send({"result": feedback});
+			feedback = "Another demo is already running! Please try again later.";
 		}
 	res.status(200).send({"result": feedback});
 	});
