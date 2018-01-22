@@ -67,7 +67,7 @@ Blockly.Python['hobbit_head'] = function(block) {
 
 	var code = "";
 	code += "\message = \'" + dropdown_head_position.toString() + "\'\n";
-	code += Blockly.Python.NodeName+'.publishTopic(\'/head/move\', String, message)\n';
+	code += Blockly.Python.NodeName+'.publishTopic(\'/head/move\', \'String\', message)\n';
 
 	return code;
 };
@@ -79,7 +79,7 @@ Blockly.Python['hobbit_emo'] = function(block) {
 
 	var code = "";
 	code += "\message = \'" + dropdown_emotion.toString() + "\'\n";
-	code += Blockly.Python.NodeName+'.publishTopic(\'/head/emo\', String, message)\n';
+	code += Blockly.Python.NodeName+'.publishTopic(\'/head/emo\', \'String\', message)\n';
 
 	return code;
 };

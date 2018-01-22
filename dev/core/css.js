@@ -531,7 +531,7 @@ Blockly.Css.CONTENT = [
     'border-radius: 30px;',
     'line-height: 45px;',
     'margin-bottom: 15px;',
-    'padding-right: 35px;',
+    'padding-right: 20px;',
     'white-space: nowrap;',
     'background-color: #fff;',
   '}',
