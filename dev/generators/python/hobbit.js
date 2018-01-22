@@ -74,8 +74,8 @@ Blockly.Python['hobbit_navigation_test'] = function(block) {
 	code += "\message = PoseStamped()\n";
 	code += "message.header.frame_id = \'map\'\n";
 	code += "message.header.stamp = rospy.Time.now()\n";
-	code += "message.pose.positon.x = "+value_pos_x+"\n";
-	code += "message.pose.positon.y = "+value_pos_y+"\n";
+	code += "message.pose.position.x = "+value_pos_x+"\n";
+	code += "message.pose.position.y = "+value_pos_y+"\n";
 	code += "message.pose.orientation.w = 1\n";
 	code += Blockly.Python.NodeName+'.publishTopic(\'/move_base_simple/goal\', \'PoseStamped\', message)\n';
 
