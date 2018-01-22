@@ -37,10 +37,11 @@ Blockly.Python['hobbit_turn'] = function(block) {
 	var value_angle_deg = value_angle/180*Math.PI;
 
 	Blockly.Python.InitROS();
+	Blockly.Python.definitions_['from_geometry_msgs.msg_import_Twist'] = 'from geometry_msgs.msg import Twist';
 
 	code += "\message = Twist()\n";
 	code += "message.angular.z = "+dropdown_direction+value_angle_deg+"\n";
-	code += Blockly.Python.NodeName+'.publishTopic(\'/cmd_vel\', Twist, message)\n';
+	code += Blockly.Python.NodeName+'.publishTopic(\'/cmd_vel\', \'Twist\', message)\n';
 
 	return code;
 };
@@ -51,11 +52,32 @@ Blockly.Python['hobbit_move'] = function(block) {
 	var code = "";
 	var message;
 
-	Blockly.Python.InitROS();  
+	Blockly.Python.InitROS();
+	Blockly.Python.definitions_['from_geometry_msgs.msg_import_Twist'] = 'from geometry_msgs.msg import Twist';
 
 	code += "\message = Twist()\n";
 	code += "message.linear.x = "+dropdown_direction+value_speed+"\n";
-	code += Blockly.Python.NodeName+'.publishTopic(\'/cmd_vel\', Twist, message)\n';
+	code += Blockly.Python.NodeName+'.publishTopic(\'/cmd_vel\', \'Twist\', message)\n';
+
+	return code;
+};
+
+Blockly.Python['hobbit_navigation_test'] = function(block) {
+	var value_pos_x = Blockly.Python.valueToCode(block, 'pos_x', Blockly.Python.ORDER_ATOMIC);
+	var value_pos_y = Blockly.Python.valueToCode(block, 'pos_y', Blockly.Python.ORDER_ATOMIC);
+	var code = "";
+	var message;
+
+	Blockly.Python.InitROS();
+	Blockly.Python.definitions_['from_geometry_msgs.msg_import_PoseStamped'] = 'from geometry_msgs.msg import PoseStamped';
+
+	code += "\message = PoseStamped()\n";
+	code += "message.header.frame_id = \'map\'\n";
+	code += "message.header.stamp = rospy.Time.now()\n";
+	code += "message.pose.positon.x = "+value_pos_x+"\n";
+	code += "message.pose.positon.y = "+value_pos_y+"\n";
+	code += "message.pose.orientation.w = 1\n";
+	code += Blockly.Python.NodeName+'.publishTopic(\'/move_base_simple/goal\', \'PoseStamped\', message)\n';
 
 	return code;
 };
@@ -93,7 +115,7 @@ Blockly.Python['ROS_publisher'] = function(block) {
 
 	var code = "";
 	code += "\message = " + value_message.toString() + "\n";
-	code += Blockly.Python.NodeName+'.publishTopic('+value_topic_name+', '+value_message_type+', message)\n';
+	code += Blockly.Python.NodeName+'.publishTopic(\''+value_topic_name+'\', \''+value_message_type+'\', message)\n';
 
 	return code;
 };

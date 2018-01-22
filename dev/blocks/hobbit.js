@@ -34,6 +34,37 @@ goog.require('Blockly.Blocks');
  */
 Blockly.Constants.hobbit.HUE = 360;
 
+Blockly.Blocks['hobbit_navigation_test'] = {
+  init: function() {
+    this.jsonInit({
+      "type": "hobbit_navigation_test",
+      "message0": "Navigate to %1 x: %2 y: %3",
+      "args0": [
+        {	
+					"type": "input_dummy"
+				},
+				{
+					"type": "input_value",
+					"name": "pos_x",
+					"check": "Number",
+				},
+				{
+					"type": "input_value",
+					"name": "pos_y",
+					"check": "Number",
+				}
+      ],
+      "inputsInline": true,
+			"previousStatement": null,
+			"nextStatement": null,
+			"colour": Blockly.Constants.hobbit.HUE,
+			"tooltip": "Test navigation.",
+			"helpUrl": ""
+    });
+  }
+};
+
+
 Blockly.Blocks['hobbit_show_info_confirm'] = {
   init: function() {
     this.jsonInit({
