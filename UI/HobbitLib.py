@@ -5,61 +5,25 @@ from std_msgs.msg import *
 from hobbit_msgs.msg import *
 from hobbit_msgs.srv import *
 
-global REACHED_POSITION
-global DESIRED_POSITION
-global ACTUAL_POSITION
+def cbCheckPanPosition(data):
+	global PAN_RUNNING
+	PAN_RUNNING = data.is_moving
 
-def cbCheckPosition(data):
-	global DESIRED_POSITION
-	global ACTUAL_POSITION
-	global REACHED_POSITION
+def cbCheckTiltPosition(data):
+	global TILT_RUNNING
+	TILT_RUNNING = data.is_moving
+
+def WaitUntilPositionReached():
+	global PAN_RUNNING
+	global TILT_RUNNING
 	
-	PositionMapping = dict()
-	PositionMapping["up"] = -0.1
-	PositionMapping["down"] = 0.3
-	PositionMapping["center"] = 0.0
-	PositionMapping["left"] = 0.6
-	PositionMapping["right"] = -0.6
+	PAN_RUNNING = True
+	TILT_RUNNING = True
+
+	rospy.Subscriber('/pan_controller/state', JointState, cbCheckPanPosition)
+	rospy.Subscriber('/tilt_controller/state', JointState, cbCheckTiltPosition)
 	
-	delta = 0.03
-	
-	if (data.transforms[0].child_frame_id == 'hobbit_neck_dynamic'):
-
-		y_act = data.transforms[0].transform.rotation.y
-		z_act = data.transforms[0].transform.rotation.z
-		
-		if y_act <= PositionMapping["up"]:
-			pos_ver = 'up'
-		elif y_act >= PositionMapping["down"]:
-			pos_ver = 'down'
-		elif y_act >= PositionMapping["center"]-delta and y_act <= PositionMapping["center"]+delta:
-			pos_ver = 'center'
-		else:
-			pos_ver = 'undef'
-
-		if z_act <= PositionMapping["right"]:
-			pos_hor = 'right'
-		elif z_act >= PositionMapping["left"]:
-			pos_hor = 'left'
-		elif z_act >= PositionMapping["center"]-delta and z_act <= PositionMapping["center"]+delta:
-			pos_hor = 'center'
-		else:
-			pos_hor = 'undef'
-
-		ACTUAL_POSITION = pos_ver+"_"+pos_hor
-		
-		if(ACTUAL_POSITION == DESIRED_POSITION):
-			REACHED_POSITION = True
-
-def WaitUntilPositionReached(DesiredPosition):
-	global REACHED_POSITION
-	global DESIRED_POSITION
-
-	DESIRED_POSITION = DesiredPosition
-	REACHED_POSITION = False
-	rospy.Subscriber('/tf', TFMessage, cbCheckPosition)
-	
-	while (not REACHED_POSITION):
+	while (PAN_RUNNING or TILT_RUNNING):
 		continue
 
 class HobbitNode:
