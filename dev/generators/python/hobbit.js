@@ -27,13 +27,11 @@ goog.provide('Blockly.Python.hobbit');
 
 goog.require('Blockly.Python');
 
-
 Blockly.Python['hobbit_turn'] = function(block) {
 	var value_angle = Blockly.Python.valueToCode(block, 'angle', Blockly.Python.ORDER_ATOMIC);
 	var dropdown_direction = block.getFieldValue('direction');
 	
 	var code = "";
-	var message;
 	var value_angle_deg = value_angle/180*Math.PI;
 
 	Blockly.Python.InitROS();
@@ -50,13 +48,25 @@ Blockly.Python['hobbit_move'] = function(block) {
 	var value_speed = Blockly.Python.valueToCode(block, 'speed', Blockly.Python.ORDER_ATOMIC);
 	var dropdown_direction = block.getFieldValue('direction');
 	var code = "";
-	var message;
 
 	Blockly.Python.InitROS();
 	Blockly.Python.definitions_['from_geometry_msgs.msg_import_Twist'] = 'from geometry_msgs.msg import Twist';
 
 	code += "\message = Twist()\n";
 	code += "message.linear.x = "+dropdown_direction+value_speed+"\n";
+	code += Blockly.Python.NodeName+'.publishTopic(\'/cmd_vel\', \'Twist\', message)\n';
+
+	return code;
+};
+
+Blockly.Python['hobbit_undock'] = function(block) {
+	var code = "";
+
+	Blockly.Python.InitROS();
+	Blockly.Python.definitions_['from_geometry_msgs.msg_import_Twist'] = 'from geometry_msgs.msg import Twist';
+
+	code += "\message = Twist()\n";
+	code += "message.linear.x = -0.5\n";
 	code += Blockly.Python.NodeName+'.publishTopic(\'/cmd_vel\', \'Twist\', message)\n';
 
 	return code;

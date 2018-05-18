@@ -684,3 +684,17 @@ Blockly.Blocks['hobbit_arm_gripper'] = {
 		});
 	}
 };
+
+Blockly.Blocks['hobbit_undock'] = {
+	init: function () {
+		this.jsonInit({
+			"type": "hobbit_undock",
+			"message0": "Undock from charger",
+			"previousStatement": null,
+			"nextStatement": null,
+			"colour": Blockly.Constants.hobbit.HUE,
+			"tooltip": "Undock from charger to get a clearer signal from laser",
+			"helpUrl": ""
+		});
+	}
+};
