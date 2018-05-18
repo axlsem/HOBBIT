@@ -38,47 +38,91 @@ Blockly.Blocks['hobbit_navigation_test'] = {
 	init: function () {
 		this.jsonInit({
 			"type": "hobbit_navigation_test",
-			"message0": "Navigate to %1 x: %2 y: %3",
+			"message0": "Navigate to x: %1 y: %2 z: %3 with orientation x: %4 y: %5 z: %6 w: %7",
 			"args0": [
-				{
-					"type": "input_dummy"
-				},
 				{
 					"type": "input_value",
 					"name": "pos_x",
 					"check": "Number",
+					"align": "RIGHT"
 				},
 				{
 					"type": "input_value",
 					"name": "pos_y",
 					"check": "Number",
+					"align": "RIGHT"
+				},
+				{
+					"type": "input_value",
+					"name": "pos_z",
+					"check": "Number",
+					"align": "RIGHT"
+				},
+				{
+					"type": "input_value",
+					"name": "quat_x",
+					"check": "Number",
+					"align": "RIGHT"
+				},
+				{
+					"type": "input_value",
+					"name": "quat_y",
+					"check": "Number",
+					"align": "RIGHT"
+				},
+				{
+					"type": "input_value",
+					"name": "quat_z",
+					"check": "Number",
+					"align": "RIGHT"
+				},
+				{
+					"type": "input_value",
+					"name": "quat_w",
+					"check": "Number",
+					"align": "RIGHT"
 				}
 			],
-			"inputsInline": true,
+			"inputsInline": false,
 			"previousStatement": null,
 			"nextStatement": null,
 			"colour": Blockly.Constants.hobbit.HUE,
 			"tooltip": "Test navigation.",
-			"helpUrl": ""//,
+			"helpUrl": "",
 			// "mutator": "hobbit_navigation_dialog"
 		});
 	}
 };
 
-// Blockly.Constants.hobbit.HOBBIT_NAVIGATION_DIALOG_MUTATOR_MIXIN = {
-// 	decompose: function (workspace) {
-// 		var topBlock = Blockly.Block.obtain(workspace, 'controls_if_if');
-// 		topBlock.initSvg();
-// 		console.log("Here comes the nav dialog");
-// 		return topBlock;
-// 	},
-// 	compose: function (topBlock) {
-// 		console.log("Now set nav xy!");
-// 	}
-// };
+Blockly.Constants.hobbit.HOBBIT_NAVIGATION_DIALOG_MUTATOR_MIXIN = {
+	decompose: function (workspace) {
+		// var topBlock = Blockly.Block.obtain(workspace, 'hobbit_navigation_test');
+		// topBlock.initSvg();
+		// console.log("Here comes the nav dialog");
+		var topBlock = Blockly.Block.obtain(workspace, 'controls_if_if');
+		topBlock.initSvg();
+		return topBlock;
+	},
+	compose: function (topBlock) {
+		// console.log(topBlock);
+		// console.log("Now set nav xy!");
+	},
+	mutationToDom: function () {
+		// var container = document.createElement('mutation');
+		// var divisorInput = (this.getFieldValue('PROPERTY') == 'DIVISIBLE_BY');
+		// container.setAttribute('divisor_input', divisorInput);
+		// return container;
+		// console.log("mutToDom");
+	},
+	domToMutation: function (xmlElement) {
+		// var hasDivisorInput = (xmlElement.getAttribute('divisor_input') == 'true');
+		// this.updateShape_(hasDivisorInput);  // Helper function for adding/removing 2nd input.
+		// console.log("domToMut");
+	}
+};
 
-// Blockly.Extensions.registerMutator('hobbit_navigation_dialog',
-// 	Blockly.Constants.hobbit.HOBBIT_NAVIGATION_DIALOG_MUTATOR_MIXIN);
+Blockly.Extensions.registerMutator('hobbit_navigation_dialog',
+	Blockly.Constants.hobbit.HOBBIT_NAVIGATION_DIALOG_MUTATOR_MIXIN);
 
 Blockly.Blocks['hobbit_show_info_confirm'] = {
 	init: function () {
@@ -526,6 +570,116 @@ Blockly.Blocks['ROS_publisher'] = {
 			"nextStatement": null,
 			"colour": Blockly.Constants.hobbit.HUE,
 			"tooltip": "Create publisher for ROS topics",
+			"helpUrl": ""
+		});
+	}
+};
+
+Blockly.Blocks['hobbit_arm_move'] = {
+	init: function () {
+		this.jsonInit({
+			"type": "hobbit_arm_move",
+			"message0": "Move arm to %1",
+			"args0": [
+				{
+					"type": "field_dropdown",
+					"name": "movement",
+					"options": [
+						[
+							"candle position",
+							"MoveToCandle"
+						],
+						[
+							"home position",
+							"MoveToHome"
+						],
+						[
+							"prepare grasping from floor",
+							"MoveToPreGraspFloor"
+						],
+						[
+							"table",
+							"MoveToPreGraspTable"
+						],
+						[
+							"tray",
+							"MoveToTray"
+						]
+					]
+				}
+			],
+			"previousStatement": null,
+			"nextStatement": null,
+			"colour": Blockly.Constants.hobbit.HUE,
+			"tooltip": "Move HOBBIT's arm",
+			"helpUrl": ""
+		});
+	}
+};
+
+Blockly.Blocks['hobbit_arm_turntable'] = {
+	init: function () {
+		this.jsonInit({
+			"type": "hobbit_arm_turntable",
+			"message0": "%1",
+			"args0": [
+				{
+					"type": "field_dropdown",
+					"name": "movement",
+					"options": [
+						[
+							"Grab turntable",
+							"MoveToLearning"
+						],
+						[
+							"Store turntable",
+							"StoreTurntable"
+						],
+						[
+							"Turn turntable clockwise",
+							"TurnTurntableCW"
+						],
+						[
+							"Turn turntable counterclockwise",
+							"TurnTurntableCCW"
+						]
+					]
+				}
+			],
+			"previousStatement": null,
+			"nextStatement": null,
+			"colour": Blockly.Constants.hobbit.HUE,
+			"tooltip": "Move turntable",
+			"helpUrl": ""
+		});
+	}
+};
+
+Blockly.Blocks['hobbit_arm_gripper'] = {
+	init: function () {
+		this.jsonInit({
+			"type": "hobbit_arm_move",
+			"message0": "%1 Gripper",
+			"args0": [
+				{
+					"type": "field_dropdown",
+					"name": "movement",
+					"options": [
+						[
+							"Open",
+							"OpenGripper"
+						],
+						[
+							"Close",
+							"CloseGripper"
+						]
+					]
+				}
+			],
+			"previousStatement": null,
+			"nextStatement": null,
+			"colour": Blockly.Constants.hobbit.HUE,
+			"tooltip": "Control HOBBIT's gripper",
 			"helpUrl": ""
 		});
 	}

@@ -90,7 +90,7 @@
 	
 
 	<xml id="toolbox" style="display: none">
-	<category id="catHobbit" name="Hobbit" colour="360">
+	<category id="catHobbitMove" name="Move" colour="360">
 		<block type="hobbit_move">
 			<value name="speed">
 				<shadow type="math_number">
@@ -109,6 +109,31 @@
 				  <field name="NUM">0</field>
 				</shadow>
 			</value>
+			<value name="pos_z">
+				<shadow type="math_number">
+				  <field name="NUM">0</field>
+				</shadow>
+			</value>
+			<value name="quat_x">
+				<shadow type="math_number">
+				  <field name="NUM">0</field>
+				</shadow>
+			</value>
+			<value name="quat_y">
+				<shadow type="math_number">
+				  <field name="NUM">0</field>
+				</shadow>
+			</value>
+			<value name="quat_z">
+				<shadow type="math_number">
+				  <field name="NUM">0</field>
+				</shadow>
+			</value>
+			<value name="quat_w">
+				<shadow type="math_number">
+				  <field name="NUM">0</field>
+				</shadow>
+			</value>
 		</block>
 		<block type="hobbit_turn">
 			<value name="angle">
@@ -117,37 +142,7 @@
 				</shadow>
 			</value>
 		</block>
-		<block type="hobbit_head"></block>
-		<block type="hobbit_emo"></block>
-		<block type="hobbit_show_info">
-			<value name="text">
-				<shadow type="text">
-				  <field name="TEXT"></field>
-				</shadow>
-			</value>
-		</block>
-		<block type="hobbit_show_info_confirm">
-			<value name="text">
-				<shadow type="text">
-				  <field name="TEXT"></field>
-				</shadow>
-			</value>
-		</block>
-		<block type="hobbit_yes_no">
-			<value name="text">
-				<shadow type="text">
-				  <field name="TEXT"></field>
-				</shadow>
-			</value>
-		</block>
-		<block type="hobbit_user_input">
-			<value name="text">
-				<shadow type="text">
-				  <field name="TEXT"></field>
-				</shadow>
-			</value>
-		</block>
-		<block type="ROS_publisher">
+		<!-- <block type="ROS_publisher">
 			<value name="topic_name">
 				<shadow type="text">
 				  <field name="TEXT"></field>
@@ -165,7 +160,44 @@
 				  <field name="TEXT"></field>
 				</shadow>
 			</value>
-		</block>
+		</block> -->
+	</category>
+	<category id="catHobbitArm" name="Arm Control" colour="360">
+	  <block type="hobbit_arm_move"></block>
+	  <block type="hobbit_arm_turntable"></block>
+	  <block type="hobbit_arm_gripper"></block>
+	</category>
+	<category id="catInteraction" name="Interaction" colour="360">
+			<block type="hobbit_show_info">
+					<value name="text">
+						<shadow type="text">
+							<field name="TEXT"></field>
+						</shadow>
+					</value>
+				</block>
+				<!-- <block type="hobbit_show_info_confirm">
+					<value name="text">
+						<shadow type="text">
+							<field name="TEXT"></field>
+						</shadow>
+					</value>
+				</block> -->
+				<block type="hobbit_yes_no">
+					<value name="text">
+						<shadow type="text">
+							<field name="TEXT"></field>
+						</shadow>
+					</value>
+				</block>
+				<block type="hobbit_user_input">
+					<value name="text">
+						<shadow type="text">
+							<field name="TEXT"></field>
+						</shadow>
+					</value>
+				</block>
+				<block type="hobbit_head"></block>
+				<block type="hobbit_emo"></block>
 	</category>
 	<category id="catLogic" name="Logic" colour="210">
 	  <block type="controls_if"></block>

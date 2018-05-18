@@ -1,9 +1,11 @@
 import rospy
+import actionlib
 from tf2_msgs.msg import *
 from geometry_msgs.msg import *
 from std_msgs.msg import *
 from hobbit_msgs.msg import *
 from hobbit_msgs.srv import *
+from dynamixel_msgs.msg import *
 
 def cbCheckPanPosition(data):
 	global PAN_RUNNING
@@ -141,4 +143,13 @@ class HobbitNode:
 		h.stamp = rospy.Time.now()
 
 		resp = self.callService('/MMUI','Request',(h,'0','create',parr))
-		
+
+	def moveArm(self,armPosition):
+		client = actionlib.SimpleActionClient('hobbit_arm', ArmServerAction)
+		client.wait_for_server()
+		goal = ArmServerGoal()
+		goal.command.data = armPosition
+		goal.velocity = 0.0
+		goal.joints = []
+		client.send_goal(goal)
+		client.wait_for_result(rospy.Duration.from_sec(30.0))

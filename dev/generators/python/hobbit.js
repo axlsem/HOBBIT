@@ -65,6 +65,12 @@ Blockly.Python['hobbit_move'] = function(block) {
 Blockly.Python['hobbit_navigation_test'] = function(block) {
 	var value_pos_x = Blockly.Python.valueToCode(block, 'pos_x', Blockly.Python.ORDER_ATOMIC);
 	var value_pos_y = Blockly.Python.valueToCode(block, 'pos_y', Blockly.Python.ORDER_ATOMIC);
+	var value_pos_z = Blockly.Python.valueToCode(block, 'pos_z', Blockly.Python.ORDER_ATOMIC);
+	var value_quat_x = Blockly.Python.valueToCode(block, 'quat_x', Blockly.Python.ORDER_ATOMIC);
+	var value_quat_y = Blockly.Python.valueToCode(block, 'quat_y', Blockly.Python.ORDER_ATOMIC);
+	var value_quat_z = Blockly.Python.valueToCode(block, 'quat_z', Blockly.Python.ORDER_ATOMIC);
+	var value_quat_w = Blockly.Python.valueToCode(block, 'quat_w', Blockly.Python.ORDER_ATOMIC);
+	
 	var code = "";
 	var message;
 
@@ -76,7 +82,12 @@ Blockly.Python['hobbit_navigation_test'] = function(block) {
 	code += "message.header.stamp = rospy.Time.now()\n";
 	code += "message.pose.position.x = "+value_pos_x+"\n";
 	code += "message.pose.position.y = "+value_pos_y+"\n";
-	code += "message.pose.orientation.w = 1\n";
+	code += "message.pose.position.z = "+value_pos_z+"\n";
+	code += "message.pose.orientation.x = "+value_quat_x+"\n";
+	code += "message.pose.orientation.y = "+value_quat_y+"\n";
+	code += "message.pose.orientation.z = "+value_quat_z+"\n";
+	code += "message.pose.orientation.w = "+value_quat_w+"\n";
+	
 	code += Blockly.Python.NodeName+'.publishTopic(\'/move_base_simple/goal\', \'PoseStamped\', message)\n';
 
 	return code;
@@ -181,4 +192,37 @@ Blockly.Python['hobbit_call_service'] = function(block) {
 	code += Blockly.Python.NodeName+'.callService('+value_service_name+','+value_service_type+','+value_service_parameters+')\n';
 
 	return [code, Blockly.Python.ORDER_NONE];
+};
+
+Blockly.Python['hobbit_arm_move'] = function(block) {
+	var dropdown_movement = block.getFieldValue('movement');
+	var code = "";
+
+	Blockly.Python.InitROS();
+	
+	code += Blockly.Python.NodeName+'.moveArm(\''+dropdown_movement+'\')\n';
+
+	return code;
+};
+
+Blockly.Python['hobbit_arm_turntable'] = function(block) {
+	var dropdown_movement = block.getFieldValue('movement');
+	var code = "";
+
+	Blockly.Python.InitROS();
+	
+	code += Blockly.Python.NodeName+'.moveArm(\''+dropdown_movement+'\')\n';
+
+	return code;
+};
+
+Blockly.Python['hobbit_arm_gripper'] = function(block) {
+	var dropdown_movement = block.getFieldValue('movement');
+	var code = "";
+
+	Blockly.Python.InitROS();
+	
+	code += Blockly.Python.NodeName+'.moveArm(\''+dropdown_movement+'\')\n';
+
+	return code;
 };
