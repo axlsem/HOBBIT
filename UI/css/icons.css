@@ -98,96 +98,120 @@ a:hover#menu-icon {
 
 /* BLOCKLY TOOLBOX */
 [id=':1.label'] {
-	background: url(../img/tb-hobbit.png) no-repeat left;
+	background: url(../img/tb-move.png) no-repeat left;
 	background-size: 20px 20px;
 	padding-left: 25px;
 }
 
 .blocklyTreeSelected [id=':1.label'] {
-	background: url(../img/tb-hobbit-sel.png) no-repeat left;
+	background: url(../img/tb-move-sel.png) no-repeat left;
 	background-size: 20px 20px;
 	padding-left: 25px;
 }
 
 [id=':2.label'] {
-	background: url(../img/tb-logic.png) no-repeat left;
+	background: url(../img/tb-arm.png) no-repeat left;
 	background-size: 20px 20px;
 	padding-left: 25px;
 }
 
 .blocklyTreeSelected [id=':2.label'] {
-	background: url(../img/tb-logic-sel.png) no-repeat left;
+	background: url(../img/tb-arm-sel.png) no-repeat left;
 	background-size: 20px 20px;
 	padding-left: 25px;
 }
 
 [id=':3.label'] {
-	background: url(../img/tb-loop.png) no-repeat left;
+	background: url(../img/tb-interaction.png) no-repeat left;
 	background-size: 20px 20px;
 	padding-left: 25px;
 }
 
 .blocklyTreeSelected [id=':3.label'] {
-	background: url(../img/tb-loop-sel.png) no-repeat left;
+	background: url(../img/tb-interaction-sel.png) no-repeat left;
 	background-size: 20px 20px;
 	padding-left: 25px;
 }
 
 [id=':4.label'] {
-	background: url(../img/tb-math.png) no-repeat left;
+	background: url(../img/tb-logic.png) no-repeat left;
 	background-size: 20px 20px;
 	padding-left: 25px;
 }
 
 .blocklyTreeSelected [id=':4.label'] {
-	background: url(../img/tb-math-sel.png) no-repeat left;
+	background: url(../img/tb-logic-sel.png) no-repeat left;
 	background-size: 20px 20px;
 	padding-left: 25px;
 }
 
 [id=':5.label'] {
-	background: url(../img/tb-text.png) no-repeat left;
+	background: url(../img/tb-loop.png) no-repeat left;
 	background-size: 20px 20px;
 	padding-left: 25px;
 }
 
 .blocklyTreeSelected [id=':5.label'] {
-	background: url(../img/tb-text-sel.png) no-repeat left;
+	background: url(../img/tb-loop-sel.png) no-repeat left;
 	background-size: 20px 20px;
 	padding-left: 25px;
 }
 
 [id=':6.label'] {
-	background: url(../img/tb-list.png) no-repeat left;
+	background: url(../img/tb-math.png) no-repeat left;
 	background-size: 20px 20px;
 	padding-left: 25px;
 }
 
 .blocklyTreeSelected [id=':6.label'] {
-	background: url(../img/tb-list-sel.png) no-repeat left;
+	background: url(../img/tb-math-sel.png) no-repeat left;
 	background-size: 20px 20px;
 	padding-left: 25px;
 }
 
 [id=':7.label'] {
-	background: url(../img/tb-variables.png) no-repeat left;
+	background: url(../img/tb-text.png) no-repeat left;
 	background-size: 20px 20px;
 	padding-left: 25px;
 }
 
 .blocklyTreeSelected [id=':7.label'] {
-	background: url(../img/tb-variables-sel.png) no-repeat left;
+	background: url(../img/tb-text-sel.png) no-repeat left;
 	background-size: 20px 20px;
 	padding-left: 25px;
 }
 
 [id=':8.label'] {
-	background: url(../img/tb-functions.png) no-repeat left;
+	background: url(../img/tb-list.png) no-repeat left;
 	background-size: 20px 20px;
 	padding-left: 25px;
 }
 
 .blocklyTreeSelected [id=':8.label'] {
+	background: url(../img/tb-list-sel.png) no-repeat left;
+	background-size: 20px 20px;
+	padding-left: 25px;
+}
+
+[id=':9.label'] {
+	background: url(../img/tb-variables.png) no-repeat left;
+	background-size: 20px 20px;
+	padding-left: 25px;
+}
+
+.blocklyTreeSelected [id=':9.label'] {
+	background: url(../img/tb-variables-sel.png) no-repeat left;
+	background-size: 20px 20px;
+	padding-left: 25px;
+}
+
+[id=':a.label'] {
+	background: url(../img/tb-functions.png) no-repeat left;
+	background-size: 20px 20px;
+	padding-left: 25px;
+}
+
+.blocklyTreeSelected [id=':a.label'] {
 	background: url(../img/tb-functions-sel.png) no-repeat left;
 	background-size: 20px 20px;
 	padding-left: 25px;
