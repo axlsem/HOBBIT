@@ -186,7 +186,7 @@ class HobbitNode:
 
 	def navigate(self,position,orientation):
 		point = Point(x=position[0],y=position[1],z=position[2])
-		quaternion = Quaternion(x=quaternion[0],y=quaternion[1],z=quaternion[2],z=quaternion[3]
+		quaternion = Quaternion(x=orientation[0],y=orientation[1],z=orientation[2],w=orientation[3])
 
 		message = PoseStamped()
 		message.header.stamp = rospy.Time.now()
@@ -196,9 +196,10 @@ class HobbitNode:
 		self.publishTopic('/move_base_simple/goal', 'PoseStamped', message)
 
 	def turn(self,angle):
-		pose = getCurrentPose()
+		currentPose = getCurrentPose()
+		pose = currentPose.pose
 		
-		q = (pose.pose.orientation.x,pose.pose.orientation.y,pose.pose.orientation.z,pose.pose.orientation.w)
+		q = (pose.orientation.x,pose.orientation.y,pose.orientation.z,pose.orientation.w)
 		currentOrientation = tf.transformations.euler_from_quaternion(q)
 		newOrientation = tf.transformations.quaternion_from_euler(currentOrientation[0],currentOrientation[1],currentOrientation[2]+angle)
 
@@ -208,8 +209,8 @@ class HobbitNode:
 		pose.orientation.w = newOrientation[3]
 
 		message = PoseStamped()
-		message.header.frame_id = pose.header.frame_id
+		message.header.frame_id = currentPose.header.frame_id
 		message.header.stamp = rospy.Time.now()
-		message.pose = pose.pose
+		message.pose = pose
 
 		self.publishTopic('/move_base_simple/goal', 'PoseStamped', message)
