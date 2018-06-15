@@ -172,7 +172,7 @@ class HobbitNode:
 
 	def move(self,distance):
 		maxDistance = 0.15
-		iterations = int(math.ceil(distance/maxDistance))
+		iterations = int(math.ceil(abs(distance)/maxDistance))
 		direction = -1 if distance < 0 else 1
 
 		message = Twist()
