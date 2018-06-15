@@ -58,7 +58,7 @@ function runCode(req, res) {
 					console.error(err);
 					return;
 				  }
-				});				
+				});
 		} else {
 			feedback = "Another demo is already running! Please try again later.";
 		}

@@ -1,3 +1,5 @@
+import tf
+import math
 import rospy
 import actionlib
 from tf2_msgs.msg import *
@@ -6,6 +8,7 @@ from std_msgs.msg import *
 from hobbit_msgs.msg import *
 from hobbit_msgs.srv import *
 from dynamixel_msgs.msg import *
+from nav_msgs.msg import *
 
 def cbCheckPanPosition(data):
 	global PAN_RUNNING
@@ -28,6 +31,19 @@ def WaitUntilPositionReached():
 	while (PAN_RUNNING or TILT_RUNNING):
 		continue
 
+def getCurrentPose():
+	global POSE
+	rospy.Subscriber('/amcl_pose',PoseWithCovarianceStamped, cbCurrentPose)
+	rospy.sleep(0.1)
+	return POSE
+
+def cbCurrentPose(data):
+	global POSE
+	poseTmp = PoseStamped()
+	poseTmp.header = data.header
+	poseTmp.pose = data.pose.pose
+	POSE = poseTmp
+
 class HobbitNode:
 	
 	def __init__(self,NodeName='DemoNode'):
@@ -43,7 +59,7 @@ class HobbitNode:
 		rate.sleep()
 		
 		if topic == '/head/move':
-			WaitUntilPositionReached(message)
+			WaitUntilPositionReached()
 	
 			
 	def callService(self,ServiceName,ServiceType,args):
@@ -153,3 +169,47 @@ class HobbitNode:
 		goal.joints = []
 		client.send_goal(goal)
 		client.wait_for_result(rospy.Duration.from_sec(30.0))
+
+	def move(self,distance):
+		maxDistance = 0.15
+		iterations = int(math.ceil(distance/maxDistance))
+		direction = -1 if distance < 0 else 1
+
+		message = Twist()
+
+		if(abs(distance) > maxDistance):
+			for i in range(1,iterations):
+				message.linear.x = maxDistance*direction
+				self.publishTopic('/cmd_vel','Twist',message)
+			message.linear.x = distance-int(math.floor(abs(distance/maxDistance)))*maxDistance*direction
+			self.publishTopic('/cmd_vel','Twist',message)
+
+	def navigate(self,position,orientation):
+		point = Point(x=position[0],y=position[1],z=position[2])
+		quaternion = Quaternion(x=quaternion[0],y=quaternion[1],z=quaternion[2],z=quaternion[3]
+
+		message = PoseStamped()
+		message.header.stamp = rospy.Time.now()
+		message.header.frame_id = 'map'
+		message.pose = Pose(point,quaternion)
+
+		self.publishTopic('/move_base_simple/goal', 'PoseStamped', message)
+
+	def turn(self,angle):
+		pose = getCurrentPose()
+		
+		q = (pose.pose.orientation.x,pose.pose.orientation.y,pose.pose.orientation.z,pose.pose.orientation.w)
+		currentOrientation = tf.transformations.euler_from_quaternion(q)
+		newOrientation = tf.transformations.quaternion_from_euler(currentOrientation[0],currentOrientation[1],currentOrientation[2]+angle)
+
+		pose.orientation.x = newOrientation[0]
+		pose.orientation.y = newOrientation[1]
+		pose.orientation.z = newOrientation[2]
+		pose.orientation.w = newOrientation[3]
+
+		message = PoseStamped()
+		message.header.frame_id = pose.header.frame_id
+		message.header.stamp = rospy.Time.now()
+		message.pose = pose.pose
+
+		self.publishTopic('/move_base_simple/goal', 'PoseStamped', message)

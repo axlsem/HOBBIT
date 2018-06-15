@@ -35,11 +35,12 @@ Blockly.Python['hobbit_turn'] = function(block) {
 	var value_angle_deg = value_angle/180*Math.PI;
 
 	Blockly.Python.InitROS();
-	Blockly.Python.definitions_['from_geometry_msgs.msg_import_Twist'] = 'from geometry_msgs.msg import Twist';
+	// Blockly.Python.definitions_['from_geometry_msgs.msg_import_Twist'] = 'from geometry_msgs.msg import Twist';
 
-	code += "\message = Twist()\n";
-	code += "message.angular.z = "+dropdown_direction+value_angle_deg+"\n";
-	code += Blockly.Python.NodeName+'.publishTopic(\'/cmd_vel\', \'Twist\', message)\n';
+	// code += "\message = Twist()\n";
+	// code += "message.angular.z = "+dropdown_direction+value_angle_deg+"\n";
+	// code += Blockly.Python.NodeName+'.publishTopic(\'/cmd_vel\', \'Twist\', message)\n';
+	code += Blockly.Python.NodeName+".turn("+dropdown_direction+value_angle_deg+")\n";
 
 	return code;
 };
@@ -50,26 +51,28 @@ Blockly.Python['hobbit_move'] = function(block) {
 	var code = "";
 
 	Blockly.Python.InitROS();
-	Blockly.Python.definitions_['from_geometry_msgs.msg_import_Twist'] = 'from geometry_msgs.msg import Twist';
+	// Blockly.Python.definitions_['from_geometry_msgs.msg_import_Twist'] = 'from geometry_msgs.msg import Twist';
 
-	code += "\message = Twist()\n";
-	code += "message.linear.x = "+dropdown_direction+value_speed+"\n";
-	code += Blockly.Python.NodeName+'.publishTopic(\'/cmd_vel\', \'Twist\', message)\n';
+	// code += "\message = Twist()\n";
+	// code += "message.linear.x = "+dropdown_direction+value_speed+"\n";
+	// code += Blockly.Python.NodeName+'.publishTopic(\'/cmd_vel\', \'Twist\', message)\n';
+	
+	code += Blockly.Python.NodeName+'.move('+dropdown_direction+value_speed+')\n';
 
 	return code;
 };
 
 Blockly.Python['hobbit_undock'] = function(block) {
-	var code = "";
+	// var code = "";
 
 	Blockly.Python.InitROS();
-	Blockly.Python.definitions_['from_geometry_msgs.msg_import_Twist'] = 'from geometry_msgs.msg import Twist';
+	// Blockly.Python.definitions_['from_geometry_msgs.msg_import_Twist'] = 'from geometry_msgs.msg import Twist';
 
-	code += "\message = Twist()\n";
-	code += "message.linear.x = -0.5\n";
-	code += Blockly.Python.NodeName+'.publishTopic(\'/cmd_vel\', \'Twist\', message)\n';
+	// code += "\message = Twist()\n";
+	// code += "message.linear.x = -0.5\n";
+	// code += Blockly.Python.NodeName+'.publishTopic(\'/cmd_vel\', \'Twist\', message)\n';
 
-	return code;
+	return Blockly.Python.NodeName+'.move(-0.4)\n';
 };
 
 Blockly.Python['hobbit_navigation_test'] = function(block) {
@@ -82,23 +85,26 @@ Blockly.Python['hobbit_navigation_test'] = function(block) {
 	var value_quat_w = Blockly.Python.valueToCode(block, 'quat_w', Blockly.Python.ORDER_ATOMIC);
 	
 	var code = "";
-	var message;
 
 	Blockly.Python.InitROS();
-	Blockly.Python.definitions_['from_geometry_msgs.msg_import_PoseStamped'] = 'from geometry_msgs.msg import PoseStamped';
+	// Blockly.Python.definitions_['from_geometry_msgs.msg_import_PoseStamped'] = 'from geometry_msgs.msg import PoseStamped';
 
-	code += "\message = PoseStamped()\n";
-	code += "message.header.frame_id = \'map\'\n";
-	code += "message.header.stamp = rospy.Time.now()\n";
-	code += "message.pose.position.x = "+value_pos_x+"\n";
-	code += "message.pose.position.y = "+value_pos_y+"\n";
-	code += "message.pose.position.z = "+value_pos_z+"\n";
-	code += "message.pose.orientation.x = "+value_quat_x+"\n";
-	code += "message.pose.orientation.y = "+value_quat_y+"\n";
-	code += "message.pose.orientation.z = "+value_quat_z+"\n";
-	code += "message.pose.orientation.w = "+value_quat_w+"\n";
+	// code += "\message = PoseStamped()\n";
+	// code += "message.header.frame_id = \'map\'\n";
+	// code += "message.header.stamp = rospy.Time.now()\n";
+	// code += "message.pose.position.x = "+value_pos_x+"\n";
+	// code += "message.pose.position.y = "+value_pos_y+"\n";
+	// code += "message.pose.position.z = "+value_pos_z+"\n";
+	// code += "message.pose.orientation.x = "+value_quat_x+"\n";
+	// code += "message.pose.orientation.y = "+value_quat_y+"\n";
+	// code += "message.pose.orientation.z = "+value_quat_z+"\n";
+	// code += "message.pose.orientation.w = "+value_quat_w+"\n";
 	
-	code += Blockly.Python.NodeName+'.publishTopic(\'/move_base_simple/goal\', \'PoseStamped\', message)\n';
+	// code += Blockly.Python.NodeName+'.publishTopic(\'/move_base_simple/goal\', \'PoseStamped\', message)\n';
+
+	code += "position = ("+[value_pos_x,value_pos_y,value_pos_z].join(",")+")\n"
+	code += "orientation = ("+[value_quat_x,value_quat_y,value_quat_z,value_quat_w].join(",")+")\n"
+	code += Blockly.Python.NodeName+".navigate(position,orientation)\n"
 
 	return code;
 };
