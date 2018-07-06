@@ -26,33 +26,34 @@ function runCode(req, res) {
 	var body = '';
 	var feedback = '';
 
-	var isMain = req.headers.origin + '/' == req.headers.referer;
-
+	
 	req.on('error', function (err) {
 		console.error(err);
 	});
-
+	
 	req.on('data', function (data) {
 		body += data;
-
+		
 		if (body.length > 1e6)
-			req.connection.destroy();
+		req.connection.destroy();
 	});
-
+	
 	req.on('end', function () {
 		if (!locked) {
 			locked = true;
 			feedback = "Demo is now running!";
 			var post = qs.parse(body);
 			var destpath = '../../src/';
+			
+			var isMain = post.main;
 
 			if (isDev) {
 				var cmd = 'start test.bat';
 			} else {
 				var cmd = 'bash run.sh';
 			}
-
-			if (isMain) {
+			
+			if (isMain == 'true') {
 				fs.copyFile(post.sourcepath + post.sourcefile, destpath + post.filename, (err) => {
 					if (err) throw err;
 				});

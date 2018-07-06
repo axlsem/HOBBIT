@@ -45,7 +45,8 @@ function run_code() {
 		$.post("/run",
 			{
 				code: pycode,
-				filename: "run.py"
+				filename: "run.py",
+				main: false
 			}, function (data, status) {
 				if (status == "success") {
 					alert(data.result);

@@ -103,7 +103,8 @@
                 {
                     filename: "run.py",
                     sourcepath: "./demos/src/",
-                    sourcefile: demofile + ".py"
+                    sourcefile: demofile + ".py",
+                    main: true
                 }, function (data, status) {
                     if (status == "success") {
                         alert(data.result);
