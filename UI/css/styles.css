@@ -7,6 +7,35 @@ html, body {
 	width: 100%;
 }
 
+.demo {
+	height: 120px;
+	color: #006699;
+	font-weight: bold;
+}
+
+.demo a:hover {
+	color: white;
+}
+
+.card {
+	border: 2.5px solid #8fbee5;
+}
+
+.card-content {
+	width: 100%;
+}
+
+.call-blockly {
+	height: 120px;
+	color: white;
+	font-weight: bold;
+	background-color: #8fbee5;
+}
+
+.demo:hover {
+	background-color: #badfff;
+}
+
 body { 
 	font-size: 1.05em;
 	line-height: 1.25em;
@@ -51,7 +80,7 @@ header {
 	height: 40px;
 	background: url(../img/header.png) no-repeat center;
 	display: block;
-
+	cursor: pointer;
 }
 
 nav {

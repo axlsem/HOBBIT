@@ -61,7 +61,7 @@ class HobbitNode:
 		if topic == '/head/move':
 			WaitUntilPositionReached()
 	
-			
+
 	def callService(self,ServiceName,ServiceType,args):
 		try:
 			ParameterList = []
@@ -152,7 +152,15 @@ class HobbitNode:
 		parr.append(p)
 		p = Parameter('Repetitions', '3')
 		parr.append(p)
-		p = Parameter('wait', '1')
+		
+		h = Header()
+		h.stamp = rospy.Time.now()
+
+		resp = self.callService('/MMUI','Request',(h,'0','create',parr))
+
+	def callSOS(self):
+		parr = []
+		p = Parameter('type', 'F_CALLSOS')
 		parr.append(p)
 		
 		h = Header()

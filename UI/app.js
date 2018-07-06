@@ -1,4 +1,6 @@
 const path = './demos/';
+const pathXML = './demos/xml/';
+const pathPy = './demos/src/';
 const fs = require('fs');
 const { exec } = require('child_process');
 const PORT = process.env.port || 3000;
@@ -8,29 +10,28 @@ var qs = require('querystring');
 var express = require('express');
 var app = express();
 var locked = false;
-var cmd = '';
 var param = String(process.argv.slice(2));
 
-if (param == 'dev') {
-	cmd = 'start test.bat';
-} else {
-	cmd = 'bash run.sh';
-}
-// var copyFile = require('quickly-copy-file');
-// const LIBFILE = 'HobbitLib';
+var isDev = param == 'dev';
 
 function loadIndex(req, res) {
 	res.sendFile('./index.html', { root: __dirname });
 };
 
+function loadBlockly(req, res) {
+	res.sendFile('./blockly.html', { root: __dirname });
+};
+
 function runCode(req, res) {
 	var body = '';
 	var feedback = '';
-	
+
+	var isMain = req.headers.origin + '/' == req.headers.referer;
+
 	req.on('error', function (err) {
 		console.error(err);
 	});
-	
+
 	req.on('data', function (data) {
 		body += data;
 
@@ -43,36 +44,45 @@ function runCode(req, res) {
 			locked = true;
 			feedback = "Demo is now running!";
 			var post = qs.parse(body);
-			// fs.writeFile('/home/demo/catkin_ws/src/hokuyo_node/test/'+post.filename, post.code, (err) => { 
-			fs.writeFile('../../src/'+post.filename, post.code, (err) => {
-				if (err) throw err;
-			});
-			
-			// copyFile(LIBFILE, '../../src/'+LIBFILE, function(error) {
-				// if (error) return console.error(error);
-			// });
+			var destpath = '../../src/';
+
+			if (isDev) {
+				var cmd = 'start test.bat';
+			} else {
+				var cmd = 'bash run.sh';
+			}
+
+			if (isMain) {
+				fs.copyFile(post.sourcepath + post.sourcefile, destpath + post.filename, (err) => {
+					if (err) throw err;
+				});
+			} else {
+				fs.writeFile(destpath + post.filename, post.code, (err) => {
+					if (err) throw err;
+				});
+			}
 
 			exec(cmd, (err, stdout, stderr) => {
-					locked = false;
-					if (err) {
+				locked = false;
+				if (err) {
 					console.error(err);
 					return;
-				  }
-				});
+				}
+			});
 		} else {
 			feedback = "Another demo is already running! Please try again later.";
 		}
-	res.status(200).send({"result": feedback});
+		res.status(200).send({ "result": feedback });
 	});
 };
 
 function saveWorkspace(req, res) {
 	var body = '';
-	
+
 	req.on('error', function (err) {
 		console.error(err);
 	});
-	
+
 	req.on('data', function (data) {
 		body += data;
 
@@ -83,33 +93,39 @@ function saveWorkspace(req, res) {
 	req.on('end', function () {
 		var post = qs.parse(body);
 		var file_exists = false;
-		
-		if (fs.existsSync(path+post.filename)) {
+		var filenameXML = post.demoname + '.xml';
+		var filenamePy = post.demoname + '.py';
+
+		if (fs.existsSync(pathXML + filenameXML)) {
 			file_exists = true;
 		}
-		
-		var can_be_saved = (file_exists == false) || (post.overwrite == 'true');
-		
-		if (can_be_saved == true) {
-			fs.writeFile('./demos/'+post.filename, post.content, (err) => {
-				if (err) throw err;
 
+		var can_be_saved = (file_exists == false) || (post.overwrite == 'true');
+
+		if (can_be_saved == true) {
+			fs.writeFile(pathXML + filenameXML, post.content, (err) => {
+				if (err) throw err;
+				console.log('Demo saved!');
+			});
+
+			fs.writeFile(pathPy + filenamePy, post.code, (err) => {
+				if (err) throw err;
 				console.log('Demo saved!');
 			});
 		}
-		
-		res.status(200).send({"result": can_be_saved});
+
+		res.status(200).send({ "result": can_be_saved });
 	});
-	
+
 };
 
 function loadDemo(req, res) {
 	var body = '';
-	
+
 	req.on('error', function (err) {
 		console.error(err);
 	});
-	
+
 	req.on('data', function (data) {
 		body += data;
 
@@ -119,22 +135,22 @@ function loadDemo(req, res) {
 
 	req.on('end', function () {
 		var post = qs.parse(body);
-		
-		fs.readFile('./demos/'+post.filename, 'utf8', function (err,data) {
+
+		fs.readFile(pathXML + post.filename, 'utf8', function (err, data) {
 			if (err) throw err;
-			res.status(200).send({"result": data});
+			res.status(200).send({ "result": data });
 		});
 	});
-	
+
 }
 
 function showDemolist(req, res) {
 	var body = '';
-	
+
 	req.on('error', function (err) {
 		console.error(err);
 	});
-	
+
 	req.on('data', function (data) {
 		body += data;
 
@@ -144,21 +160,52 @@ function showDemolist(req, res) {
 
 	req.on('end', function () {
 		var post = qs.parse(body);
-		
-		data = fs.readdirSync('./demos/');
-		res.status(200).send({"result": data});
+
+		data = fs.readdirSync(pathXML);
+		res.status(200).send({ "result": data });
 	});
-	
+
+}
+
+function deleteDemo(req, res) {
+	var body = '';
+
+	req.on('error', function (err) {
+		console.error(err);
+	});
+
+	req.on('data', function (data) {
+		body += data;
+
+		if (body.length > 1e6)
+			req.connection.destroy();
+	});
+
+	req.on('end', function () {
+		var post = qs.parse(body);
+
+		fs.unlink(pathXML + post.demoname + '.xml', (err) => {
+			if (err) throw err;
+		});
+
+		fs.unlink(pathPy + post.demoname + '.py', (err) => {
+			if (err) throw err;
+		});
+
+		res.status(200).send({ "result": data });
+	});
 }
 
 app.use(express.static(__dirname + '/'));
 
 app.get('/', loadIndex);
+app.get('/blockly', loadBlockly);
 app.post('/run', runCode);
 app.post('/save', saveWorkspace);
 app.post('/load', loadDemo);
 app.post('/demolist', showDemolist);
+app.post('/delete', deleteDemo);
 
-app.listen(PORT,'0.0.0.0', function () {
-  console.log('Hobbit blockly is now listening to port '+PORT+'!');
+app.listen(PORT, '0.0.0.0', function () {
+	console.log('Hobbit blockly is now listening to port ' + PORT + '!');
 });

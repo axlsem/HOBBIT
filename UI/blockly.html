@@ -1,0 +1,534 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+
+	<meta charset="utf-8">
+
+	<title>Blockly for Hobbit</title>
+
+	<meta name="description" content="Simplifying Hobbit">
+	<meta name="author" content="Alexander Semeliker (TU Wien)">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+	<link rel="stylesheet" href="css/styles.css">
+	<link rel="stylesheet" href="css/icons.css">
+	<link rel="shortcut icon" href="img/favicon.ico" />
+
+</head>
+
+<body onload="restorelocal()">
+
+
+	<header>
+
+		<div id="logo"></div>
+
+		<nav>
+
+			<a href="#" id="menu-icon"></a>
+
+			<ul>
+
+				<li>
+					<a id="nav-home" class="current">
+						<div id="icon-blocks" class="icon-blocks-current">Blocks</div>
+					</a>
+				</li>
+				<li>
+					<a id="nav-run">
+						<div id="icon-run" class="icon-run-passive">Run</div>
+					</a>
+				</li>
+				<li>
+					<a id="nav-code">
+						<div id="icon-code" class="icon-code-passive">Code</div>
+					</a>
+				</li>
+				<li class="nav-save-dropdown">
+					<a id="nav-save">
+						<div id="icon-save" class="icon-save-passive">Save</div>
+					</a>
+					<div class="nav-save-dropdown-content">
+						<a id="nav-save-robot" class="dropdown-element">to Hobbit</a>
+						<a id="nav-save-locally" class="dropdown-element">to local file</a>
+					</div>
+				</li>
+				<li class="nav-save-dropdown">
+					<a id="nav-load">
+						<div id="icon-load" class="icon-load-passive">Load</div>
+					</a>
+					<div class="nav-save-dropdown-content">
+						<a id="nav-show-demolist" class="dropdown-element">from Hobbit</a>
+						<a id="nav-load-locally" class="dropdown-element">from local file</a>
+					</div>
+				</li>
+				<li>
+					<a id="nav-clear">
+						<div id="icon-clear" class="icon-clear-passive">Clear</div>
+					</a>
+				</li>
+
+			</ul>
+
+		</nav>
+
+	</header>
+
+	<div id="load-hobbit-modal" class="modal">
+		<div id="load-hobbit-modal-content" class="modal-content">
+			<span class="close">&times;</span>
+			<div class="selectdiv">
+				<select id="list-demofiles"></select>
+			</div>
+			<ul>
+				<li>
+					<a id="nav-load-robot">Load</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+
+	<section>
+		<table id="table-content">
+			<tbody>
+				<tr>
+					<td id="table-header"></td>
+				</tr>
+				<tr>
+					<td>
+						<div id="home">
+							<div id="blocklyArea" style="height:100vh;"></div>
+						</div>
+						<div id="profile">
+							<div id="editor" style="width:100%; height:100vh; display: none;"></div>
+						</div>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</section>
+
+	<div id="blocklyDiv" style="position: absolute"></div>
+
+
+	<xml id="toolbox" style="display: none">
+		<category id="catHobbitMove" name="Move" colour="360">
+			<block type="hobbit_undock"></block>
+			<block type="hobbit_move">
+				<value name="speed">
+					<shadow type="math_number">
+						<field name="NUM">0</field>
+					</shadow>
+				</value>
+			</block>
+			<block type="hobbit_navigation_test">
+				<value name="pos_x">
+					<shadow type="math_number">
+						<field name="NUM">0</field>
+					</shadow>
+				</value>
+				<value name="pos_y">
+					<shadow type="math_number">
+						<field name="NUM">0</field>
+					</shadow>
+				</value>
+				<value name="pos_z">
+					<shadow type="math_number">
+						<field name="NUM">0</field>
+					</shadow>
+				</value>
+				<value name="quat_x">
+					<shadow type="math_number">
+						<field name="NUM">0</field>
+					</shadow>
+				</value>
+				<value name="quat_y">
+					<shadow type="math_number">
+						<field name="NUM">0</field>
+					</shadow>
+				</value>
+				<value name="quat_z">
+					<shadow type="math_number">
+						<field name="NUM">0</field>
+					</shadow>
+				</value>
+				<value name="quat_w">
+					<shadow type="math_number">
+						<field name="NUM">0</field>
+					</shadow>
+				</value>
+			</block>
+			<block type="hobbit_turn">
+				<value name="angle">
+					<shadow type="math_number">
+						<field name="NUM">0</field>
+					</shadow>
+				</value>
+			</block>
+			<!-- <block type="ROS_publisher">
+			<value name="topic_name">
+				<shadow type="text">
+				  <field name="TEXT"></field>
+				</shadow>
+			</value>
+		</block>
+		<block type="hobbit_call_service">
+			<value name="service_name">
+				<shadow type="text">
+				  <field name="TEXT"></field>
+				</shadow>
+			</value>
+			<value name="service_type">
+				<shadow type="text">
+				  <field name="TEXT"></field>
+				</shadow>
+			</value>
+		</block> -->
+		</category>
+		<category id="catHobbitArm" name="Arm Control" colour="360">
+			<block type="hobbit_arm_move"></block>
+			<block type="hobbit_arm_turntable"></block>
+			<block type="hobbit_arm_gripper"></block>
+		</category>
+		<category id="catInteraction" name="Interaction" colour="360">
+			<block type="hobbit_show_info">
+				<value name="text">
+					<shadow type="text">
+						<field name="TEXT"></field>
+					</shadow>
+				</value>
+			</block>
+			<block type="hobbit_show_info_confirm">
+				<value name="text">
+					<shadow type="text">
+						<field name="TEXT"></field>
+					</shadow>
+				</value>
+			</block>
+			<block type="hobbit_yes_no">
+				<value name="text">
+					<shadow type="text">
+						<field name="TEXT"></field>
+					</shadow>
+				</value>
+			</block>
+			<block type="hobbit_user_input">
+				<value name="text">
+					<shadow type="text">
+						<field name="TEXT"></field>
+					</shadow>
+				</value>
+			</block>
+			<block type="hobbit_head"></block>
+			<block type="hobbit_emo"></block>
+		</category>
+		<category id="catLogic" name="Logic" colour="210">
+			<block type="controls_if"></block>
+			<block type="logic_compare"></block>
+			<block type="logic_operation"></block>
+			<block type="logic_negate"></block>
+			<block type="logic_boolean"></block>
+			<block type="logic_null"></block>
+			<block type="logic_ternary"></block>
+		</category>
+		<category id="catLoop" name="Loop" colour="120">
+			<block type="controls_repeat_ext">
+				<value name="TIMES">
+					<shadow type="math_number">
+						<field name="NUM">10</field>
+					</shadow>
+				</value>
+			</block>
+			<block type="controls_whileUntil"></block>
+			<block type="controls_for">
+				<value name="FROM">
+					<shadow type="math_number">
+						<field name="NUM">1</field>
+					</shadow>
+				</value>
+				<value name="TO">
+					<shadow type="math_number">
+						<field name="NUM">10</field>
+					</shadow>
+				</value>
+				<value name="BY">
+					<shadow type="math_number">
+						<field name="NUM">1</field>
+					</shadow>
+				</value>
+			</block>
+			<block type="controls_forEach"></block>
+			<block type="controls_flow_statements"></block>
+		</category>
+		<category id="catMath" name="Math" colour="230">
+			<block type="math_number"></block>
+			<block type="math_arithmetic">
+				<value name="A">
+					<shadow type="math_number">
+						<field name="NUM">1</field>
+					</shadow>
+				</value>
+				<value name="B">
+					<shadow type="math_number">
+						<field name="NUM">1</field>
+					</shadow>
+				</value>
+			</block>
+			<block type="math_single">
+				<value name="NUM">
+					<shadow type="math_number">
+						<field name="NUM">9</field>
+					</shadow>
+				</value>
+			</block>
+			<block type="math_trig">
+				<value name="NUM">
+					<shadow type="math_number">
+						<field name="NUM">45</field>
+					</shadow>
+				</value>
+			</block>
+			<block type="math_constant"></block>
+			<block type="math_number_property">
+				<value name="NUMBER_TO_CHECK">
+					<shadow type="math_number">
+						<field name="NUM">0</field>
+					</shadow>
+				</value>
+			</block>
+			<block type="math_round">
+				<value name="NUM">
+					<shadow type="math_number">
+						<field name="NUM">3.1</field>
+					</shadow>
+				</value>
+			</block>
+			<block type="math_on_list"></block>
+			<block type="math_modulo">
+				<value name="DIVIDEND">
+					<shadow type="math_number">
+						<field name="NUM">64</field>
+					</shadow>
+				</value>
+				<value name="DIVISOR">
+					<shadow type="math_number">
+						<field name="NUM">10</field>
+					</shadow>
+				</value>
+			</block>
+			<block type="math_constrain">
+				<value name="VALUE">
+					<shadow type="math_number">
+						<field name="NUM">50</field>
+					</shadow>
+				</value>
+				<value name="LOW">
+					<shadow type="math_number">
+						<field name="NUM">1</field>
+					</shadow>
+				</value>
+				<value name="HIGH">
+					<shadow type="math_number">
+						<field name="NUM">100</field>
+					</shadow>
+				</value>
+			</block>
+			<block type="math_random_int">
+				<value name="FROM">
+					<shadow type="math_number">
+						<field name="NUM">1</field>
+					</shadow>
+				</value>
+				<value name="TO">
+					<shadow type="math_number">
+						<field name="NUM">100</field>
+					</shadow>
+				</value>
+			</block>
+			<block type="math_random_float"></block>
+		</category>
+		<category id="catText" name="Text" colour="160">
+			<block type="text"></block>
+			<block type="text_join"></block>
+			<block type="text_append">
+				<value name="TEXT">
+					<shadow type="text"></shadow>
+				</value>
+			</block>
+			<block type="text_length">
+				<value name="VALUE">
+					<shadow type="text">
+						<field name="TEXT">abc</field>
+					</shadow>
+				</value>
+			</block>
+			<block type="text_isEmpty">
+				<value name="VALUE">
+					<shadow type="text">
+						<field name="TEXT"></field>
+					</shadow>
+				</value>
+			</block>
+			<block type="text_indexOf">
+				<value name="VALUE">
+					<block type="variables_get">
+						<field name="VAR">{textVariable}</field>
+					</block>
+				</value>
+				<value name="FIND">
+					<shadow type="text">
+						<field name="TEXT">abc</field>
+					</shadow>
+				</value>
+			</block>
+			<block type="text_charAt">
+				<value name="VALUE">
+					<block type="variables_get">
+						<field name="VAR">{textVariable}</field>
+					</block>
+				</value>
+			</block>
+			<block type="text_getSubstring">
+				<value name="STRING">
+					<block type="variables_get">
+						<field name="VAR">{textVariable}</field>
+					</block>
+				</value>
+			</block>
+			<block type="text_changeCase">
+				<value name="TEXT">
+					<shadow type="text">
+						<field name="TEXT">abc</field>
+					</shadow>
+				</value>
+			</block>
+			<block type="text_trim">
+				<value name="TEXT">
+					<shadow type="text">
+						<field name="TEXT">abc</field>
+					</shadow>
+				</value>
+			</block>
+			<block type="text_print">
+				<value name="TEXT">
+					<shadow type="text">
+						<field name="TEXT">abc</field>
+					</shadow>
+				</value>
+			</block>
+			<block type="text_prompt_ext">
+				<value name="TEXT">
+					<shadow type="text">
+						<field name="TEXT">abc</field>
+					</shadow>
+				</value>
+			</block>
+		</category>
+		<category id="catLists" name="Lists" colour="260">
+			<block type="lists_create_with">
+				<mutation items="0"></mutation>
+			</block>
+			<block type="lists_create_with"></block>
+			<block type="lists_repeat">
+				<value name="NUM">
+					<shadow type="math_number">
+						<field name="NUM">5</field>
+					</shadow>
+				</value>
+			</block>
+			<block type="lists_length"></block>
+			<block type="lists_isEmpty"></block>
+			<block type="lists_indexOf">
+				<value name="VALUE">
+					<block type="variables_get">
+						<field name="VAR">{listVariable}</field>
+					</block>
+				</value>
+			</block>
+			<block type="lists_getIndex">
+				<value name="VALUE">
+					<block type="variables_get">
+						<field name="VAR">{listVariable}</field>
+					</block>
+				</value>
+			</block>
+			<block type="lists_setIndex">
+				<value name="LIST">
+					<block type="variables_get">
+						<field name="VAR">{listVariable}</field>
+					</block>
+				</value>
+			</block>
+			<block type="lists_getSublist">
+				<value name="LIST">
+					<block type="variables_get">
+						<field name="VAR">{listVariable}</field>
+					</block>
+				</value>
+			</block>
+			<block type="lists_split">
+				<value name="DELIM">
+					<shadow type="text">
+						<field name="TEXT">,</field>
+					</shadow>
+				</value>
+			</block>
+			<block type="lists_sort"></block>
+		</category>
+		<!-- <category id="{catColour}" name="Colour" colour="20"> -->
+		<!-- <block type="colour_picker"></block> -->
+		<!-- <block type="colour_random"></block> -->
+		<!-- <block type="colour_rgb"> -->
+		<!-- <value name="RED"> -->
+		<!-- <shadow type="math_number"> -->
+		<!-- <field name="NUM">100</field> -->
+		<!-- </shadow> -->
+		<!-- </value> -->
+		<!-- <value name="GREEN"> -->
+		<!-- <shadow type="math_number"> -->
+		<!-- <field name="NUM">50</field> -->
+		<!-- </shadow> -->
+		<!-- </value> -->
+		<!-- <value name="BLUE"> -->
+		<!-- <shadow type="math_number"> -->
+		<!-- <field name="NUM">0</field> -->
+		<!-- </shadow> -->
+		<!-- </value> -->
+		<!-- </block> -->
+		<!-- <block type="colour_blend"> -->
+		<!-- <value name="COLOUR1"> -->
+		<!-- <shadow type="colour_picker"> -->
+		<!-- <field name="COLOUR">#ff0000</field> -->
+		<!-- </shadow> -->
+		<!-- </value> -->
+		<!-- <value name="COLOUR2"> -->
+		<!-- <shadow type="colour_picker"> -->
+		<!-- <field name="COLOUR">#3333ff</field> -->
+		<!-- </shadow> -->
+		<!-- </value> -->
+		<!-- <value name="RATIO"> -->
+		<!-- <shadow type="math_number"> -->
+		<!-- <field name="NUM">0.5</field> -->
+		<!-- </shadow> -->
+		<!-- </value> -->
+		<!-- </block> -->
+		<!-- </category> -->
+
+		<category id="catVariables" custom="VARIABLE" name="Variables" colour="330"></category>
+		<category id="catFunctions" custom="PROCEDURE" name="Functions" colour="290"></category>
+
+	</xml>
+
+	<script src="./js/jquery.min.js"></script>
+	<script src="./js/blockly_compressed.js"></script>
+	<script src="./js/blocks_compressed.js"></script>
+	<script src="./js/python_compressed.js"></script>
+	<script src="./js/msg/js/en.js"></script>
+	<script src="./js/code.js"></script>
+	<script src="./js/ace.js" type="text/javascript" charset="utf-8"></script>
+
+</body>
+
+</html>
