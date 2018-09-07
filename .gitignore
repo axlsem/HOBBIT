@@ -1,1 +1,13 @@
 *.bat
+/doc/**/*.aux
+/doc/**/*.auxlock
+/doc/**/*.bbl
+/doc/**/*.fdb_latexmk
+/doc/**/*.fls
+/doc/**/*.lof
+/doc/**/*.lot
+/doc/**/*.out
+/doc/**/*.blg
+/doc/**/*.log
+/doc/**/*.toc
+/doc/**/*.run.xml

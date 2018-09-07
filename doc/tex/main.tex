@@ -1,0 +1,83 @@
+
+\documentclass[
+	%draft,
+%	Entwurf,				% document will be marked as draft with current timestamp but all
+							%graphics will be included
+	%NoTableOfContents,		% do not create a Table Of Contents
+	%NoListOfFigures,		% do not create a List Of Figures
+	%NoListOfTables,			% do not create a List Of Tables
+	USenglish 		 		% als Sprachen werden nur USenglish, ngerman und naustrian unterst�tzt!
+	% ngerman
+]{ACIN_diploma_thesis}
+
+ \Title{\toolname: A graphical tool for programming ROS based robots}
+% \Subject{Diplomarbeit}
+ \Author{Alexander Semeliker, BSc}
+ \Date{29.07.2018}
+ \PlaceAndTime{Wien, im September 2018}
+ \AuthorAddress
+ 	{Georg Humbhandl Gasse 1\\
+ 	 2362 Biedermannsdorf\\
+ 	 \"Osterreich}
+ \Supervisor{
+ 	Ao.Univ.-Prof.\@ Dipl.-Ing.\@ Dr.\,techn.\@ Markus\@ Vincze \\
+ 	% Dipl.-Ing.\@ Markus\@ Bajones
+ }
+
+%% PDFTitle nur notwendig, falls von Title abweichend. (Z.Bsp. falls Titel Zeilenumbr�che enth�lt)
+% \PDFTitle{Title}
+% \PDFAuthor{author}
+% \PDFSubject{Diplomarbeit}
+
+
+% Hinweise:
+% - Beim drucken Seitenanpassung ausschalten!
+
+
+% include necessary packages, add additional packages there!
+\input{packages}
+
+% include file with settings
+%\input{settings}
+
+% sollte auskommentiert werden! (zum Anzeigen des Seitenspiegels auf der letzten Seite)
+%\usepackage{layout}
+
+% Alle externalisierten tikz/pgfplot Grafiken neu generieren:
+%\tikzset{external/force remake}
+
+\begin{document}
+
+	% \input{macros.tex}
+	\maketitle
+	% Include all the chapters...
+	%=============================
+%	\include{cha1_TemplateIntroduction}
+%	\include{TestChapter}
+
+	\include{Introduction}
+	\include{Related_Work}
+	\include{Architecture}
+	\include{Evaluation}
+	\include{Conclusion}
+	% Appendix...
+	%=============
+	%\appendix
+
+	%\include{apx1_XXX}
+	
+	
+	% Literaturverzeichnis...
+	%=========================
+	\printbibliography 
+	
+	
+% 	\include{post1_affirmation}
+	
+	
+	% Anzeigen des Seitenlayouts
+%	\newpage
+%	\layout
+
+
+\end{document}

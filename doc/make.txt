@@ -1,0 +1,81 @@
+@echo off
+
+set inputfile=main
+set base_dir=%~dp0
+set base_dir=%base_dir:~0,-1%
+set tmp_dir=%base_dir%\tmp
+set src_dir=%base_dir%\tex
+
+::set latex options depending on TeX-distribution (needed for pgfplots)
+call pdflatex -version | findstr /c:"MiKTeX" >nul &&(
+	echo *** using MiKTeX ***
+	set latex_options=-enable-write18 -synctex=1 -quiet -aux-directory="%tmp_dir%" -output-directory="%base_dir%"
+	set texlive=false
+) || (
+	echo *** using TeX Live ***
+	set latex_options=-shell-escape -synctex=1 -interaction=batchmode -output-directory="%tmp_dir%"
+	set texlive=true
+)
+
+REM test if tmp directories exist and create if necessary
+dir /b /ad "%tmp_dir%" >nul 2>nul
+if not errorlevel 1 goto TeX
+echo Create tmp directory: "%tmp_dir%"
+mkdir "%tmp_dir%"
+
+
+:TeX
+cd "%src_dir%"
+echo *** pdflatex %inputfile%.tex ***
+pdflatex.exe %latex_options% %inputfile%.tex
+echo.
+:: Cancel further compilation if error occured
+if errorlevel 1 (
+	echo. & echo. & echo There were Errors while executing pdflatex!
+	cd "%base_dir%"
+::	pause
+	exit /b 1
+)
+
+
+:biber
+find.exe "Please (re)run Biber on the file" "%tmp_dir%\%inputfile%.log" >nul
+if not errorlevel 1 (
+	echo *** biber ***
+	biber --quiet --output_directory "%tmp_dir%" %inputfile%
+)
+
+
+:RerunLaTeX
+find.exe "Rerun to get" "%tmp_dir%\%inputfile%.log" >nul || find.exe "rerun LaTeX" "%tmp_dir%\%inputfile%.log" >nul
+if errorlevel 1 goto end 
+echo *** Re-run pdflatex ***
+pdflatex.exe %latex_options% %inputfile%.tex
+echo.
+goto RerunLaTeX
+
+
+:end
+cd "%base_dir%"
+echo.
+echo.
+echo.
+echo *** log ***
+findstr.exe /N /I "underfull overfull" %tmp_dir%\%inputfile%.log
+findstr.exe /N /I "Undefined Missing" %tmp_dir%\%inputfile%.log
+echo --- warnings ---
+findstr.exe /N /I "Warning" "%tmp_dir%\%inputfile%.log"
+echo --- errors ---
+findstr.exe /N /I "illegal" "%tmp_dir%\%inputfile%.log"
+findstr.exe /N /I "error" "%tmp_dir%\%inputfile%.log"
+findstr.exe /N /I /C:"TeX capacity exceeded" "%tmp_dir%\%inputfile%.log"
+findstr.exe /N /I /C:"No pages of output" "%tmp_dir%\%inputfile%.log"
+
+echo PLEASE check your log-files for further errors and warnings!
+
+if %texlive%==true (
+	move /Y %tmp_dir%\%inputfile%.pdf %base_dir%
+	move /Y %tmp_dir%\%inputfile%.synctex.gz %base_dir%
+)
+
+exit /b 0

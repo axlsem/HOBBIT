@@ -1,0 +1,76 @@
+\chapter{Architecture}
+This chapter describes the architecture and implementation of \toolname{} (portmanteau of ROS and Blockly). First the purpose and need of it are explained, followed by a architectural overview of \hobbit{}, the used robot. Based on this constraints the options implemtenting the tool are presented as well as a explanation of the decision. Then a short description of the robot operating system ROS and the fundamental JavaScript frameworks, Node.js and Express, are given and finally the necessary details of the implementation are documented - for both, the frontend and the backend.
+
+\section{Requirements}
+In the field of software engineering constraints are the basic design parameters. Therefore it is necessary to provide them as detailed as possible. In the given case the basic constraints are given by the purpose of the tool and the architecture of the robot.
+
+\subsection{\hobbit{} - The Mutal Care Robot}
+The HOBBIT PT2 (prototype 2) platform was developed within the EU project of the same name. The robot was developed to enable independent living for older adults in their own homes instead of a care facility. The main focus is on fall prevention and detection. PT2 is based on a mobile platform provided by Metralabs. It has an arm to enable picking up objects and learning objects. The head, developed by Blue Danube Robotics, combines the sensor set-up for detecting objects, gestures, and obstacles during navigation. Moreover, the head serves as emotional display and attention center for the user. Human-robot interaction with Hobbit can be done via three input modalities: Speech, gesture, and a touchscreen. \cite{HobbitACIN}\\
+
+\begin{figure}[htbp]
+	\centering
+	\begin{overpic}[width=0.3\linewidth]{./graphics/Hobbit}
+	\end{overpic}
+	\caption{\hobbit{} - The Mutal Care Robot}%
+	\label{fig:HobbitPic}%
+\end{figure}
+
+In terms of technology \hobbit{} (see \prettyref{fig:HobbitPic}) is based on the robot operating system ROS (\prettyref{sub:ros}), which allows easy communication between all components. The system is set up to be used on Ubuntu 16.04 together with the ROS distribution \textit{Kinetic}. All ROS nodes are implemented in either Python or \Cpp{}. In order to provide a fast and simple way to implement new behaviours several commands should be pre-implemented. These commands are performed either by publishing messages to topics or services, or executing callbacks defined in the corresponding action's client. The common commands and their description are listed in \prettyref{tab:hobbitCommands}.
+
+\begin{table}
+	\begin{tabular}{l l l l}
+		\toprule
+		Name               & Type    & Message type               & Description            \\
+		\midrule
+		/cmd\_vel          & Topic   & geometry\_msgs/Twist       & move \hobbit           \\
+		/head/move         & Topic   & std\_msgs/String           & move \hobbit's head    \\
+		/head/emo          & Topic   & std\_msgs/String           & control \hobbit's eyes \\
+		/MMUI              & Service & hobbit\_msgs/Request       & control UI interface   \\
+		hobbit\_arm        & Action  & hobbit\_msgs/ArmServer     & control \hobbit's arm  \\
+		move\_base\_simple & Action  & geometry\_msgs/PoseStamped & navigate \hobbit       \\
+		\bottomrule
+	\end{tabular}
+	\caption{Common commands used by \hobbit}
+	\label{tab:hobbitCommands}
+\end{table}
+
+\subsection{Purpose of the tool}
+Since the above mentioned EU project \hobbit{} became very popular and demos of it's behaviours has been presenting at large number of fairs. Unfortunally only the following show cases are currently implemented on the robot:
+
+\begin{labeling}{HobbitDemos}
+	\item [follow me] \hobbit{} follows the user
+	\item [learn object] \hobbit{} learns object
+	\item [call SOS] \hobbit{} starts an emergency call
+	\item [pick up] \hobbit{} picks up an object
+\end{labeling}
+
+All of the demos can be started via the UI running on \hobbit{}'s tablet. Re-writing new demos would need a detailed knowledge of the robot's setup. In order to implement new behaviours and demos more easily it is necessary to provide an programming interface, which provides both a powerful, generic base to cover a wide range of \hobbit's features and intuitive handling.\\
+
+Furthermore the \ACIN{} of the TU Wien is part of the Educational Robotics for STEM (ER4STEM) project, which aims to turn curious young children into young adults passionate about science and technology with hands-on workshops on robotics. The ER4STEM framework will coherently offer students aged 7 to 18 as well as their educators different perspectives and approaches to find their interests and strengths in robotics to pursue STEM careers through robotics and semi-autonomous smart devices. \cite{ER4STEMACIN} Providing an intuitive programming tool would allow the integration of \hobbit{} into the project, which would be an extra input evaluation parameter.\\
+
+At last the framework should be implement to be re-used for other ROS based robots. This means, that it should not only provide an interface to the mentioned commands for \hobbit{}, but an open, adpatable framework. It should be able to allow a flexible configuration and assembly of the provided functions.
+
+\section{Options}
+There are several approaches to fulfill the mentioned requirements. In the following subsections three different options are presented by a simple example: the implementation of picking up an object from the floor an putting it on the table. This should give a rough overview in terms of complexity of the usability as well as the implementation of the corresponding approach.
+
+\subsection{Python/\Cpp{} API}
+The most obvious way to fulfill the requirements is to provide an application programming interface (API) for the desired programming languages (Python, \Cpp{}). An API is a set of commands, functions, protocols, and objects that programmers can use to create software or interact with an external system. It provides developers with standard commands for performing common operations so they do not have to write the code from scratch. In the present case such a API could consists of the following components:
+
+\begin{labeling}{ApiComponents}
+	\item [Initialization] setting up communication and intial states - e.g. creating ROS nodes, starting the arm referencing or undocking from charger
+	\item [Topic management] managing the messages published to ROS topics and creating subscriber nodes if applicable
+	\item [Service management] managing the ROS services of \hobbit{} - e.g. the tablet user interface
+	\item [Action management] creating ROS action clients for e.g. navigation or arm movement
+\end{labeling}
+
+It should be noted, that the components doesn't re-implement ROS functionality, but extend it and prvovide a simpler use of it. Depending of how generic the API is implemented it is possible that the user can control the robot without any detailed knowledge of the technical setup of it. Nevertheless this approach would presuppose the user to have knowledge of the programming language the API is desigend for. Refering to the required commands \prettyref{tab:hobbitCommands} a API for Python could be designed as shown in.
+
+\subsection{SMACH}
+\subsection{Blockly}
+\subsection{Decision}
+\section{Frameworks}
+\subsection{ROS} \label{sub:ros}
+\subsection{Node.js}
+\subsection{Express}
+\section{Server implementation}
+\section{Frontend implementation}
