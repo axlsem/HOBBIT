@@ -6,7 +6,7 @@
 % Objekt
 % \end{textblock}
 %
-%Die Argumente breite und x sind Vielfache des horizontalen Längenparameters \TPHorizModule, y ein Vielfaches von %\TPVertModule. Stellt man die Parameter auf einen Millimeter (mm) ein, dann kann jede Position mittels eines %Lineals abgelesen werden.
+%Die Argumente breite und x sind Vielfache des horizontalen Lï¿½ngenparameters \TPHorizModule, y ein Vielfaches von %\TPVertModule. Stellt man die Parameter auf einen Millimeter (mm) ein, dann kann jede Position mittels eines %Lineals abgelesen werden.
 %
 \setlength{\TPHorizModule}{1mm}
 \setlength{\TPVertModule}{1mm}
@@ -65,7 +65,7 @@
     \unitlength 1cm
 
     \newlength{\Top}
-    \setlength{\Top}{3cm} % Höhe der Mittellinie durch die Logos und den Schriftzug Diplomarbeit
+    \setlength{\Top}{3cm} % Hï¿½he der Mittellinie durch die Logos und den Schriftzug Diplomarbeit
 
 	\begin{textblock*}{\textwidth}[0.03, 0.5](\hoffset+\oddsidemargin+1in, \Top+1.3cm)
 		\includegraphics[height=1.75cm]{logos/TULogo_CMYK}
@@ -201,6 +201,7 @@
 
 	\ifdefined\NoTableOfContents
 	\else
+		\setcounter{tocdepth}{2}
 		\tableofcontents
 	\fi
 	\ifdefined\NoListOfFigures
@@ -230,14 +231,14 @@
 %	}
 %	\bibliography{bibliography}
 
-% 	% Eidesstattliche Erklärung
+% 	% Eidesstattliche Erklï¿½rung
 % 	%===========================
-% 	% Eidesstattliche Erklärung ohne Seitennummer am Ende des Dokumentes.
-% 	\addchap*{Eidesstattliche Erklärung}
+% 	% Eidesstattliche Erklï¿½rung ohne Seitennummer am Ende des Dokumentes.
+% 	\addchap*{Eidesstattliche Erklï¿½rung}
 % 	\thispagestyle{empty}
 % 
 % 	\noindent Hiermit versichere ich, dass ich die vorliegende Arbeit
-% selbstständig verfasst und keine anderen als die angegebenen Quellen und Hilfsmittel benutzt habe.\vspace{3cm}
+% selbststï¿½ndig verfasst und keine anderen als die angegebenen Quellen und Hilfsmittel benutzt habe.\vspace{3cm}
 % 
 % 	\noindent%
 % 	\PlaceAndTime

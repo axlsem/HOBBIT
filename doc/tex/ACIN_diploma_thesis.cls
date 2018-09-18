@@ -307,6 +307,7 @@
 	\newrefformat{sub}{Section~\ref{#1}}
 	\newrefformat{tab}{Table~\ref{#1}}
 	\newrefformat{def}{Definition~\ref{#1}}
+	\newrefformat{lst}{Listing~\ref{#1}}
 }
 
 

@@ -1,7 +1,7 @@
 \chapter{Architecture}
-This chapter describes the architecture and implementation of \toolname{} (portmanteau of ROS and Blockly). First the purpose and need of it are explained, followed by a architectural overview of \hobbit{}, the used robot. Based on this constraints the options implemtenting the tool are presented as well as a explanation of the decision. Then a short description of the robot operating system ROS and the fundamental JavaScript frameworks, Node.js and Express, are given and finally the necessary details of the implementation are documented - for both, the frontend and the backend.
+This chapter describes the architecture and implementation of \toolname{} (portmanteau of ROS and Blockly). First the purpose and need of it are explained, followed by a architectural overview of \hobbit{}, the used robot. Based on this constraints the options implemtenting the tool are presented as well as an explanation of the decision. Then a short description of the robot operating system ROS and the fundamental JavaScript frameworks, Node.js and Express, are given and finally the necessary details of the implementation are documented - for both, the frontend and the backend.
 
-\section{Requirements}
+\section{Requirements} \label{sec:requirements}
 In the field of software engineering constraints are the basic design parameters. Therefore it is necessary to provide them as detailed as possible. In the given case the basic constraints are given by the purpose of the tool and the architecture of the robot.
 
 \subsection{\hobbit{} - The Mutal Care Robot}
@@ -15,9 +15,10 @@ The HOBBIT PT2 (prototype 2) platform was developed within the EU project of the
 	\label{fig:HobbitPic}%
 \end{figure}
 
-In terms of technology \hobbit{} (see \prettyref{fig:HobbitPic}) is based on the robot operating system ROS (\prettyref{sub:ros}), which allows easy communication between all components. The system is set up to be used on Ubuntu 16.04 together with the ROS distribution \textit{Kinetic}. All ROS nodes are implemented in either Python or \Cpp{}. In order to provide a fast and simple way to implement new behaviours several commands should be pre-implemented. These commands are performed either by publishing messages to topics or services, or executing callbacks defined in the corresponding action's client. The common commands and their description are listed in \prettyref{tab:hobbitCommands}.
+In terms of technology \hobbit{} (see \prettyref{fig:HobbitPic}) is based on the robot operating system ROS (\prettyref{sub:ros}), which allows easy communication between all components. The system is set up to be used on Ubuntu 16.04 together with the ROS distribution \textit{Kinetic}. All ROS nodes are implemented in either Python or \Cpp{}. In order to provide a fast and simple way to implement new behaviours several commands should be pre-implemented. These commands are performed either by publishing messages to topics or services, or executing callbacks defined in the corresponding action's client. The common commands and their description are listed in \prettyref{tab:hobbitCommands}. A detailed list of possible messages for each command will be presented in \prettyref{sub:ros} after furher explanation of the ROS architecture.
 
 \begin{table}
+	\centering
 	\begin{tabular}{l l l l}
 		\toprule
 		Name               & Type    & Message type               & Description            \\
@@ -35,42 +36,186 @@ In terms of technology \hobbit{} (see \prettyref{fig:HobbitPic}) is based on the
 \end{table}
 
 \subsection{Purpose of the tool}
-Since the above mentioned EU project \hobbit{} became very popular and demos of it's behaviours has been presenting at large number of fairs. Unfortunally only the following show cases are currently implemented on the robot:
+\hobbit{} became very popular since the above mentioned EU project and demos of it's behaviours has been presenting at large number of fairs. Unfortunally only the following show cases are currently implemented on the robot:
 
-\begin{labeling}{HobbitDemos}
-	\item [follow me] \hobbit{} follows the user
-	\item [learn object] \hobbit{} learns object
-	\item [call SOS] \hobbit{} starts an emergency call
-	\item [pick up] \hobbit{} picks up an object
-\end{labeling}
+\begin{itemize}
+	\item \hobbit{} follows the user
+	\item \hobbit{} learns object
+	\item \hobbit{} starts an emergency call
+	\item \hobbit{} picks up an object
+\end{itemize}
 
-All of the demos can be started via the UI running on \hobbit{}'s tablet. Re-writing new demos would need a detailed knowledge of the robot's setup. In order to implement new behaviours and demos more easily it is necessary to provide an programming interface, which provides both a powerful, generic base to cover a wide range of \hobbit's features and intuitive handling.\\
+All of the demos can be started via the UI running on \hobbit{}'s tablet, but re-writing new demos would assume a detailed knowledge of the robot's setup. In order to implement new behaviours and demos more easily it is necessary to provide a programming interface, which provides a powerful, generic base to cover a wide range of \hobbit's features as well as an intuitive handling.\\
 
 Furthermore the \ACIN{} of the TU Wien is part of the Educational Robotics for STEM (ER4STEM) project, which aims to turn curious young children into young adults passionate about science and technology with hands-on workshops on robotics. The ER4STEM framework will coherently offer students aged 7 to 18 as well as their educators different perspectives and approaches to find their interests and strengths in robotics to pursue STEM careers through robotics and semi-autonomous smart devices. \cite{ER4STEMACIN} Providing an intuitive programming tool would allow the integration of \hobbit{} into the project, which would be an extra input evaluation parameter.\\
 
 At last the framework should be implement to be re-used for other ROS based robots. This means, that it should not only provide an interface to the mentioned commands for \hobbit{}, but an open, adpatable framework. It should be able to allow a flexible configuration and assembly of the provided functions.
 
 \section{Options}
-There are several approaches to fulfill the mentioned requirements. In the following subsections three different options are presented by a simple example: the implementation of picking up an object from the floor an putting it on the table. This should give a rough overview in terms of complexity of the usability as well as the implementation of the corresponding approach.
+There are several approaches to fulfill the mentioned requirements. In the following subsections three different options are presented by a simple example: the implementation of picking up an object from the floor an putting it on the table. This should give a rough overview in terms of complexity of the usability as well as the implementation of the corresponding approach. For reasons of simplicity tasks like searching and detecting the object or gripper positioning are excluded.
 
 \subsection{Python/\Cpp{} API}
+\label{sub:PyApi}
 The most obvious way to fulfill the requirements is to provide an application programming interface (API) for the desired programming languages (Python, \Cpp{}). An API is a set of commands, functions, protocols, and objects that programmers can use to create software or interact with an external system. It provides developers with standard commands for performing common operations so they do not have to write the code from scratch. In the present case such a API could consists of the following components:
 
-\begin{labeling}{ApiComponents}
-	\item [Initialization] setting up communication and intial states - e.g. creating ROS nodes, starting the arm referencing or undocking from charger
-	\item [Topic management] managing the messages published to ROS topics and creating subscriber nodes if applicable
-	\item [Service management] managing the ROS services of \hobbit{} - e.g. the tablet user interface
-	\item [Action management] creating ROS action clients for e.g. navigation or arm movement
-\end{labeling}
+\begin{itemize}
+	\item Initialization: setting up communication and intial states - e.g. creating ROS nodes, starting the arm referencing or undocking from charger
+	\item Topic management: managing the messages published to ROS topics and creating subscriber nodes if applicable
+	\item Service management: managing the ROS services of \hobbit{} - e.g. the tablet user interface
+	\item Action management: creating ROS action clients for e.g. navigation or arm movement
+	\item Common commands: providing common commands (see \prettyref{tab:hobbitCommands})
+\end{itemize}
 
-It should be noted, that the components doesn't re-implement ROS functionality, but extend it and prvovide a simpler use of it. Depending of how generic the API is implemented it is possible that the user can control the robot without any detailed knowledge of the technical setup of it. Nevertheless this approach would presuppose the user to have knowledge of the programming language the API is desigend for. Refering to the required commands \prettyref{tab:hobbitCommands} a API for Python could be designed as shown in.
+It should be noted, that the components doesn't re-implement ROS functionality, but extend it and prvovide a simpler use of it. Depending of how generic the API is implemented it is possible that the user can control the robot without any detailed knowledge of the technical setup of it. Nevertheless this approach would assume the user to have knowledge of the programming language the API is desigend for. Refering to the required commands in \prettyref{tab:hobbitCommands} an API for Python could be designed as shown in \prettyref{fig:PythonApi}. The highest usability would be reached, if all input parameters are from common variable types such as interger and string. Indeed, this would increase the implementation effort, especially in terms of error handling, as well as the extent of the documentation,  which are huge disadvantages of writing an API. \\
 
-\subsection{SMACH}
+\begin{figure}[htbp]
+	\centering
+	\begin{overpic}[width=0.8\linewidth]{./graphics/PythonApi}
+	\end{overpic}
+	\caption{Exemplary design of API for Python}%
+	\label{fig:PythonApi}%
+\end{figure}
+
+Assuming the API would be implemented as explained before and the Python module would be named \textit{HobbitRosModule}, \prettyref{lst:PythonApiEx} shows a sample code for the mentioned use case to pick up an object. Note that the code is very short and easy to read, which - on the other hand - means that the implementation of the API must cover a broad technical range, such as error handling for unsupported inputs and communication errors.
+
+\begin{figure}[htbp]
+	\lstinputlisting[label={lst:PythonApiEx},caption={Example Python code using the API shown in \prettyref{fig:PythonApi}}, language={Python}]{./listings/PythonApiEx.py}
+\end{figure}
+
+\subsection{\smach{}}
+\smach{} is a task-level architecture for rapidly creating complex robot behavior. At its core, \smach{} is a ROS-independent Python library to build hierarchical state machines. \cite{SmachROS}. Since that, this approach would also end up in providing an API for the user, but allows to create more complex demos with less effort than the one described in \prettyref{sub:PyApi}. \smach{} also provides a powerful graphical viewer to visualize and introspect state machines as well as an integration with ROS, of course. Since the aforementioned example is a very simple one and doesn't require a lot of the provided \smach{} functionality, this section only covers the needed ones to fulfill the requirements. For a detail description on how to use \smach{} refer to \cite{SmachROS}. \\
+
+The arm of \hobbit{} is controlled via the hobbit\_arm action. \smach{} supports calling ROS action interfaces with it's so called \textit{SimpleActionState}, a state class that acts as a proxy to an \textit{actionlib} (see \prettyref{sub:ros}) action. The instantiation of the state takes a topic name, action type, and some policy for generating a goal. When a state finishes, it returns a so called \textit{outcome} - a string that describes how the state finishes. The transition to the next state will be specified based on the outcome of the previous state. \prettyref{lst:SmachExCode} shows a possible implementation of picking up a object an placing it on the table. After the imports of the necessary modules (lines 1 to 4), the state machine is instanced (line 7), to which the required states are added (lines 17-22). The parameters passed to \textit{SimpleActionState} are
+
+\begin{itemize}
+	\item the name of the action as it will be broadcast over ROS (e.g. \textit{hobbit\_arm})
+	\item the type of action to which the client will connect (e.g. \textit{ArmServerAction}) and
+	\item the goal message.
+\end{itemize}
+
+For reasons of readability the goals are declared at a seperate code block (lines 11 to 14). The equivalent visualization of the state machine is shown in \prettyref{fig:SmachSM}. \\
+
+\begin{figure}[htbp]
+	\lstinputlisting[label={lst:SmachExCode},caption={Using \smach{} to generate a state machine}, language={Python}]{./listings/SmachEx.py}
+\end{figure}
+
+\begin{figure}[htbp]
+	\centering
+	\begin{overpic}[width=0.7\linewidth]{./graphics/SmachSM}
+	\end{overpic}
+	\caption{State machine generated via \prettyref{lst:SmachExCode}}%
+	\label{fig:SmachSM}%
+\end{figure}
+
+Providing just the \smach{} interface has some disadvantages and would not be practicable. First the user would need an advanced knowledge of Python. Depending on the design of the self-implemented API (\prettyref{sub:PyApi}) the knowledge has to be at least at the same level. Next the user would have to understand the API and needs to find a design to fit for the corresponding demo case. Furthermore it requires the user also to exactly know the ROS specification of the robot. So, if \smach{} would be choosen as the underlying framework, it would also be necessary to provide a more abstract API - basically with the same interfaces as shown in \prettyref{fig:PythonApi}.
+
 \subsection{Blockly}
+Blockly is a library that adds a visual code editor to web and Android apps. The Blockly editor uses interlocking, graphical blocks to represent code concepts like variables logical expressions, loops, and more. It allows users to apply programming principles without having to worry about syntax or the intimidation of a blinking cursor on the command line. \cite{BlocklyIntro} So for the present case, in contrast to the other approaches the user would not need to have any technical knowledge of \hobbit{}, it's components and interfaces. Furthermore such a editor would not require the user to master any programming language. On the other hand implementing this approach would require knowledge of web applications (i.e. JavaScript, HTML and CSS) additionally. \\
+
+\begin{figure}[htbp]
+	\centering
+	\begin{overpic}[width=0.9\linewidth]{./graphics/BlocklyEx}
+	\end{overpic}
+	\caption{A short Blockly demo showing it's structure and use}%
+	\label{fig:BlocklyEx}%
+\end{figure}
+
+\prettyref{fig:BlocklyEx} shows an exemplary injection and use as well as the basic structure of Blockly applications. It consists of a toolbox, from where the progamming blocks can dragged to the workspace, where they are connected. The Blockly API \cite{BlocklyAPI} provides a function to generate code for all blocks in the workspace to several languages: JavaScript, Python, PHP, Lua, Dart and XML. In the shown example for each of them a tab is avaible to show the generated code. The blocks dragged to the workspace in \prettyref{fig:BlocklyEx} are already customized blocks, with whom an object can be picked up and be placed on the table. There are basically four steps requierd in order to create and use a custom block, which are described briefly in the following paragraphs. A detailed documentation is given in \cite{BlocklyCustomBlocks}.
+
+\subsubsection{Defining the block}
+Blocks are defined in the \textit{blocks} directory of the source code by adding either JSON objects or JavaScript functions to the \lstinline!Blockly.Blocks! mapping. It includes the specification of the shape, fields, tooltip and connection points. An exampe definition using a JavaScript function of the \textit{gripper} block is shown in \prettyref{lst:DefineBlockEx}. Attention should be payed to lines 6 to 21, where the input fields are defined (line 8). Here a dropdown field with two options ("Open" and "Close") is created. The name ("gripper\_position") is used to refer to it later.
+
+\begin{figure}[htbp]
+	\lstinputlisting[label={lst:DefineBlockEx},caption={Block initialization using a JavaScript function}, language={JavaScript}]{./listings/BlocklyBlockInitEx.js}
+\end{figure}
+
+\subsubsection{Providing the code}
+Similar to the definition of a block, the code, which is generated out of them, is stored in a mapping variable inside the Blockly library. Since different languages are supported, the code definition has to be in the right directory. Note that it is not necessary to provided code for each language. The code generation is handled in the \textit{generator} directory of the library. Each language has it's own helper functions file (e.g. \lstinline!python.js!) and subdirectory, where the code for each block is defined. There are several interfaces functions provided by Blockly to manage interaction with a block - such as collecting arguments of the block. A short example to control \hobbit{}'s gripper is shown \prettyref{lst:DefineCodeEx}. In line 2 the \lstinline!block.getFieldValue()! function is used to get the user's selection of the dropdown field. Note that the generator always returns a string variable including the code in the desired language (line 4). So the shown example requires to use a custom Python API (such as \prettyref{fig:PythonApi}), because \lstinline!node.gripper()! is not a built-in function of Python. \\
+
+\begin{figure}[htbp]
+	\lstinputlisting[label={lst:DefineCodeEx},caption={Defintion of a code generator in Blockly for Python}, language={JavaScript}]{./listings/BlocklyCodeInitEx.js}
+\end{figure}
+
+\subsubsection{Building}
+After the customized block and it's code generator are defined, the whole Blockly project has to be rebuilt by running \lstinline!python build.py!. Building means that the source code, which is usually spread to several - in the given case over a hundred - files, is converted into a stand-alone form, that can be easily integrated. The Blockly build process uses Google's online Closure Compile and outputs compressed JavaScript files for core functionalites, blocks, block generators for each progamming language and a folder including JavaScript files for messages in several lingual languages. In our case the following four files needs to be included:
+
+\begin{itemize}
+	\item \lstinline!blockly_compressed.js!: Blockly core functionalites
+	\item \lstinline!blocks_compressed.js!: Defintion of all blocks
+	\item \lstinline!python_compressed.js!: Code generators for all blocks
+	\item \lstinline!/msg/js/en.js!: English messages for e.g. tooltips
+\end{itemize}
+
+\subsubsection{Add it to the toolbox}
+Once the building is completed and the necessary files are included to the web application, the custom block needs to be included in the toolbox. The toolbox is specified in XML and passed to Blockly when it is injected. Assuming the blocks shown in \prettyref{fig:BlocklyEx} are build as described in the previous paragraphs, they can be add to the toolbox as shwon in \prettyref{lst:DefineToolboxEx}. \\
+
+\begin{figure}[htbp]
+	\lstinputlisting[label={lst:DefineToolboxEx},caption={Minimal example of adding two blocks to a Blockly toolbox}, language={XML}]{./listings/BlocklyToolboxEx.xml}
+\end{figure}
+
 \subsection{Decision}
+In order to select the best fitting solution the requirements explained in \prettyref{sec:requirements} are summarized as follows:
+
+\begin{itemize}
+	\item The user wants to build as complex demos as possible.
+	\item The user wants an intuitive interface to create demos.
+	\item The user should need as little knowledge of the robot as possible.
+	\item The user should need as little technical knowledge as possible.
+	\item The implementation of the tool should not exceed the usual effort of a master thesis.
+	\item The tool should provide the ability to add new functionalites.
+	\item The tool should be maintable, meaning it should have clear interfaces and as less dependencies as possible.
+\end{itemize}
+
+\begin{table}[htbp]
+	\centering
+	\begin{tabular}{l c c c}
+		\toprule
+		                        & Python/\Cpp{} API & \smach{} & Blockly \\
+		\midrule
+		Complexity of demos     & 3                 & 4        & 2       \\
+		User Interface          & 2                 & 2        & 5       \\
+		Robot specific know-how & 3                 & 1        & 5       \\
+		Technical know-how      & 1                 & 1        & 5       \\
+		Implementation          & 2                 & 3        & 3       \\
+		Scalability             & 4                 & 3        & 2       \\
+		Maintainability         & 3                 & 3        & 1       \\
+		% Dependencies            & 4                 & 2        & 2       \\
+		\bottomrule
+		$\Sigma$                & 18                & 17       & 23      \\
+		\bottomrule
+	\end{tabular}
+	\caption{Decision}
+	\label{tab:decision}
+\end{table}
+
 \section{Frameworks}
 \subsection{ROS} \label{sub:ros}
+\begin{table}
+	\centering
+	\begin{tabular}{l l}
+		\toprule
+		Message              & Description                    \\
+		\midrule
+		'center\_center'     & look straight                  \\
+		'center\_right'      & look to the right              \\
+		'center\_left'       & look to the left               \\
+		'up\_center'         & look up                        \\
+		'up\_right'          & look to the upper right corner \\
+		'up\_left'           & look to the left left corner   \\
+		'down\_center'       & look down                      \\
+		'down\_right'        & look to the lower right corner \\
+		'down\_left'         & look to the lower left corner  \\
+		'littledown\_center' & look little down               \\
+		'to\_grasp'          & look to grasp position         \\
+		'to\_turntable'      & look to turntable              \\
+		\bottomrule
+	\end{tabular}
+	\caption{Possible messages for topic \textit{/head/move}}
+	\label{tab:headMoveCommands}
+\end{table}
 \subsection{Node.js}
 \subsection{Express}
+
 \section{Server implementation}
 \section{Frontend implementation}
+\section{Python module}

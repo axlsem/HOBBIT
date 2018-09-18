@@ -1,0 +1,4 @@
+<xml id="toolbox" style="display: none">
+  <block type="hobbit_arm_gripper"></block>
+  <block type="hobbit_arm_movement"></block>
+</xml>
