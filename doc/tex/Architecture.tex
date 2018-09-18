@@ -54,7 +54,7 @@ At last the framework should be implement to be re-used for other ROS based robo
 \section{Options}
 There are several approaches to fulfill the mentioned requirements. In the following subsections three different options are presented by a simple example: the implementation of picking up an object from the floor an putting it on the table. This should give a rough overview in terms of complexity of the usability as well as the implementation of the corresponding approach. For reasons of simplicity tasks like searching and detecting the object or gripper positioning are excluded.
 
-\subsection{Python/\Cpp{} API}
+\subsection{Custom API}
 \label{sub:PyApi}
 The most obvious way to fulfill the requirements is to provide an application programming interface (API) for the desired programming languages (Python, \Cpp{}). An API is a set of commands, functions, protocols, and objects that programmers can use to create software or interact with an external system. It provides developers with standard commands for performing common operations so they do not have to write the code from scratch. In the present case such a API could consists of the following components:
 
@@ -166,29 +166,41 @@ In order to select the best fitting solution the requirements explained in \pret
 	\item The tool should be maintable, meaning it should have clear interfaces and as less dependencies as possible.
 \end{itemize}
 
+The selection is based on rating each of the approaches in regards of each single requirement mentioned with a score ranging from 0 (lowest) to 5 (highest). The approach with the highest overall score is seen as the best fitting one and will be implemented. \prettyref{tab:decision} shows the result of the evaluation. In the end the Blockly convinced with its very intuitive interface, which requires the user to have very little previos knowledge to build simple demos. Despite the fact that maintainability and scalability suffer from the high abstraction and encapsulation of the libary, the effort in terms implementation is not worth mentioning compared to the other approaches. This results from the circumstance each one would require the design of a custom API. Instead of just abstracting the given ROS functionality, Blockly adds a much more user-friendly option to create demos - in contrast to the others.
+
 \begin{table}[htbp]
 	\centering
 	\begin{tabular}{l c c c}
 		\toprule
-		                        & Python/\Cpp{} API & \smach{} & Blockly \\
+		                        & Custom API & \smach{} & Blockly \\
 		\midrule
-		Complexity of demos     & 3                 & 4        & 2       \\
-		User Interface          & 2                 & 2        & 5       \\
-		Robot specific know-how & 3                 & 1        & 5       \\
-		Technical know-how      & 1                 & 1        & 5       \\
-		Implementation          & 2                 & 3        & 3       \\
-		Scalability             & 4                 & 3        & 2       \\
-		Maintainability         & 3                 & 3        & 1       \\
+		Complexity of demos     & 3          & 4        & 2       \\
+		User Interface          & 2          & 2        & 5       \\
+		Robot specific know-how & 3          & 1        & 5       \\
+		Technical know-how      & 1          & 1        & 5       \\
+		Implementation          & 2          & 3        & 3       \\
+		Scalability             & 4          & 3        & 2       \\
+		Maintainability         & 3          & 3        & 1       \\
 		% Dependencies            & 4                 & 2        & 2       \\
 		\bottomrule
-		$\Sigma$                & 18                & 17       & 23      \\
+		$\Sigma$                & 18         & 17       & 23      \\
 		\bottomrule
 	\end{tabular}
-	\caption{Decision}
+	\caption{Evaluation matrice}
 	\label{tab:decision}
 \end{table}
 
 \section{Frameworks}
+The fundamental component of \toolname{}'s architecture (\prettyref{fig:Architecture}) is a custom Python module, which abstracts ROS commands, but there are also several other basic frameworks used and it's necessary to have a brief overview of them.
+
+\begin{figure}[htbp]
+	\centering
+	\begin{overpic}[width=\linewidth]{./graphics/Architecture}
+	\end{overpic}
+	\caption{Frontend and backend architecture of \toolname{}}%
+	\label{fig:Architecture}%
+\end{figure}
+
 \subsection{ROS} \label{sub:ros}
 \begin{table}
 	\centering
@@ -215,7 +227,15 @@ In order to select the best fitting solution the requirements explained in \pret
 \end{table}
 \subsection{Node.js}
 \subsection{Express}
+\subsection{Others}
 
-\section{Server implementation}
 \section{Frontend implementation}
-\section{Python module}
+\subsection{Demo Management}
+\subsection{Code Generation}
+\subsection{Code Editor}
+\subsection{Backend Communication}
+\section{Backend implementation}
+\subsection{Frontend Communication}
+\subsection{Storage Management}
+\subsection{Python module}
+\subsection{Code Execution}
