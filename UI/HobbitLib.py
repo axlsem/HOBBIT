@@ -44,13 +44,12 @@ def cbCurrentPose(data):
 	poseTmp.pose = data.pose.pose
 	POSE = poseTmp
 
-class HobbitNode:
+class node:
 	
 	def __init__(self,NodeName='DemoNode'):
 			self.Name = NodeName
 			rospy.init_node(self.Name, anonymous=True)
 
-			
 	def publishTopic(self, topic, message_type, message):
 		rate = rospy.Rate(1)
 		exec('pub = rospy.Publisher(\''+topic+'\', '+message_type+', queue_size=10)')
@@ -61,7 +60,6 @@ class HobbitNode:
 		if topic == '/head/move':
 			WaitUntilPositionReached()
 	
-
 	def callService(self,ServiceName,ServiceType,args):
 		try:
 			ParameterList = []
