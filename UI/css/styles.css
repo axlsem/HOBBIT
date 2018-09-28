@@ -8,7 +8,7 @@ html, body {
 }
 
 .demo {
-	height: 120px;
+	/* height: 120px; */
 	color: #006699;
 	font-weight: bold;
 }
@@ -30,10 +30,17 @@ html, body {
 	color: white;
 	font-weight: bold;
 	background-color: #8fbee5;
+	cursor: pointer;
+    font-size: 4em;
+    font-weight: normal;
 }
 
 .demo:hover {
 	background-color: #badfff;
+}
+
+.delete-btn {
+	z-index: 99999;
 }
 
 body { 

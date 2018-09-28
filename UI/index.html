@@ -34,13 +34,14 @@
                 if (status == "success") {
                     for (var demofile of data.result) {
                         var title = demofile.slice(0, -4);
+                        var cardClass = 'class="col s12 m6 l4 xl3"';
 
                         var demos = [
-                            '<div class="col s6 m3">',
+                            '<div ' + cardClass + '>',
                             '<div class="card">',
                             '<div class="valign-wrapper demo">',
                             '<div class="card-content">',
-                            '<div>' + title + '</div>',
+                            '<div><h5>' + title + '</h5></div>',
                             '<div class="row center-align">',
                             '<a><div class="col s4 m4" onclick={deleteDemo(\'' + title + '\')}>delete</div></a>',
                             '<a><div class="col s4 m4" onclick={runDemo(\'' + title + '\')}>run</div></a>',
@@ -51,11 +52,10 @@
                         $("#cont").append(demos);
                     }
                     var createDemo = [
-                        '<div class="col s6 m3">',
+                        '<div ' + cardClass + '>',
                         '<div class="card">',
                         '<div class="valign-wrapper call-blockly" onclick={loadBlockly()}>',
-                        '<div class="card-content">',
-                        '<div>Create</div>',
+                        '<div style="margin: 0 auto;">+</div>',
                         '</div>', '</div>', '</div>'
                     ].join("\n");
 
@@ -98,7 +98,6 @@
 
     function runDemo(demofile) {
         if (confirm("Do you really want to run the demo?") == true) {
-            console.log(demofile);
             $.post("/run",
                 {
                     filename: "run.py",
@@ -119,9 +118,7 @@
         var url = window.location.href + 'blockly';
         if (!keepStorage) {
             localStorage.removeItem("blocks_cache");
-            window.open(url,'_blank');
-        } else {
-            window.location.href = url;
         }
+        window.location.href = url;
     }
 </script>
