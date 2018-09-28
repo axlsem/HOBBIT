@@ -166,7 +166,7 @@ In order to select the best fitting solution the requirements explained in \pret
 	\item The tool should be maintable, meaning it should have clear interfaces and as less dependencies as possible.
 \end{itemize}
 
-The selection is based on rating each of the approaches in regards of each single requirement mentioned with a score ranging from 0 (lowest) to 5 (highest). The approach with the highest overall score is seen as the best fitting one and will be implemented. \prettyref{tab:decision} shows the result of the evaluation. In the end the Blockly convinced with its very intuitive interface, which requires the user to have very little previos knowledge to build simple demos. Despite the fact that maintainability and scalability suffer from the high abstraction and encapsulation of the libary, the effort in terms implementation is not worth mentioning compared to the other approaches. This results from the circumstance each one would require the design of a custom API. Instead of just abstracting the given ROS functionality, Blockly adds a much more user-friendly option to create demos - in contrast to the others.
+The selection is based on rating each of the approaches in regards of each single requirement mentioned with a score ranging from 0 (lowest) to 5 (highest). The approach with the highest overall score is seen as the best fitting one and will be implemented. \prettyref{tab:decision} shows the result of the evaluation. In the end the Blockly convinced with its very intuitive interface, which requires the user to have very little previous knowledge to build demos. Despite the fact that maintainability and scalability suffer from the high abstraction and encapsulation of the libary, the effort in terms of implementation is not worth mentioning compared to the other approaches. This results from the circumstance each one would require the design of a custom API. Instead of just abstracting the given ROS functionality, Blockly adds a much more user-friendly option to create demos - in contrast to the others.
 
 \begin{table}[htbp]
 	\centering
@@ -186,7 +186,7 @@ The selection is based on rating each of the approaches in regards of each singl
 		$\Sigma$                & 18         & 17       & 23      \\
 		\bottomrule
 	\end{tabular}
-	\caption{Evaluation matrice}
+	\caption{Evaluation of possible approaches}
 	\label{tab:decision}
 \end{table}
 
@@ -202,31 +202,29 @@ The fundamental component of \toolname{}'s architecture (\prettyref{fig:Architec
 \end{figure}
 
 \subsection{ROS} \label{sub:ros}
-\begin{table}
-	\centering
-	\begin{tabular}{l l}
-		\toprule
-		Message              & Description                    \\
-		\midrule
-		'center\_center'     & look straight                  \\
-		'center\_right'      & look to the right              \\
-		'center\_left'       & look to the left               \\
-		'up\_center'         & look up                        \\
-		'up\_right'          & look to the upper right corner \\
-		'up\_left'           & look to the left left corner   \\
-		'down\_center'       & look down                      \\
-		'down\_right'        & look to the lower right corner \\
-		'down\_left'         & look to the lower left corner  \\
-		'littledown\_center' & look little down               \\
-		'to\_grasp'          & look to grasp position         \\
-		'to\_turntable'      & look to turntable              \\
-		\bottomrule
-	\end{tabular}
-	\caption{Possible messages for topic \textit{/head/move}}
-	\label{tab:headMoveCommands}
-\end{table}
-\subsection{Node.js}
-\subsection{Express}
+ROS (Robot Operating System) provides libraries and tools to help software developers create robot applications. It provides hardware abstraction, device drivers, libraries, visualizers, message-passing, package management, and more. Since ROS is licensed under an open source, BSD license it used for a wide range of robots, sensors and motors. Covering all of its features would go beyond the scope of this thesis, so just the concepts, which are needed to implement \toolname{}, are summarized. \cite{WikiROS}
+
+\subsubsection{Packages}
+Software in ROS is organized in packages. A package might contain ROS nodes, a ROS-independent library, a dataset, configuration files, a third-party piece of software, or anything else that logically constitutes a useful module. The goal of these packages it to provide this useful functionality in an easy-to-consume manner so that software can be easily reused.
+
+\subsubsection{Nodes}
+A node is a process that performs computation and are written with the use of a ROS client library, such as roscpp (for \Cpp{}) or rospy (for Python). Nodes are combined together into a graph and communicate with one another using streaming topics, RPC (Remote Procedure Call) services, and the Parameter Server. A robot control system will usually comprise many nodes. For example, one node controls a laser range-finder, one Node controls the robot's wheel motors, one node performs localization, one node performs path planning, and so on.
+
+\subsubsection{Topics}
+Topics are named buses over which nodes exchange messages. Topics have anonymous publish/subscribe semantics, which decouples the production of information from its consumption. In general, nodes are not aware of who they are communicating with. Instead, nodes that are interested in data subscribe to the relevant topic; nodes that generate data publish to the relevant topic. There can be multiple publishers and subscribers to a topic. Each topic is strongly typed by the ROS message type used to publish to it and nodes can only receive messages with a matching type.
+
+\subsubsection{Messages}
+A message is a simple data structure, comprising typed fields. Standard primitive types (integer, floating point, boolean, etc.) are supported, as are arrays of primitive types. Messages can include arbitrarily nested structures and arrays. Nodes can also exchange a request and response message as part of a ROS service call. Message descriptions are stored in .msg files in the msg/ subdirectory of a ROS package.
+
+\subsubsection{Services}
+The publish-subscribe model is a very flexible communication paradigm, but its many-to-many one-way transport is not appropriate for RPC request-reply interactions, which are often required in a distributed system. Request-reply in ROS is done via a service, which is defined by a pair of messages: one for the request and one for the reply. Services are defined using .srv files, which are compiled into source code by a ROS client library.
+
+\subsubsection{Actions}
+In some cases, e.g. if a service takes a long time to execute, the user might want the ability to cancel the request during execution or get periodic feedback about how the request is progressing. The actionlib package provides tools to create servers that execute long-running goals that can be preempted. It also provides a client interface in order to send requests to the server.
+The action client and action server communicate via a "ROS Action Protocol", which is built on top of ROS messages. The client and server then provide a simple API for users to request goals (on the client side) or to execute goals (on the server side) via function calls and callbacks.
+
+\subsection{Node.js \& Express}
+
 \subsection{Others}
 
 \section{Frontend implementation}
