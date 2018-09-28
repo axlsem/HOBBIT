@@ -1,15 +1,30 @@
 /* Functions */
 function toIndex() {
 	window.location.href = window.location.origin;
-}
+};
 
-function show_blockly() {
+function reload_blockly() {
 	document.getElementById("blocklyDiv").style.display = 'block';
 	document.getElementById("blocklyArea").style.display = 'block';
 	document.getElementById("nav-home").setAttribute("class", "current");
 	document.getElementById("nav-home").parentElement.setAttribute("class", "border-current");
 
+	localstorage();
+
 	window.location.reload(true);
+};
+
+function show_blockly() {
+	var blocklyCode = Blockly.Python.workspaceToCode(workspace);
+	var editorCode = ace.edit("editor").getValue();
+	if (blocklyCode == editorCode) {
+		reload_blockly();
+	} else {
+		if (confirm("Edited code will be lost. Do you want to continue?")) {
+			reload_blockly();
+		}
+	}
+
 };
 
 function hide_blockly() {
@@ -28,7 +43,7 @@ function hide_blockly() {
 
 	// show the code
 	Blockly.Python.addReservedWords('code');
-	var code = Blockly.Python.workspaceToCode(workspace);
+	var code = getCode();
 
 	var editor = ace.edit("editor");
 	editor.setTheme("ace/theme/chrome");
@@ -38,8 +53,14 @@ function hide_blockly() {
 	editor.setValue(code);
 };
 
+function getCode() {
+	var blocklyCode = Blockly.Python.workspaceToCode(workspace);
+	var editorCode = ace.edit("editor").getValue();
+	return editorCode || blocklyCode
+}
+
 function run_code() {
-	var pycode = Blockly.Python.workspaceToCode(workspace);
+	var pycode = getCode();
 
 	if (confirm("Do you really want to run the demo?") == true) {
 		$.post("/run",
@@ -75,40 +96,45 @@ function save_demo_locally() {
 }
 
 function save_demo_robot() {
-	var demoname = prompt("Please enter demo name", "Demo");
-	var pycode = Blockly.Python.workspaceToCode(workspace);
+	var demoname = prompt("Please enter demo name", "");
 
-	if (demoname == null || demoname == "") {
-		console.log('Cancelled')
-	} else {
+	if (typeof demoname == "string") {
+		var pycode = getCode();
+		var hasBlanks = demoname.indexOf(" ") >= 0;
 
-		var xml = Blockly.Xml.workspaceToDom(workspace);
-		var xml_text = Blockly.Xml.domToText(xml);
-		$.post("/save",
-			{
-				content: xml_text,
-				demoname: demoname,
-				overwrite: false,
-				code: pycode
-			}, function (data, status) {
-				if (status == "success") {
-					if (data.result == true) {
-						alert("Demo saved.");
-					} else {
-						if (confirm("File already exists. Do you want overwrite it?") == true) {
-							$.post("/save",
-								{
-									content: xml_text,
-									demoname: demoname,
-									overwrite: true,
-									code: pycode
-								});
+		if (demoname == "" || hasBlanks) {
+			alert("Enter a valid name.");
+			console.log('Cancelled saving of \"' + demoname + "\"");
+		} else {
+
+			var xml = Blockly.Xml.workspaceToDom(workspace);
+			var xml_text = Blockly.Xml.domToText(xml);
+			$.post("/save",
+				{
+					content: xml_text,
+					demoname: demoname,
+					overwrite: false,
+					code: pycode
+				}, function (data, status) {
+					if (status == "success") {
+						if (data.result == true) {
+							alert("Demo saved.");
+						} else {
+							if (confirm("File already exists. Do you want overwrite it?") == true) {
+								$.post("/save",
+									{
+										content: xml_text,
+										demoname: demoname,
+										overwrite: true,
+										code: pycode
+									});
+							}
 						}
+					} else {
+						alert("Oops...Something went wrong!");
 					}
-				} else {
-					alert("Oops...Something went wrong!");
-				}
-			});
+				});
+		}
 	}
 };
 
@@ -287,21 +313,21 @@ var workspace = Blockly.inject(blocklyDiv,
 		rtl: false,
 		media: '../img/media/',
 		zoom:
-			{
-				enabled: true,
-				controls: true,
-				wheel: true,
-				maxScale: 4,
-				minScale: .25,
-				scaleSpeed: 1.1
-			},
+		{
+			enabled: true,
+			controls: true,
+			wheel: true,
+			maxScale: 4,
+			minScale: .25,
+			scaleSpeed: 1.1
+		},
 		grid:
-			{
-				spacing: 25,
-				length: 3,
-				colour: '#ccc',
-				snap: true
-			},
+		{
+			spacing: 25,
+			length: 3,
+			colour: '#ccc',
+			snap: true
+		},
 		trashcan: true
 	});
 
