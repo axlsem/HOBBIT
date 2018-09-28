@@ -10,4 +10,5 @@
 /doc/**/*.blg
 /doc/**/*.log
 /doc/**/*.toc
+/doc/**/*.lol
 /doc/**/*.run.xml
