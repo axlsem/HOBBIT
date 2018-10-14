@@ -331,6 +331,31 @@ var workspace = Blockly.inject(blocklyDiv,
 		trashcan: true
 	});
 
+$.get("/toolbox", function (data, status) {
+	if (status == "success") {
+
+		for (var custBlock of data.blocks) {
+			var block = custBlock.block;
+			var name = custBlock.name;
+			var code = custBlock.code;
+
+			
+			eval("Blockly.Blocks."+name+" = {init:function(){this.jsonInit("+block+")}}");
+			eval("Blockly.Python."+name+"=function(block){"+code+"}");
+			
+		}
+		
+		eval("Blockly.Blocks.newblock = {init:function(){this.jsonInit("+block+")}}");
+		eval("Blockly.Python.newblock=function(block){"+code+"}");
+		
+		var parser = new DOMParser();
+		var xmlToolbox = parser.parseFromString(data.toolbox,"text/xml");
+		workspace.updateToolbox(xmlToolbox.getElementById("toolbox"));
+	} else {
+		alert("Something went wrong!");
+	}
+});
+
 var onresize = function (e) {
 	// Compute the absolute coordinates and dimensions of blocklyArea.
 	var element = blocklyArea;

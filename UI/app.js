@@ -6,6 +6,7 @@ const { exec } = require('child_process');
 const PORT = process.env.port || 3000;
 // const PORT = Number(process.argv.slice(2));
 
+var xml2js = require('xml2js')
 var qs = require('querystring');
 var express = require('express');
 var app = express();
@@ -26,25 +27,25 @@ function runCode(req, res) {
 	var body = '';
 	var feedback = '';
 
-	
+
 	req.on('error', function (err) {
 		console.error(err);
 	});
-	
+
 	req.on('data', function (data) {
 		body += data;
-		
+
 		if (body.length > 1e6)
-		req.connection.destroy();
+			req.connection.destroy();
 	});
-	
+
 	req.on('end', function () {
 		if (!locked) {
 			locked = true;
 			feedback = "Demo is now running!";
 			var post = qs.parse(body);
 			var destpath = '../../src/';
-			
+
 			var isMain = post.main;
 
 			if (isDev) {
@@ -52,7 +53,7 @@ function runCode(req, res) {
 			} else {
 				var cmd = 'bash run.sh';
 			}
-			
+
 			if (isMain == 'true') {
 				fs.copyFile(post.sourcepath + post.sourcefile, destpath + post.filename, (err) => {
 					if (err) throw err;
@@ -197,6 +198,79 @@ function deleteDemo(req, res) {
 	});
 }
 
+function loadToolbox(req, res) {
+
+	fs.readFile('./toolbox.xml', function (err, data) {
+		var xmlParser = new xml2js.Parser();
+		xmlParser.parseString(data, function (err, result) {
+			fs.readFile('./blocks.json', function (err, customBlocks) {
+				var customBlocks = JSON.parse(customBlocks);
+
+				var customBlocksCat = {
+					'$': {
+						id: 'catCustomBlocks',
+						name: 'Custom Blocks',
+						colour: '50'
+					},
+					'block': [
+					]
+				};
+
+				for (var i in customBlocks) {
+					customBlocksCat.block.push({ '$': { 'type': 'custom' + i.toString() } })
+				}
+
+				result.xml.category.push(customBlocksCat)
+
+				builder = new xml2js.Builder();
+				var toolbox = builder.buildObject(result);
+
+				var ret = { "toolbox": toolbox, "blocks": customBlocks };
+
+				res.status(200).send(ret);
+			});
+		});
+	});
+}
+
+function loadConfigurator(req, res) {
+	res.sendFile('./configurator.html', { root: __dirname });
+}
+
+function createBlock(req, res) {
+	var body = '';
+
+	req.on('error', function (err) {
+		console.error(err);
+	});
+
+	req.on('data', function (data) {
+		body += data;
+
+		if (body.length > 1e6)
+			req.connection.destroy();
+	});
+
+	req.on('end', function () {
+		var post = qs.parse(body);
+		var code = post['block[code]'];
+		var block = post['block[block]'];
+
+		fs.readFile('./blocks.json', function (err, exisBlocks) {
+			var exisBlocks = JSON.parse(exisBlocks);
+
+			exisBlocks.push({ code: code, block: block, name: "custom" + exisBlocks.length.toString() });
+
+			fs.writeFile("./blocks.json", JSON.stringify(exisBlocks), (err) => {
+				if (err) throw err;
+				console.log("New custom block created.");
+			});
+
+			res.status(200).send("Done");
+		});
+	});
+}
+
 app.use(express.static(__dirname + '/'));
 
 app.get('/', loadIndex);
@@ -206,6 +280,9 @@ app.post('/save', saveWorkspace);
 app.post('/load', loadDemo);
 app.post('/demolist', showDemolist);
 app.post('/delete', deleteDemo);
+app.get('/toolbox', loadToolbox);
+app.get('/configurator', loadConfigurator);
+app.post('/create', createBlock);
 
 app.listen(PORT, '0.0.0.0', function () {
 	console.log('Hobbit blockly is now listening to port ' + PORT + '!');

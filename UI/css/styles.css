@@ -26,13 +26,17 @@ html, body {
 }
 
 .call-blockly {
-	height: 120px;
+	height: 140px;
 	color: white;
 	font-weight: bold;
 	background-color: #8fbee5;
 	cursor: pointer;
     font-size: 4em;
     font-weight: normal;
+}
+
+.btn-rule {
+	border-bottom: 4px solid #8fbee5;
 }
 
 .demo:hover {

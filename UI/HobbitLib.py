@@ -44,6 +44,11 @@ def cbCurrentPose(data):
 	poseTmp.pose = data.pose.pose
 	POSE = poseTmp
 
+def importMsg(msgPckg,msgType):
+    exec('module=importlib.import_module("'+msgPckg+'.msg")')
+    exec(msgType+'=module.'+msgType)
+    exec('globals()[msgType] ='+msgType)
+
 class node:
 	
 	def __init__(self,NodeName='DemoNode'):

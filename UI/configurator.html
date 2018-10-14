@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Block Configurator</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/styles.css">
+    <link type="text/css" rel="stylesheet" href="./css/materialize.min.css" media="screen,projection" />
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="input-field col s6">
+                <label for="title" class="active">Block title</label>
+                <input placeholder="Title" id="title" type="text" class="validate" value="Move foward">
+            </div>
+            <div class="input-field col s6">
+                <label for="tooltip" class="active">Tooltip</label>
+                <input placeholder="Tooltip" id="tooltip" type="text" class="validate">
+            </div>
+            <div id="inputs" class="input-field col s6">
+                <label for="in1" class="active">Inputs
+                    <button type="button" onclick="addInput()">Add</button>
+                    <button type="button" onclick="removeInput()">Remove</button>
+                </label>
+                <input placeholder="Name" id="in1" type="text" class="validate" value="In1">
+            </div>
+            <div class="input-field col s6">
+                <select style="display: block;border-bottom: 1px solid #9e9e9e !important;background-color: #f9f9f9;">
+                    <option value="1">Topic</option>
+                    <option value="2">Service</option>
+                    <option value="3">Action</option>
+                </select>
+                <label class="active">Type</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="input-field col s6">
+                <label for="topic" class="active">Topic</label>
+                <input placeholder="Topic name" id="topic" type="text" class="validate" value="/cmd_vel">
+                <!-- <input placeholder="Topic name" id="topic" type="text" class="validate"> -->
+            </div>
+            <div class="input-field col s6">
+                <label for="msgtype" class="active">Message type</label>
+                <input placeholder="Message type" id="msgtype" type="text" class="validate" value="geometry_msgs/Twist">
+                <!-- <input placeholder="Message type" id="msgtype" type="text" class="validate"> -->
+            </div>
+        </div>
+        <div class="row">
+            <div class="input-field col s12">
+                <label for="message" class="active">Message</label>
+                <textarea id="message" style="height:100px;" placeholder="message=..."></textarea>
+            </div>
+        </div>
+
+
+        <button type="button" onclick="create()">Create Block</button>
+    </div>
+
+    <script src="./js/jquery.min.js"></script>
+
+    <script>
+        document.getElementById("message").value = "message=Twist()\nmessage.linear.x=$1$";
+        var inputCnt = 1;
+
+        function getBlockDefintion() {
+            var title = document.getElementById("title").value + " %1";
+            var inputs = document.getElementById("inputs").getElementsByTagName("INPUT");
+            var tooltip = document.getElementById("tooltip").value;
+
+            var block = {};
+            block["args0"] = [{ type: "input_dummy" }];
+
+            var inpMessages = [];
+
+            var inCnt = 1;
+            for (var inp of inputs) {
+                inCnt += 1;
+                inpMessages.push(inp.value + " %" + inCnt.toString());
+                var tmpInp = { type: "input_value", align: "RIGHT", name: "var" + inCnt.toString() };
+                block.args0.push(tmpInp);
+            }
+
+            block.message0 = [title, inpMessages.join(" ")].join(" ");
+            block.previousStatement = null;
+            block.nextStatement = null;
+            block.colour = 50,
+                block.tooltip = tooltip;
+            block.helpUrl = "";
+
+            return block
+        }
+
+        function getCodeTopic(block) {
+            var topic = document.getElementById("topic").value;
+            var msgtypeRaw = document.getElementById("msgtype").value;
+            var message = document.getElementById("message").value;
+
+            var msgPackage = msgtypeRaw.split("/")[0];
+            var msgtype = msgtypeRaw.split("/")[1];
+
+            var imp = ["from", msgPackage + ".msg", "import", msgtype];
+            var importCode = "Blockly.Python.definitions_['" + imp.join("_") + "']='" + imp.join(" ") + "';";
+
+            var varInits = [];
+            for (var inCnt = 2; inCnt <= block.args0.length; inCnt++) {
+                varInits.push("var value_var" + inCnt.toString() + "=Blockly.Python.valueToCode(block,\'var" + inCnt.toString() + "\', Blockly.Python.ORDER_ATOMIC);");
+            }
+            varInits.push("Blockly.Python.InitROS();");
+
+
+            var re = /\$([0-9]+)\$/gm;
+            while ((match = re.exec(message)) != null) {
+                if (inCnt < parseInt(match[1])+2) {
+                    alert("Only "+(inCnt-2).toString()+" inputs defined, but more used in message!")
+                    return ""
+                }
+                message = message.replace(match[0], "'+value_var" + (parseInt(match[1]) + 1).toString() + "+'");
+            }
+
+            message = "var code='';" + message.split("\n").map(e => "code+=\'" + e + "\\n\'").join(";");
+            var MsgImport = "code+='HobbbitLib.importMsg(\\'" + msgPackage + "\\',\\'" + msgtype + "\\')\\n'";
+            var pubCode = "code+=Blockly.Python.NodeName+'.publishTopic(\\'" + topic + "\\', \\'" + msgtype + "\\', message)\\n';"
+            var pyCode = [message, MsgImport, pubCode].join(";");
+
+            return [varInits.join(""), importCode, pyCode, "return code"].join("")
+        }
+
+        function create() {
+            var block = getBlockDefintion();
+            var code = getCodeTopic(block);
+
+            if (code != "") {
+
+                var newBlock = { "code": code, "block": JSON.stringify(block) };
+
+                $.post("/create",
+                    {
+                        block: newBlock
+                    }, function (data, status) {
+                        if (status == "success") {
+                            console.log("Block created");
+                        } else {
+                            alert("Something went wrong!");
+                        }
+                    });
+            }
+        }
+
+        function addInput() {
+            inputCnt += 1;
+            var x = document.createElement("INPUT");
+            x.setAttribute("placeholder", "Name");
+            x.setAttribute("id", "in" + inputCnt);
+            x.setAttribute("type", "text");
+            x.setAttribute("class", "validate");
+            document.getElementById("inputs").appendChild(x);
+        }
+
+        function removeInput() {
+            var inputs = document.getElementById("inputs");
+            if (inputCnt > 1) {
+                inputs.removeChild(inputs.childNodes[inputs.childNodes.length - 1]);
+                inputCnt -= 1;
+            };
+        }
+    </script>
+</body>
+
+</html>
