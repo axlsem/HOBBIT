@@ -51,7 +51,7 @@ Furthermore the \ACIN{} of the TU Wien is part of the Educational Robotics for S
 
 At last the framework should be implement to be re-used for other ROS based robots. This means, that it should not only provide an interface to the mentioned commands for \hobbit{}, but an open, adpatable framework. It should be able to allow a flexible configuration and assembly of the provided functions.
 
-\section{Options}
+\section{Options} \label{sec:Options}
 There are several approaches to fulfill the mentioned requirements. In the following subsections three different options are presented by a simple example: the implementation of picking up an object from the floor an putting it on the table. This should give a rough overview in terms of complexity of the usability as well as the implementation of the corresponding approach. For reasons of simplicity tasks like searching and detecting the object or gripper positioning are excluded.
 
 \subsection{Custom API}
@@ -109,7 +109,7 @@ For reasons of readability the goals are declared at a seperate code block (line
 
 Providing just the \smach{} interface has some disadvantages and would not be practicable. First the user would need an advanced knowledge of Python. Depending on the design of the self-implemented API (\prettyref{sub:PyApi}) the knowledge has to be at least at the same level. Next the user would have to understand the API and needs to find a design to fit for the corresponding demo case. Furthermore it requires the user also to exactly know the ROS specification of the robot. So, if \smach{} would be choosen as the underlying framework, it would also be necessary to provide a more abstract API - basically with the same interfaces as shown in \prettyref{fig:PythonApi}.
 
-\subsection{Blockly}
+\subsection{Blockly} \label{sub:Blockly}
 Blockly is a library that adds a visual code editor to web and Android apps. The Blockly editor uses interlocking, graphical blocks to represent code concepts like variables logical expressions, loops, and more. It allows users to apply programming principles without having to worry about syntax or the intimidation of a blinking cursor on the command line. \cite{BlocklyIntro} So for the present case, in contrast to the other approaches the user would not need to have any technical knowledge of \hobbit{}, it's components and interfaces. Furthermore such a editor would not require the user to master any programming language. On the other hand implementing this approach would require knowledge of web applications (i.e. JavaScript, HTML and CSS) additionally. \\
 
 \begin{figure}[htbp]
@@ -190,7 +190,7 @@ The selection is based on rating each of the approaches in regards of each singl
 	\label{tab:decision}
 \end{table}
 
-\section{Frameworks}
+\section{Framework}
 The fundamental component of \toolname{}'s architecture (\prettyref{fig:Architecture}) is a custom Python module, which abstracts ROS commands, but there are also several other basic frameworks used and it's necessary to have a brief overview of them.
 
 \begin{figure}[htbp]
@@ -205,10 +205,10 @@ The fundamental component of \toolname{}'s architecture (\prettyref{fig:Architec
 ROS (Robot Operating System) provides libraries and tools to help software developers create robot applications. It provides hardware abstraction, device drivers, libraries, visualizers, message-passing, package management, and more. Since ROS is licensed under an open source, BSD license it used for a wide range of robots, sensors and motors. Covering all of its features would go beyond the scope of this thesis, so just the concepts, which are needed to implement \toolname{}, are summarized. \cite{WikiROS}
 
 \subsubsection{Packages}
-Software in ROS is organized in packages. A package might contain ROS nodes, a ROS-independent library, a dataset, configuration files, a third-party piece of software, or anything else that logically constitutes a useful module. The goal of these packages it to provide this useful functionality in an easy-to-consume manner so that software can be easily reused.
+Software in ROS is organized in packages. A package might contain ROS nodes, a ROS-independent library, a dataset, configuration files, a third-party piece of software, or anything else that logically constitutes a useful module. The goal of these packages is to provide this useful functionality in an easy-to-consume manner so that software can be easily reused.
 
 \subsubsection{Nodes}
-A node is a process that performs computation and are written with the use of a ROS client library, such as roscpp (for \Cpp{}) or rospy (for Python). Nodes are combined together into a graph and communicate with one another using streaming topics, RPC (Remote Procedure Call) services, and the Parameter Server. A robot control system will usually comprise many nodes. For example, one node controls a laser range-finder, one Node controls the robot's wheel motors, one node performs localization, one node performs path planning, and so on.
+A node is a process that performs computation and are written with the use of a ROS client library, such as roscpp (for \Cpp{}) or rospy (for Python). Nodes are combined together into a graph and communicate with one another using streaming topics, RPC (Remote Procedure Call) services, and the Parameter Server. A robot control system will usually comprise many nodes. For example, one node controls a laser range-finder, one node controls the robot's wheel motors, one node performs localization, one node performs path planning, and so on.
 
 \subsubsection{Topics}
 Topics are named buses over which nodes exchange messages. Topics have anonymous publish/subscribe semantics, which decouples the production of information from its consumption. In general, nodes are not aware of who they are communicating with. Instead, nodes that are interested in data subscribe to the relevant topic; nodes that generate data publish to the relevant topic. There can be multiple publishers and subscribers to a topic. Each topic is strongly typed by the ROS message type used to publish to it and nodes can only receive messages with a matching type.
@@ -223,14 +223,51 @@ The publish-subscribe model is a very flexible communication paradigm, but its m
 In some cases, e.g. if a service takes a long time to execute, the user might want the ability to cancel the request during execution or get periodic feedback about how the request is progressing. The actionlib package provides tools to create servers that execute long-running goals that can be preempted. It also provides a client interface in order to send requests to the server.
 The action client and action server communicate via a "ROS Action Protocol", which is built on top of ROS messages. The client and server then provide a simple API for users to request goals (on the client side) or to execute goals (on the server side) via function calls and callbacks.
 
-\subsection{Node.js \& Express}
+\subsection{JavaScript frameworks}
+Since \toolname{} is a web application all of the functionality blocks do touch JavaScript in any way. And since there are a lot of JavaScript frameworks supporting the development of web applications, it's necessary to get an overview of the important ones - besides Blockly (see \prettyref{sub:Blockly}) - used to implement \toolname{} before diving into the implementation itself.
 
-\subsection{Others}
+\subsubsection{Node.js}
+% \subsection{Node.js \& Express}
+Node.js is an open source platform that allows you to build fast and scalable network applications using JavaScript. Node.js is built on top of V8, a modern JavaScript virtual machine that powers Google's Chrome web browser. At its core, one of the most powerful features of Node.js is that it is event-driven. This means that almost all the code written in Node.js is going to be written in a way that is either responding to an event or is itself firing an event (which in turn will fire other code listening for that event). In an effort to make the code as modular and reusable as possible, Node.JS uses a module system - called  "Node Package Manager" (NPM) - that allows to better organize the code and makes it easy to use third-party open source modules.
+
+\subsubsection{Express}
+Express is a minimal and flexible Node.js web application framework, providing a robust set of features for building single, multi-page, and hybrid web applications. In other words, it provides all the tools and basic building blocks one need to get a web server up and running by writing very little code. \prettyref{lst:ExpressHelloWorld} shows a minimal example of using Node.js and Express to implement the famous "Hello World" program. First the Express module is imported (Line 1) and an instance of the app is created (Line 2), which finally listens to the configured port (Line 6). Line 3 to 5 describes the mentioned event-driven behavior: \lstinline!app.get('/',...)! causes every request to trigger the given callback function, which in this case is just sending the "Hello World" string.
+
+\begin{figure}[htbp]
+	\lstinputlisting[label={lst:ExpressHelloWorld},caption={"Hello World" program implemented using Node.js and Express}, language={JavaScript}]{./listings/ExpressEx.js}
+\end{figure}
+
+\subsubsection{Ace}
+Ace, whose name is derived from "Ajax.org Cloud9 Editor", is a standalone code editor written in JavaScript. Ace is developed as the primary editor for Cloud9 IDE - an online integrated development environment -  and the successor of the Mozilla Skywriter (formerly Bespin) Project. It supports syntax highlighting and auto formatting of the code as well as customizable keyboard shortcuts.
+
+\subsubsection{jQuery}
+jQuery is a fast, small, and feature-rich JavaScript library. It makes things like HTML document traversal and manipulation, event handling, animation and ajax (Asynchronous JavaScript and XML) much simpler with an easy-to-use API that works across a multitude of browsers. \toolname{} basically uses its functionality to exchange data via RESTful (Representational State Transfer) web services and manipulating HTML elements.
 
 \section{Frontend implementation}
+The frontend of \toolname{} consists of the following four components:
+
+\begin{itemize}
+	\item A \textbf{Demo Management} which allows the user to create, edit, delete and run demos easily.
+	\item A \textbf{Code Editor} to allow further editing of the generate code before running it on the robot.
+	\item The \textbf{Code Generation} with the help of Blockly - the heart of the tool.
+	\item Sending and receiving data from the robot via the \textbf{Backend Communication}.
+\end{itemize}
+
 \subsection{Demo Management}
-\subsection{Code Generation}
+The Demo Management (\prettyref{fig:DemoManagement}) is one key feature of \toolname{} and the entry point of it. It gives an overview of all avaible demos, meaning demos, which are saved on the robot in a specific directory. It provides a graphical interface and hence makes it a lot easier to manage and run demos in contrast to the other mentioned options (\prettyref{sec:Options}), where e.g. the user needs explicity to locate the file and run. Since usability and simplicity are main requirements for this tool, such a feature is a main advantage of it.
+
+\begin{figure}[htbp]
+	\centering
+	\begin{overpic}[width=\linewidth]{./graphics/DemoManagementFrontend}
+	\end{overpic}
+	\caption{Demo Management Page}%
+	\label{fig:DemoManagement}%
+\end{figure}
+
+At the start of the tool the demos/ directory inside the tools folder on the robot is searched for saved demos. Since we talking about a web-based tool and demos are saved on the robot, this requieres a call to the backend, which then returns a list of all demos via the RESTful API.
+
 \subsection{Code Editor}
+\subsection{Code Generation}
 \subsection{Backend Communication}
 \section{Backend implementation}
 \subsection{Frontend Communication}
