@@ -20,46 +20,49 @@
     <div class="container">
         <div class="row btn-rule">
             <div style="float:left">
-                <h4>Block configuration</h4>
+                <h4>Block Configuration</h4>
             </div>
-            <div id="logo"></div>
+            <div id="logo" onclick="toIndex()"></div>
         </div>
         <div class="row">
-            <div class="col s2 blocks-overview">
-
-            </div>
-            <div class="col s10">
-                <div class="row">
-                    <div class="input-field col s6">
-                        <label for="title" class="active">Block title</label>
-                        <input placeholder="Title" id="title" type="text" class="validate">
-                    </div>
-                    <div class="input-field col s6">
-                        <label for="tooltip" class="active">Tooltip</label>
-                        <input placeholder="Tooltip" id="tooltip" type="text" class="validate">
-                    </div>
-                    <div id="inputs" class="input-field col s6">
-                        <label for="in1" class="active">Inputs
-                            <button type="button" onclick="addInput()">Add</button>
-                            <button type="button" onclick="removeInput()">Remove</button>
-                        </label>
-                        <input placeholder="Name" id="in1" type="text" class="validate">
-                    </div>
-                    <div class="input-field col s6">
-                        <select id="typeSelector" style="display: block;border-bottom: 1px solid #9e9e9e !important;background-color: #f9f9f9;">
-                            <option value="1">Service</option>
-                            <option value="2">Topic</option>
-                            <option value="3">Action</option>
-                        </select>
-                        <label class="active">Type</label>
+            <div class="col s2">
+                <div id="blocks-overview">
+                    <div class="row" style="margin-right: 0px;">
+                        <div class="collection" style="margin-bottom: 15px !important;">
+                            <a class="collection-item" id="createBlockNav" onclick="clearform()" style="font-weight: normal;">Create
+                                new</a>
+                        </div>
+                        <div id="blockList" class="collection">
+                        </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div id="pyImports" class="blockly-collapsible col s12">
-                        Import packages
-                    </div>
-                    <div class="col-content">
-                        <textarea placeholder="import..." id="pckImports" style="height:50px; max-width: 100%; min-width: 100%;"></textarea>
+            </div>
+            <div class="col s10">
+                <div id="blockMetas">
+                    <div class="row">
+                        <div class="input-field col s6">
+                            <label for="title" class="active">Block title</label>
+                            <input placeholder="Title" id="title" type="text" class="validate">
+                        </div>
+                        <div class="input-field col s6">
+                            <label for="tooltip" class="active">Tooltip</label>
+                            <input placeholder="Tooltip" id="tooltip" type="text" class="validate">
+                        </div>
+                        <div id="inputs" class="input-field col s6">
+                            <label for="in1" class="active">Inputs
+                                <button type="button" class="btn waves-effect waves-light toggle" onclick="addInput()">Add</button>
+                                <button type="button" class="btn waves-effect waves-light toggle" onclick="removeInput()">Remove</button>
+                            </label>
+                            <input placeholder="Name" id="in1" type="text" class="validate">
+                        </div>
+                        <div class="input-field col s6">
+                            <select id="typeSelector" style="display: block;border-bottom: 1px solid #8fbee5 !important;background-color: #f9f9f9;">
+                                <option value="1">Topic</option>
+                                <option value="2">Service</option>
+                                <option value="3">Action</option>
+                            </select>
+                            <label class="active">Type</label>
+                        </div>
                     </div>
                 </div>
                 <div id="configTopic">
@@ -84,22 +87,21 @@
                     <div class="row">
                         <div class="input-field col s6">
                             <label for="service" class="active">Service</label>
-                            <input placeholder="Service name" id="service" type="text" class="validate" value="/MMUI">
+                            <input placeholder="Service name" id="service" type="text" class="validate">
                         </div>
                         <div class="input-field col s6">
                             <label for="srvtype" class="active">Message type</label>
-                            <input placeholder="Message type" id="srvtype" type="text" class="validate" value="hobbit_msgs/Request">
+                            <input placeholder="Message type" id="srvtype" type="text" class="validate">
 
                         </div>
                         <div id="requestFields" class="input-field col s12">
                             <label for="srvMsg1" class="active">Request message fields
-                                <button type="button" onclick="addSrvField()">Add</button>
-                                <button type="button" onclick="removeSrvField()">Remove</button>
+                                <button type="button" class="btn waves-effect waves-light toggle" onclick="addSrvField()">Add</button>
+                                <button type="button" class="btn waves-effect waves-light toggle" onclick="removeSrvField()">Remove</button>
                             </label>
                             <div id="srvMsg1">
                                 <div class="blockly-collapsible">
-                                    <input placeholder="Name" id="srvField1" type="text" class="validate srvField"
-                                        value="header">
+                                    <input placeholder="Name" id="srvField1" type="text" class="validate srvField">
                                 </div>
                                 <div class="col-content">
                                     <textarea placeholder="enter value..." id="srvMsgVal1" style="height:50px; max-width: 100%; min-width: 100%;"></textarea>
@@ -115,7 +117,18 @@
                 <div id="configAction">
                     Action
                 </div>
-                <div class="right-align"><button type="button" onclick="create()">Save</button></div>
+                <div id="otherInfos">
+                    <div class="row">
+                        <div id="pyImports" class="blockly-collapsible col s12">
+                            Import packages
+                        </div>
+                        <div class="col-content">
+                            <textarea placeholder="import..." id="pckImports" style="height:50px; max-width: 100%; min-width: 100%;"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <button id="saveBtn" class="btn waves-effect waves-light" type="submit" name="action" onclick="create()">Save</button>
+                <button id="editBtn" class="btn waves-effect waves-light" type="submit" name="action" onclick="toggleEditMode(editMode)">Edit</button>
             </div>
         </div>
     </div>
@@ -124,18 +137,129 @@
     <script src="./js/collapsible.js"></script>
 
     <script>
+        var selectedType = 'Topic';
         var inputCnt = 1;
         var srvFieldCnt = 1;
-        var selectedType = "Topic";
+        init();
+        document.getElementById('typeSelector').addEventListener('change', typeListener);
+        typeListener();
+        var editMode = false;
 
-        addSrvField("sessionID", "'0'");
-        addSrvField("requestText", "'create'");
-        addSrvField("params", "params = []\np = Parameter('type', 'D_NAME')\nparams.append(p)\np = Parameter('text', $1$)\nparams.append(p)\np = Parameter('Timeout', timeout)\nparams.append(p)", true);
-        document.getElementById("srvMsgVal1").value = "header = Header()\nheader.stamp = rospy.Time.now()";
-        document.getElementById("srvCode1").checked = true;
+        function toggleEditMode(b) {
+            var editBtn = document.getElementById("editBtn");
+            editBtn.innerHTML = editMode ? "Edit" : "Cancel";
 
-        document.getElementById("title").value = "Ask question";
-        document.getElementById("in1").value = "Q";
+            // console.log(b,editMode);
+            lockInputs(b);
+            editMode = !b;
+            // console.log(b,editMode);
+        }
+
+        function init() {
+            $.get("/blocks", function (data, status) {
+                if (status == "success") {
+
+                    var selectedBlock = window.location.search.substring(1);
+
+                    for (var block of data) {
+                        var isSelectedBlock = block.name == selectedBlock;
+                        var x = document.createElement("A");
+                        x.setAttribute("href", "?" + block.name);
+                        x.setAttribute("class", "collection-item");
+                        x.setAttribute("style", "font-weight: normal;");
+                        if (isSelectedBlock) x.setAttribute("class", "collection-item active");
+                        x.innerHTML = block.meta.title;
+                        document.getElementById("blockList").appendChild(x);
+
+                        if (selectedBlock != "" && isSelectedBlock) {
+                            setFormValues(block.meta);
+                            if (block.meta.inputs) inputCnt = block.meta.inputs.length;
+                            if (block.meta.fields) srvFieldCnt = block.meta.fields.length;
+                        }
+                    }
+
+                    if (selectedBlock == "") {
+                        var createBlockNav = document.getElementById("createBlockNav");
+                        createBlockNav.setAttribute("class", "collection-item active");
+                        var editBtn = document.getElementById("editBtn");
+                        editBtn.setAttribute("style","display:none;");
+                    } else {
+                        lockInputs(true);
+                    }
+
+                } else {
+                    alert("Something went wrong!");
+                }
+            });
+        }
+
+        function lockInputs(lock) {
+            var shapes = ["title", "tooltip", "typeSelector", "topic", "service", "msgtype", "srvtype", "message", "pckImports"];
+            var inputShapes = Array.from({ length: inputCnt }, (v, k) => "in" + (k + 1).toString());
+            var srvFieldShapes = Array.from({ length: srvFieldCnt }, (v, k) => "srvField" + (k + 1).toString());
+            var srvValShapes = Array.from({ length: srvFieldCnt }, (v, k) => "srvMsgVal" + (k + 1).toString());
+            var srvCodeShapes = Array.from({ length: srvFieldCnt }, (v, k) => "srvCode" + (k + 1).toString());
+
+            shapes = shapes.concat(inputShapes).concat(srvFieldShapes).concat(srvValShapes).concat(srvCodeShapes);
+
+            for (var shape of shapes) {
+                document.getElementById(shape).disabled = lock;
+            }
+
+            var toggleBtns = document.getElementsByClassName("toggle");
+            for (var btn of toggleBtns) {
+                btn.disabled = lock;
+            }
+
+            var saveBtn = document.getElementById("saveBtn");
+            saveBtn.disabled = lock;
+        }
+
+        function setFormValues(values) {
+            document.getElementById("title").value = values.title;
+            document.getElementById("tooltip").value = values.tooltip;
+            document.getElementById("typeSelector").selectedIndex = ["Topic", "Service", "Actions"].indexOf(values.type);
+
+            if (values.pyImports) document.getElementById("pckImports").value = values.pyImports;
+
+            typeListener();
+
+            for (var i = 0; i < values.inputs.length; i++) {
+                if (i == 0) {
+                    document.getElementById("in" + (i + 1).toString()).value = values.inputs[i];
+                } else {
+                    addInput(values.inputs[i])
+                }
+            }
+
+            if (values.type == "Topic") {
+                document.getElementById("message").value = values.message;
+                document.getElementById("topic").value = values.topic;
+                document.getElementById("msgtype").value = values.msgtype;
+            } else if (values.type == "Service") {
+                document.getElementById("service").value = values.service;
+                document.getElementById("srvtype").value = values.srvtype;
+
+                for (var i = 0; i < values.fields.length; i++) {
+                    if (i == 0) {
+                        document.getElementById("srvField" + (i + 1).toString()).value = values.fields[i].name;
+                        document.getElementById("srvMsgVal" + (i + 1).toString()).value = values.fields[i].value;
+                        document.getElementById("srvCode" + (i + 1).toString()).checked = values.fields[i].isCode;
+                    } else {
+                        addSrvField(values.fields[i].name, values.fields[i].value, values.fields[i].isCode)
+                    }
+                }
+
+            }
+        }
+
+        function toIndex() {
+            window.location.href = window.location.origin;
+        };
+
+        function clearform() {
+            window.location = window.location.origin + window.location.pathname;
+        }
 
         function typeListener() {
             var typeSelector = document.getElementById("typeSelector");
@@ -151,8 +275,6 @@
                 }
             }
         }
-        document.getElementById('typeSelector').addEventListener('change', typeListener);
-        typeListener();
 
         function getBlockDefintion() {
             var title = document.getElementById("title").value + " %1";
@@ -190,7 +312,8 @@
             var msgPackage = msgtypeRaw.split("/")[0];
             var msgtype = msgtypeRaw.split("/")[1];
 
-            var importCode = importSyntax(msgPackage, msgtype, ".msg")
+            var importCode = [importSyntax(msgPackage + ".msg", msgtype)];
+            importCode = importCode.concat(importExtraPackages()).join("");
 
             var varInits = [];
             for (var inCnt = 2; inCnt <= block.args0.length; inCnt++) {
@@ -226,10 +349,11 @@
             return {
                 type: "Topic",
                 topic: document.getElementById("topic").value,
-                msgtypeRaw: document.getElementById("msgtype").value,
+                msgtype: document.getElementById("msgtype").value,
                 message: document.getElementById("message").value,
                 title: document.getElementById("title").value,
                 inputs: inputs,
+                pyImports: document.getElementById("pckImports").value,
                 tooltip: document.getElementById("tooltip").value
 
             }
@@ -249,16 +373,24 @@
                 title: document.getElementById("title").value,
                 fields: formatSrvFields(),
                 inputs: inputs,
+                pyImports: document.getElementById("pckImports").value,
                 tooltip: document.getElementById("tooltip").value
 
             }
         }
 
-        function importSyntax(msgPackage, msgtype, type) {
-            var imp = ["from", msgPackage + "type", "import", msgtype];
+        function importSyntax(msgPackage, msgtype) {
+            var imp = ["from", msgPackage, "import", msgtype];
             var importCode = "Blockly.Python.definitions_['" + imp.join("_") + "']='" + imp.join(" ") + "';";
 
             return importCode
+        }
+
+        function importExtraPackages() {
+            var pyImports = document.getElementById("pckImports").value.split("\n");
+
+            return pyImports.map(v => "Blockly.Python.definitions_['" + v.replace(/ /g, "_") + "']='" + v + "';")
+
         }
 
         function replaceDollars(message, inCnt) {
@@ -285,9 +417,9 @@
             var fields = [];
             for (i = 0; i < msgNames.length; i++) {
                 let temp = {
-                    name:msgNames[i],
-                    value:msgValues[i],
-                    isCode:codeFlags[i]
+                    name: msgNames[i],
+                    value: msgValues[i],
+                    isCode: codeFlags[i]
                 };
                 fields.push(temp);
             }
@@ -306,7 +438,9 @@
             var msgPackage = srvtypeRaw.split("/")[0];
             var msgtype = srvtypeRaw.split("/")[1];
 
-            var importCode = [importSyntax(msgPackage, msgtype, ".srv"), importSyntax(msgPackage, msgtype + "Request", ".srv")].join("");
+            var importCode = [importSyntax(msgPackage + ".srv", msgtype), importSyntax(msgPackage + ".srv", msgtype + "Request")];
+            importCode = importCode.concat(importExtraPackages()).join("");
+
 
             var varInits = [];
             for (var inCnt = 2; inCnt <= block.args0.length; inCnt++) {
@@ -387,7 +521,7 @@
 
         function removeInput(force) {
             var inputs = document.getElementById("inputs");
-            if (inputCnt > 1 || true) {
+            if (inputCnt > 1 || force) {
                 inputs.removeChild(inputs.childNodes[inputs.childNodes.length - 1]);
                 inputCnt -= 1;
             };

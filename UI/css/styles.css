@@ -7,6 +7,10 @@ html, body {
 	width: 100%;
 }
 
+h4 {
+	color: #006699;
+}
+
 .demo {
 	/* height: 120px; */
 	color: #006699;
@@ -81,6 +85,61 @@ header {
 	border-bottom: 4px solid #8fbee5;
 	z-index: 100;
 
+}
+
+input:not([type]), input[type=text]:not(.browser-default), input[type=password]:not(.browser-default), input[type=email]:not(.browser-default), input[type=url]:not(.browser-default), input[type=time]:not(.browser-default), input[type=date]:not(.browser-default), input[type=datetime]:not(.browser-default), input[type=datetime-local]:not(.browser-default), input[type=tel]:not(.browser-default), input[type=number]:not(.browser-default), input[type=search]:not(.browser-default), textarea.materialize-textarea {
+	border-bottom: 1px solid #8fbee5 !important;
+}
+
+[type="checkbox"]+span:not(.lever) {
+	padding-left: 25px !important;
+}
+
+[type="checkbox"].filled-in:checked+span:not(.lever):after {
+	border: #8fbee5 !important;
+	background-color: #8fbee5 !important;
+}
+
+[type="checkbox"].filled-in:not(:checked)+span:not(.lever):after {
+	border: 2px solid  #8fbee5 !important;
+}
+
+input {
+	color: #333 !important;
+}
+
+textarea {
+	color: #555 !important;
+	font-size: 0.9em !important;
+	font-family: 'Courier New', Courier, monospace !important;
+	border: 0.5px solid #8fbee5 !important;
+}
+
+.btn {
+	background-color: #8fbee5 !important;
+	height: 30px !important;
+	line-height: 30px !important;
+	border-radius: 15px !important;
+}
+
+.collection {
+	margin: 0px !important;
+	border-radius: 10px !important;
+}
+
+.collection .collection-item.active {
+	background-color: #badfff !important;
+	color: #f9f9f9 !important;
+}
+
+.collection .collection-item {
+	color: #006699 !important;
+	background-color: #f8f8f8 !important;
+}
+
+#createBlockNav {
+	background-color: #8fbee5 !important;
+	color: #f9f9f9 !important;
 }
 
 #logo{
@@ -160,6 +219,10 @@ section {
     display: block;
 }
 
+[type="checkbox"].filled-in:disabled:not(:checked)+span:not(.lever):after {
+	background-color: transparent !important;
+}
+
 .modal {
 	display: none;
 	position: fixed;
@@ -204,6 +267,10 @@ section {
 	border: 5px solid #dee7ec;
 }
 
+#typeSelector {
+	color: #333 !important;
+}
+
 select {
 	box-shadow: none;
 	width: 100%;
@@ -221,9 +288,9 @@ select {
 	-moz-appearance: none;
 	color: gray;
 	background-image:
-	  linear-gradient(45deg, transparent 50%, gray 50%),
-	  linear-gradient(135deg, gray 50%, transparent 50%),
-	  linear-gradient(to right, #ccc, #ccc);
+	  linear-gradient(45deg, transparent 50%, #8fbee5 50%),
+	  linear-gradient(135deg, #8fbee5 50%, transparent 50%),
+	  linear-gradient(to right, #8fbee5, #8fbee5);
 	background-position:
 	  calc(100% - 20px) calc(1em + 5px),
 	  calc(100% - 15px) calc(1em + 5px),

@@ -25,13 +25,29 @@
 }
 
 #requestFields .blockly-collapsible:after {
-  content: 'edit value'; /* Unicode character for "plus" sign (+) */
+  content: '\25BC  edit value'; /* Unicode character for "plus" sign (+) */
   font-size: 13px;
   /* color: white; */
   float: left;
   margin-left: 5px;
+  color: #8fbee5;
 }
 
 #requestFields .col-active:after {
-  content: "\2796"; /* Unicode character for "minus" sign (-) */
+  content: "\25B2"; /* Unicode character for "minus" sign (-) */
+  color: #8fbee5;
+}
+
+.blockly-collapsible:after {
+  content: '\25BC'; /* Unicode character for "plus" sign (+) */
+  font-size: 13px;
+  /* color: white; */
+  float: left;
+  margin-left: 5px;
+  color: #8fbee5;
+}
+
+.col-active:after {
+  content: "\25B2"; /* Unicode character for "minus" sign (-) */
+  color: #8fbee5;
 }

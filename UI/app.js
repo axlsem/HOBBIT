@@ -257,8 +257,6 @@ function createBlock(req, res) {
 		var block = post['block[block]'];
 		var meta = JSON.parse(post['block[meta]']);
 
-		console.log(post);
-
 		fs.readFile('./blocks.json', function (err, exisBlocks) {
 			var exisBlocks = JSON.parse(exisBlocks);
 
@@ -274,6 +272,14 @@ function createBlock(req, res) {
 	});
 }
 
+function getBlocks(req,res) {
+	fs.readFile('./blocks.json', function (err, exisBlocks) {
+		if (err) res.status(404).send({})
+		var exisBlocks = JSON.parse(exisBlocks);
+		res.status(200).send(exisBlocks)
+	});
+}
+
 app.use(express.static(__dirname + '/'));
 
 app.get('/', loadIndex);
@@ -286,6 +292,7 @@ app.post('/delete', deleteDemo);
 app.get('/toolbox', loadToolbox);
 app.get('/configurator', loadConfigurator);
 app.post('/create', createBlock);
+app.get('/blocks', getBlocks);
 
 app.listen(PORT, '0.0.0.0', function () {
 	console.log('Hobbit blockly is now listening to port ' + PORT + '!');
