@@ -63,7 +63,15 @@
                         '</div>', '</div>', '</div>'
                     ].join("\n");
 
-                    $("#cont").append(createDemo);
+                    var configurator = [
+                        '<div ' + cardClass + '>',
+                        '<div class="card">',
+                        '<div class="valign-wrapper call-blockly" onclick={loadConfigurator()}>',
+                        '<div style="margin: 0 auto;"><img src="./img/config-icon.png"></div>',
+                        '</div>', '</div>', '</div>'
+                    ].join("\n");
+
+                    $("#cont").append(createDemo).append(configurator);
                 } else {
                     alert("Something went wrong!");
                 }
@@ -125,4 +133,9 @@
         }
         window.location.href = url;
     }
-</script>
+    
+    function loadConfigurator() {
+        var url = window.location.href + 'configurator';
+        window.location.href = url;
+    }
+    </script>

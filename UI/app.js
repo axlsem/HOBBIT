@@ -219,8 +219,9 @@ function loadToolbox(req, res) {
 				for (var i in customBlocks) {
 					customBlocksCat.block.push({ '$': { 'type': 'custom' + i.toString() } })
 				}
-
-				result.xml.category.push(customBlocksCat)
+				if (customBlocksCat.block.length > 0) {
+					result.xml.category.unshift(customBlocksCat)
+				}
 
 				builder = new xml2js.Builder();
 				var toolbox = builder.buildObject(result);
@@ -239,7 +240,6 @@ function loadConfigurator(req, res) {
 
 function createBlock(req, res) {
 	var body = '';
-
 	req.on('error', function (err) {
 		console.error(err);
 	});
@@ -255,11 +255,19 @@ function createBlock(req, res) {
 		var post = qs.parse(body);
 		var code = post['block[code]'];
 		var block = post['block[block]'];
+		var meta = {
+			topic: post['block[meta][topic]'],
+			msgtypeRaw: post['block[meta][msgtypeRaw]'],
+			message: post['block[meta][message]'],
+			title: post['block[meta][title]'],
+			inputs: post['block[meta][inputs]'],
+			tooltip: post['block[meta][tooltip]']
+		};
 
 		fs.readFile('./blocks.json', function (err, exisBlocks) {
 			var exisBlocks = JSON.parse(exisBlocks);
 
-			exisBlocks.push({ code: code, block: block, name: "custom" + exisBlocks.length.toString() });
+			exisBlocks.push({ meta: meta, code: code, block: block, name: "custom" + exisBlocks.length.toString() });
 
 			fs.writeFile("./blocks.json", JSON.stringify(exisBlocks), (err) => {
 				if (err) throw err;

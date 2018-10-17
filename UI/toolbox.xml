@@ -58,9 +58,7 @@
 			<block type="hobbit_arm_turntable"></block>
 			<block type="hobbit_arm_gripper"></block>
 		</category>
-		<!-- <category id="catInteraction" name="Custom Blocks" colour="50">
-		</category> -->
-		<!-- <category id="catInteraction" name="Interaction" colour="360">
+		<category id="catInteraction" name="Interaction" colour="360">
 			<block type="hobbit_show_info">
 				<value name="text">
 					<shadow type="text">
@@ -347,6 +345,6 @@
 		</category>
 		
 		<category id="catVariables" custom="VARIABLE" name="Variables" colour="330"></category>
-		<category id="catFunctions" custom="PROCEDURE" name="Functions" colour="290"></category> -->
+		<category id="catFunctions" custom="PROCEDURE" name="Functions" colour="290"></category>
 
 	</xml>

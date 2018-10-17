@@ -345,12 +345,10 @@ $.get("/toolbox", function (data, status) {
 			
 		}
 		
-		eval("Blockly.Blocks.newblock = {init:function(){this.jsonInit("+block+")}}");
-		eval("Blockly.Python.newblock=function(block){"+code+"}");
-		
 		var parser = new DOMParser();
 		var xmlToolbox = parser.parseFromString(data.toolbox,"text/xml");
 		workspace.updateToolbox(xmlToolbox.getElementById("toolbox"));
+
 	} else {
 		alert("Something went wrong!");
 	}
