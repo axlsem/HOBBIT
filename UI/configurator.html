@@ -13,6 +13,7 @@
 
     <link rel="stylesheet" href="css/styles.css">
     <link type="text/css" rel="stylesheet" href="./css/materialize.min.css" media="screen,projection" />
+    <link type="text/css" rel="stylesheet" href="./css/collapsible.css" media="screen,projection" />
 </head>
 
 <body>
@@ -31,7 +32,7 @@
                 <div class="row">
                     <div class="input-field col s6">
                         <label for="title" class="active">Block title</label>
-                        <input placeholder="Title" id="title" type="text" class="validate" value="Move foward">
+                        <input placeholder="Title" id="title" type="text" class="validate">
                     </div>
                     <div class="input-field col s6">
                         <label for="tooltip" class="active">Tooltip</label>
@@ -42,7 +43,7 @@
                             <button type="button" onclick="addInput()">Add</button>
                             <button type="button" onclick="removeInput()">Remove</button>
                         </label>
-                        <input placeholder="Name" id="in1" type="text" class="validate" value="In1">
+                        <input placeholder="Name" id="in1" type="text" class="validate">
                     </div>
                     <div class="input-field col s6">
                         <select id="typeSelector" style="display: block;border-bottom: 1px solid #9e9e9e !important;background-color: #f9f9f9;">
@@ -53,17 +54,23 @@
                         <label class="active">Type</label>
                     </div>
                 </div>
+                <div class="row">
+                    <div id="pyImports" class="blockly-collapsible col s12">
+                        Import packages
+                    </div>
+                    <div class="col-content">
+                        <textarea placeholder="import..." id="pckImports" style="height:50px; max-width: 100%; min-width: 100%;"></textarea>
+                    </div>
+                </div>
                 <div id="configTopic">
                     <div class="row">
                         <div class="input-field col s6">
                             <label for="topic" class="active">Topic</label>
-                            <input placeholder="Topic name" id="topic" type="text" class="validate" value="/cmd_vel">
-                            <!-- <input placeholder="Topic name" id="topic" type="text" class="validate"> -->
+                            <input placeholder="Topic name" id="topic" type="text" class="validate">
                         </div>
                         <div class="input-field col s6">
                             <label for="msgtype" class="active">Message type</label>
-                            <input placeholder="Message type" id="msgtype" type="text" class="validate" value="geometry_msgs/Twist">
-                            <!-- <input placeholder="Message type" id="msgtype" type="text" class="validate"> -->
+                            <input placeholder="Message type" id="msgtype" type="text" class="validate">
                         </div>
                     </div>
                     <div class="row">
@@ -76,25 +83,32 @@
                 <div id="configService">
                     <div class="row">
                         <div class="input-field col s6">
-                            <label for="topic" class="active">Service</label>
-                            <input placeholder="Topic name" id="topic" type="text" class="validate" value="/MMUI">
-                            <!-- <input placeholder="Topic name" id="topic" type="text" class="validate"> -->
+                            <label for="service" class="active">Service</label>
+                            <input placeholder="Service name" id="service" type="text" class="validate" value="/MMUI">
                         </div>
                         <div class="input-field col s6">
-                            <label for="msgtype" class="active">Message type</label>
-                            <input placeholder="Message type" id="msgtype" type="text" class="validate" value="Request">
-                            <!-- <input placeholder="Message type" id="msgtype" type="text" class="validate"> -->
+                            <label for="srvtype" class="active">Message type</label>
+                            <input placeholder="Message type" id="srvtype" type="text" class="validate" value="hobbit_msgs/Request">
 
                         </div>
-                        <div id="requestFields" class="input-field col s6">
-                            <label for="in1" class="active">Request message fields
+                        <div id="requestFields" class="input-field col s12">
+                            <label for="srvMsg1" class="active">Request message fields
                                 <button type="button" onclick="addSrvField()">Add</button>
                                 <button type="button" onclick="removeSrvField()">Remove</button>
                             </label>
-                            <input placeholder="Name" id="in1" type="text" class="validate" value="header">
-                            <input placeholder="Name" id="in1" type="text" class="validate" value="sessionID">
-                            <input placeholder="Name" id="in1" type="text" class="validate" value="requestText">
-                            <input placeholder="Name" id="in1" type="text" class="validate" value="params">
+                            <div id="srvMsg1">
+                                <div class="blockly-collapsible">
+                                    <input placeholder="Name" id="srvField1" type="text" class="validate srvField"
+                                        value="header">
+                                </div>
+                                <div class="col-content">
+                                    <textarea placeholder="enter value..." id="srvMsgVal1" style="height:50px; max-width: 100%; min-width: 100%;"></textarea>
+                                    <label>
+                                        <input id="srvCode1" type="checkbox" class="filled-in srvCode" />
+                                        <span>Code</span>
+                                    </label>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -107,14 +121,25 @@
     </div>
 
     <script src="./js/jquery.min.js"></script>
+    <script src="./js/collapsible.js"></script>
 
     <script>
         var inputCnt = 1;
-        typeListener();
+        var srvFieldCnt = 1;
+        var selectedType = "Topic";
+
+        addSrvField("sessionID", "'0'");
+        addSrvField("requestText", "'create'");
+        addSrvField("params", "params = []\np = Parameter('type', 'D_NAME')\nparams.append(p)\np = Parameter('text', $1$)\nparams.append(p)\np = Parameter('Timeout', timeout)\nparams.append(p)", true);
+        document.getElementById("srvMsgVal1").value = "header = Header()\nheader.stamp = rospy.Time.now()";
+        document.getElementById("srvCode1").checked = true;
+
+        document.getElementById("title").value = "Ask question";
+        document.getElementById("in1").value = "Q";
 
         function typeListener() {
             var typeSelector = document.getElementById("typeSelector");
-            var selectedType = typeSelector.options[typeSelector.selectedIndex].text;
+            selectedType = typeSelector.options[typeSelector.selectedIndex].text;
             var elem = document.getElementById("config" + selectedType);
             elem.style.display = 'block';
 
@@ -126,11 +151,10 @@
                 }
             }
         }
-
         document.getElementById('typeSelector').addEventListener('change', typeListener);
+        typeListener();
 
-
-        function getBlockDefintionTopic() {
+        function getBlockDefintion() {
             var title = document.getElementById("title").value + " %1";
             var inputs = document.getElementById("inputs").getElementsByTagName("INPUT");
             var tooltip = document.getElementById("tooltip").value;
@@ -166,8 +190,7 @@
             var msgPackage = msgtypeRaw.split("/")[0];
             var msgtype = msgtypeRaw.split("/")[1];
 
-            var imp = ["from", msgPackage + ".msg", "import", msgtype];
-            var importCode = "Blockly.Python.definitions_['" + imp.join("_") + "']='" + imp.join(" ") + "';";
+            var importCode = importSyntax(msgPackage, msgtype, ".msg")
 
             var varInits = [];
             for (var inCnt = 2; inCnt <= block.args0.length; inCnt++) {
@@ -185,15 +208,15 @@
                 message = message.replace(match[0], "'+value_var" + (parseInt(match[1]) + 1).toString() + "+'");
             }
 
-            message = "var code='';" + message.split("\n").map(e => "code+=\'" + e + "\\n\'").join(";");
-            var MsgImport = "code+='HobbbitLib.importMsg(\\'" + msgPackage + "\\',\\'" + msgtype + "\\')\\n'";
+            message = "var code='\\n';" + message.split("\n").map(e => "code+=\'" + e + "\\n\'").join(";");
+            var MsgImport = "code+='HobbbitLib.importMsg(\\'" + msgPackage + ".msg\\',\\'" + msgtype + "\\')\\n'";
             var pubCode = "code+=Blockly.Python.NodeName+'.publishTopic(\\'" + topic + "\\', \\'" + msgtype + "\\', message)\\n';"
             var pyCode = [message, MsgImport, pubCode].join(";");
 
             return [varInits.join(""), importCode, pyCode, "return code"].join("")
         }
 
-        function getMetaInfo() {
+        function getMetaInfoTopic() {
             var inputs = [];
             var inputElems = document.getElementById("inputs").getElementsByTagName("INPUT");
             for (var inp of inputElems) {
@@ -201,6 +224,7 @@
             }
 
             return {
+                type: "Topic",
                 topic: document.getElementById("topic").value,
                 msgtypeRaw: document.getElementById("msgtype").value,
                 message: document.getElementById("message").value,
@@ -211,15 +235,131 @@
             }
         }
 
+        function getMetaInfoService() {
+            var inputs = [];
+            var inputElems = document.getElementById("inputs").getElementsByTagName("INPUT");
+            for (var inp of inputElems) {
+                inputs.push(inp.value)
+            }
+
+            return {
+                type: "Service",
+                service: document.getElementById("service").value,
+                srvtype: document.getElementById("srvtype").value,
+                title: document.getElementById("title").value,
+                fields: formatSrvFields(),
+                inputs: inputs,
+                tooltip: document.getElementById("tooltip").value
+
+            }
+        }
+
+        function importSyntax(msgPackage, msgtype, type) {
+            var imp = ["from", msgPackage + "type", "import", msgtype];
+            var importCode = "Blockly.Python.definitions_['" + imp.join("_") + "']='" + imp.join(" ") + "';";
+
+            return importCode
+        }
+
+        function replaceDollars(message, inCnt) {
+            var re = /\$([0-9]+)\$/gm;
+            while ((match = re.exec(message)) != null) {
+                if (inCnt < parseInt(match[1]) + 2) {
+                    alert("Only " + (inCnt - 2).toString() + " inputs defined, but more used in message!")
+                    return ""
+                }
+                message = message.replace(match[0], "'+value_var" + (parseInt(match[1]) + 1).toString() + "+'");
+            }
+            return message
+        }
+
+        function formatSrvFields() {
+            var srvFields = document.getElementById("requestFields").getElementsByClassName("srvField");
+            var srvChBoxes = document.getElementById("requestFields").getElementsByClassName("srvCode");
+            var fieldValues = document.getElementById("requestFields").getElementsByTagName("TEXTAREA");
+
+            var msgNames = Array.prototype.map.call(srvFields, elem => elem.value);
+            var msgValues = Array.prototype.map.call(fieldValues, elem => elem.value);
+            var codeFlags = Array.prototype.map.call(srvChBoxes, elem => elem.checked);
+
+            var fields = [];
+            for (i = 0; i < msgNames.length; i++) {
+                let temp = {
+                    name:msgNames[i],
+                    value:msgValues[i],
+                    isCode:codeFlags[i]
+                };
+                fields.push(temp);
+            }
+
+            return fields
+        }
+
+        function getCodeService(block) {
+            var code = "";
+            var service = document.getElementById("service").value;
+            var srvtypeRaw = document.getElementById("srvtype").value;
+            var srvFields = document.getElementById("requestFields").getElementsByClassName("srvField");
+            var srvChBoxes = document.getElementById("requestFields").getElementsByClassName("srvCode");
+            var fieldValues = document.getElementById("requestFields").getElementsByTagName("TEXTAREA");
+
+            var msgPackage = srvtypeRaw.split("/")[0];
+            var msgtype = srvtypeRaw.split("/")[1];
+
+            var importCode = [importSyntax(msgPackage, msgtype, ".srv"), importSyntax(msgPackage, msgtype + "Request", ".srv")].join("");
+
+            var varInits = [];
+            for (var inCnt = 2; inCnt <= block.args0.length; inCnt++) {
+                varInits.push("var value_var" + inCnt.toString() + "=Blockly.Python.valueToCode(block,\'var" + inCnt.toString() + "\', Blockly.Python.ORDER_ATOMIC);");
+            }
+            varInits.push("Blockly.Python.InitROS();");
+
+            var msgNames = Array.prototype.map.call(srvFields, elem => elem.value);
+            var msgValues = Array.prototype.map.call(fieldValues, elem => elem.value);
+            var codeFlags = Array.prototype.map.call(srvChBoxes, elem => elem.checked);
+
+            var blocklyCode = [];
+
+            for (i = 0; i < msgNames.length; i++) {
+                var name = msgNames[i];
+                var isCode = codeFlags[i];
+                var value = replaceDollars(msgValues[i].replace(/\n/g, "\\n").replace(/\'/g, "\\'").replace(/\"/g, "\\'"), inCnt);
+                if (value == "") return ""
+
+                if (isCode) {
+                    blocklyCode.push(value + "\\n");
+                } else {
+                    blocklyCode.push(name + "=" + value + "\\n");
+                }
+
+            }
+            blocklyCode.push("reqparams=(" + msgNames.join(",") + ")\\n");
+
+            var message = blocklyCode.map(v => "code+='" + v + "'").join(";");
+            var MsgImport = "code+='HobbbitLib.importMsg(\\'" + msgPackage + ".srv\\',\\'" + msgtype + "\\')\\n'";
+            var pubCode = "code+=Blockly.Python.NodeName+'.callService(\\'" + service + "\\', \\'" + msgtype + "\\', reqparams)\\n';"
+
+            var pyCode = [message, MsgImport, pubCode].join(";");
+
+            return [varInits.join(""), importCode, "var code='\\n';", pyCode, "return code"].join("")
+        }
+
         function create() {
-            var block = getBlockDefintionTopic();
-            var code = getCodeTopic(block);
-            var metaInfo = getMetaInfo();
+            var block = getBlockDefintion();
 
+            if (selectedType == "Topic") {
+                var code = getCodeTopic(block);
+                var metaInfo = getMetaInfoTopic();
+            } else if (selectedType == "Service") {
+                var code = getCodeService(block);
+                var metaInfo = getMetaInfoService();
+            } else if (selectedType == "Action") {
 
-            if (code != "") {
+            } else return
 
-                var newBlock = { "meta": metaInfo, "code": code, "block": JSON.stringify(block) };
+            if (code && code != "") {
+
+                var newBlock = { "meta": JSON.stringify(metaInfo), "code": code, "block": JSON.stringify(block) };
 
                 $.post("/create",
                     {
@@ -253,19 +393,56 @@
             };
         }
 
-        function addSrvField(value) {
-            var x = document.createElement("INPUT");
-            x.setAttribute("placeholder", "Name");
-            x.setAttribute("id", "in" + inputCnt);
-            x.setAttribute("type", "text");
-            x.setAttribute("class", "validate");
-            if (value) x.setAttribute("value", value);
-            document.getElementById("requestFields").appendChild(x);
+        function addSrvField(name, value, isCode) {
+            srvFieldCnt += 1;
+
+            var wrap = document.createElement("DIV");
+            wrap.setAttribute("id", "srvMsg" + srvFieldCnt);
+
+            var colps = document.createElement("DIV");
+            colps.setAttribute("class", "blockly-collapsible");
+
+            var inp = document.createElement("INPUT");
+            inp.setAttribute("placeholder", "Name");
+            inp.setAttribute("id", "srvField" + srvFieldCnt);
+            inp.setAttribute("type", "text");
+            inp.setAttribute("class", "validate srvField");
+            if (name) inp.setAttribute("value", name);
+            colps.appendChild(inp);
+
+            var colCont = document.createElement("DIV");
+            colCont.setAttribute("class", "col-content");
+
+            var srvVal = document.createElement("TEXTAREA");
+            srvVal.setAttribute("id", "srvMsgVal" + srvFieldCnt.toString());
+            srvVal.setAttribute("placeholder", "Enter value...");
+            srvVal.setAttribute("style", 'height:50px; max-width: 100%; min-width: 100%;');
+            if (value) srvVal.value = value;
+
+            var chBoxLbl = document.createElement("LABEL");
+            var chBox = document.createElement("INPUT");
+            chBox.setAttribute("id", "srvCode" + srvFieldCnt);
+            chBox.setAttribute("type", "checkbox");
+            chBox.setAttribute("class", "filled-in srvCode");
+            if (isCode) chBox.checked = isCode;
+            var chBoxDesc = document.createElement("SPAN");
+            chBoxDesc.innerHTML = "Code";
+
+            chBoxLbl.appendChild(chBox);
+            chBoxLbl.appendChild(chBoxDesc);
+
+            colCont.appendChild(srvVal);
+            colCont.appendChild(chBoxLbl);
+
+            wrap.appendChild(colps);
+            wrap.appendChild(colCont);
+
+            document.getElementById("requestFields").appendChild(wrap);
+            updateListener()
         }
 
         function removeSrvField() {
             var fields = document.getElementById("requestFields");
-            console.log(fields.childNodes)
             fields.removeChild(fields.childNodes[fields.childNodes.length - 1]);
         }
 

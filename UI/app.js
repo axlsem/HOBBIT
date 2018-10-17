@@ -255,14 +255,9 @@ function createBlock(req, res) {
 		var post = qs.parse(body);
 		var code = post['block[code]'];
 		var block = post['block[block]'];
-		var meta = {
-			topic: post['block[meta][topic]'],
-			msgtypeRaw: post['block[meta][msgtypeRaw]'],
-			message: post['block[meta][message]'],
-			title: post['block[meta][title]'],
-			inputs: post['block[meta][inputs]'],
-			tooltip: post['block[meta][tooltip]']
-		};
+		var meta = JSON.parse(post['block[meta]']);
+
+		console.log(post);
 
 		fs.readFile('./blocks.json', function (err, exisBlocks) {
 			var exisBlocks = JSON.parse(exisBlocks);

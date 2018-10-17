@@ -349,6 +349,24 @@ $.get("/toolbox", function (data, status) {
 		var xmlToolbox = parser.parseFromString(data.toolbox,"text/xml");
 		workspace.updateToolbox(xmlToolbox.getElementById("toolbox"));
 
+		// var testblock = '';
+		// var tescode = "";
+		
+		// eval("Blockly.Blocks.newblock = {init:function(){this.jsonInit("+testblock+")}}");
+		// eval("Blockly.Python.newblock=function(block){"+tescode+"}");
+
+		// var block0 = workspace.newBlock("newblock");
+		// block0.initSvg();
+		// block0.render();
+		
+		// var block1 = workspace.newBlock("custom1");
+		// block1.initSvg();
+		// block1.render();
+
+		// var parentConnection = block0.getInput('custom1').connection;
+		// var childConnection = block1.previousConnection;
+		// parentConnection.connect(childConnection);
+
 	} else {
 		alert("Something went wrong!");
 	}
