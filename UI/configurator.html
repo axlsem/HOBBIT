@@ -38,6 +38,10 @@
                 </div>
             </div>
             <div class="col s10">
+                <div class="right-align">
+                    <button id="deleteBtn" class="btn waves-effect waves-light" type="submit" name="action" onclick="deleteBlock()"
+                        disabled>Delete Block</button>
+                </div>
                 <div id="blockMetas">
                     <div class="row">
                         <div class="input-field col s6">
@@ -50,8 +54,10 @@
                         </div>
                         <div id="inputs" class="input-field col s6">
                             <label for="in1" class="active">Inputs
-                                <button type="button" class="btn waves-effect waves-light toggle" onclick="addInput()">Add</button>
-                                <button type="button" class="btn waves-effect waves-light toggle" onclick="removeInput()">Remove</button>
+                                <button type="button" class="btn waves-effect waves-light toggle" onclick="addInput()"
+                                    disabled>Add</button>
+                                <button type="button" class="btn waves-effect waves-light toggle" onclick="removeInput()"
+                                    disabled>Remove</button>
                             </label>
                             <input placeholder="Name" id="in1" type="text" class="validate">
                         </div>
@@ -96,8 +102,10 @@
                         </div>
                         <div id="requestFields" class="input-field col s12">
                             <label for="srvMsg1" class="active">Request message fields
-                                <button type="button" class="btn waves-effect waves-light toggle" onclick="addSrvField()">Add</button>
-                                <button type="button" class="btn waves-effect waves-light toggle" onclick="removeSrvField()">Remove</button>
+                                <button type="button" class="btn waves-effect waves-light toggle" onclick="addSrvField()"
+                                    disabled>Add</button>
+                                <button type="button" class="btn waves-effect waves-light toggle" onclick="removeSrvField()"
+                                    disabled>Remove</button>
                             </label>
                             <div id="srvMsg1">
                                 <div class="blockly-collapsible">
@@ -115,19 +123,55 @@
                     </div>
                 </div>
                 <div id="configAction">
-                    Action
+                    <div class="row">
+                            <div class="input-field col s1">
+                                    <label for="actiontimeout" class="active">Timeout</label>
+                                    <input id="actiontimeout" type="number" min="0" value="10" class="validate">
+                                </div>
+                        <div class="input-field col s5">
+                            <label for="action" class="active">Server</label>
+                            <input placeholder="Server name" id="action" type="text" class="validate">
+                        </div>
+                        <div class="input-field col s6">
+                            <label for="actiontype" class="active">Message type</label>
+                            <input placeholder="Message type" id="actiontype" type="text" class="validate">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <label for="goal" class="active">Goal</label>
+                            <textarea id="goal" style="height:100px; max-width: 100%; min-width: 100%;" placeholder="goal=..."></textarea>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div id="callbacks" class="blockly-collapsible col s12">
+                            <label for="callbacks" class="active">Callback functions</label>
+                        </div>
+                        <div class="col-content">
+                            <div><label for="donecb" class="active">Done callback</label>
+                                <textarea placeholder="def done_cb(status,result):..." id="donecb" style="height:100px; max-width: 100%; min-width: 100%;"></textarea></div>
+                            <div><label for="activecb" class="active">Active callback</label>
+                                <textarea placeholder="def active_cb():..." id="activecb" style="height:100px; max-width: 100%; min-width: 100%;"></textarea></div>
+                            <div><label for="feedbackcb" class="active">Feedback callback</label>
+                                <textarea placeholder="def feedback_cb(feedback):..." id="feedbackcb" style="height:100px; max-width: 100%; min-width: 100%;"></textarea>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div id="otherInfos">
                     <div class="row">
                         <div id="pyImports" class="blockly-collapsible col s12">
-                            Import packages
+                            <label for="pckImports" class="active">Import packages</label>
                         </div>
                         <div class="col-content">
                             <textarea placeholder="import..." id="pckImports" style="height:50px; max-width: 100%; min-width: 100%;"></textarea>
                         </div>
                     </div>
                 </div>
-                <button id="saveBtn" class="btn waves-effect waves-light" type="submit" name="action" onclick="create()">Save</button>
+                <button id="saveBtn" class="btn waves-effect waves-light" type="submit" name="action" onclick="create('save')"
+                    disabled>Save</button>
+                <button style="display: none;" id="createBtn" class="btn waves-effect waves-light" type="submit" name="action"
+                    onclick="create('create')">Create</button>
                 <button id="editBtn" class="btn waves-effect waves-light" type="submit" name="action" onclick="toggleEditMode(editMode)">Edit</button>
             </div>
         </div>
@@ -140,19 +184,75 @@
         var selectedType = 'Topic';
         var inputCnt = 1;
         var srvFieldCnt = 1;
+        typeListener();
         init();
         document.getElementById('typeSelector').addEventListener('change', typeListener);
-        typeListener();
         var editMode = false;
+        var currentBlock = {};
+
+        document.getElementById("title").value = "Move arm";
+        document.getElementById("in1").value = "Position";
+        document.getElementById("action").value = "hobbit_arm";
+        document.getElementById("actiontype").value = "hobbit_msgs/ArmServerAction";
+        document.getElementById("goal").value = "goal = ArmServerGoal()\ngoal.command.data = $1$\ngoal.velocity = 0.0\ngoal.joints = []";
+        document.getElementById("pckImports").value = "from hobbit_msgs.msg import ArmServerGoal\nfrom hobbit_msgs.msg import ArmServerAction";
+        document.getElementById("typeSelector").selectedIndex = 2;
+        typeListener();
+
+        var uniqueId = function () {
+            return Math.random().toString(36).substr(2, 16);
+        };
+
+        $.put = function (url, data, callback, type) {
+
+            if ($.isFunction(data)) {
+                type = type || callback,
+                    callback = data,
+                    data = {}
+            }
+
+            return $.ajax({
+                url: url,
+                type: 'PUT',
+                success: callback,
+                data: data,
+                contentType: type
+            });
+        }
+
+        $.delete = function (url, data, callback, type) {
+
+            if ($.isFunction(data)) {
+                type = type || callback,
+                    callback = data,
+                    data = {}
+            }
+
+            return $.ajax({
+                url: url,
+                type: 'DELETE',
+                success: callback,
+                data: data,
+                contentType: type
+            });
+        }
 
         function toggleEditMode(b) {
             var editBtn = document.getElementById("editBtn");
             editBtn.innerHTML = editMode ? "Edit" : "Cancel";
-
-            // console.log(b,editMode);
-            lockInputs(b);
             editMode = !b;
-            // console.log(b,editMode);
+
+            if (!editMode) {
+                setFormValues(currentBlock.meta);
+            }
+
+            lockInputs(b);
+        }
+
+        function setElementVisible(elem, visible) {
+            var display = visible ? 'block' : 'none';
+            var shape = document.getElementById(elem);
+            shape.setAttribute("style", "display:" + display + ";");
         }
 
         function init() {
@@ -160,11 +260,12 @@
                 if (status == "success") {
 
                     var selectedBlock = window.location.search.substring(1);
+                    allBlocks = data;
 
                     for (var block of data) {
-                        var isSelectedBlock = block.name == selectedBlock;
+                        var isSelectedBlock = block.id == selectedBlock;
                         var x = document.createElement("A");
-                        x.setAttribute("href", "?" + block.name);
+                        x.setAttribute("href", "?" + block.id);
                         x.setAttribute("class", "collection-item");
                         x.setAttribute("style", "font-weight: normal;");
                         if (isSelectedBlock) x.setAttribute("class", "collection-item active");
@@ -172,17 +273,18 @@
                         document.getElementById("blockList").appendChild(x);
 
                         if (selectedBlock != "" && isSelectedBlock) {
-                            setFormValues(block.meta);
+                            setFormValues(block.meta, true);
                             if (block.meta.inputs) inputCnt = block.meta.inputs.length;
                             if (block.meta.fields) srvFieldCnt = block.meta.fields.length;
+                            currentBlock = block;
                         }
                     }
 
                     if (selectedBlock == "") {
-                        var createBlockNav = document.getElementById("createBlockNav");
-                        createBlockNav.setAttribute("class", "collection-item active");
-                        var editBtn = document.getElementById("editBtn");
-                        editBtn.setAttribute("style","display:none;");
+                        setElementVisible("editBtn", false);
+                        setElementVisible("saveBtn", false);
+                        setElementVisible("deleteBtn", false);
+                        setElementVisible("createBtn", true);
                     } else {
                         lockInputs(true);
                     }
@@ -213,23 +315,35 @@
 
             var saveBtn = document.getElementById("saveBtn");
             saveBtn.disabled = lock;
+            var deleteBtn = document.getElementById("deleteBtn");
+            deleteBtn.disabled = lock;
         }
 
-        function setFormValues(values) {
+        function setFormValues(values, init) {
+            var inputDiff = inputCnt - values.inputs.length;
+
+            if (inputDiff < 0) {
+                for (var i = 0; i < -inputDiff; i++) {
+                    addInput();
+                }
+            } else if (inputDiff > 0) {
+                for (var i = 0; i < inputDiff; i++) {
+                    removeInput();
+                }
+            }
+
+
             document.getElementById("title").value = values.title;
             document.getElementById("tooltip").value = values.tooltip;
             document.getElementById("typeSelector").selectedIndex = ["Topic", "Service", "Actions"].indexOf(values.type);
 
             if (values.pyImports) document.getElementById("pckImports").value = values.pyImports;
+            else document.getElementById("pckImports").value = null;
 
             typeListener();
 
             for (var i = 0; i < values.inputs.length; i++) {
-                if (i == 0) {
-                    document.getElementById("in" + (i + 1).toString()).value = values.inputs[i];
-                } else {
-                    addInput(values.inputs[i])
-                }
+                document.getElementById("in" + (i + 1).toString()).value = values.inputs[i];
             }
 
             if (values.type == "Topic") {
@@ -240,14 +354,22 @@
                 document.getElementById("service").value = values.service;
                 document.getElementById("srvtype").value = values.srvtype;
 
-                for (var i = 0; i < values.fields.length; i++) {
-                    if (i == 0) {
-                        document.getElementById("srvField" + (i + 1).toString()).value = values.fields[i].name;
-                        document.getElementById("srvMsgVal" + (i + 1).toString()).value = values.fields[i].value;
-                        document.getElementById("srvCode" + (i + 1).toString()).checked = values.fields[i].isCode;
-                    } else {
-                        addSrvField(values.fields[i].name, values.fields[i].value, values.fields[i].isCode)
+                var srvFiledDiff = srvFieldCnt - values.fields.length;
+
+                if (srvFiledDiff < 0) {
+                    for (var i = 0; i < -srvFiledDiff; i++) {
+                        addSrvField();
                     }
+                } else if (srvFiledDiff > 0) {
+                    for (var i = 0; i < srvFiledDiff; i++) {
+                        removeSrvField();
+                    }
+                }
+
+                for (var i = 0; i < values.fields.length; i++) {
+                    document.getElementById("srvField" + (i + 1).toString()).value = values.fields[i].name;
+                    document.getElementById("srvMsgVal" + (i + 1).toString()).value = values.fields[i].value;
+                    document.getElementById("srvCode" + (i + 1).toString()).checked = values.fields[i].isCode;
                 }
 
             }
@@ -334,6 +456,7 @@
             message = "var code='\\n';" + message.split("\n").map(e => "code+=\'" + e + "\\n\'").join(";");
             var MsgImport = "code+='HobbbitLib.importMsg(\\'" + msgPackage + ".msg\\',\\'" + msgtype + "\\')\\n'";
             var pubCode = "code+=Blockly.Python.NodeName+'.publishTopic(\\'" + topic + "\\', \\'" + msgtype + "\\', message)\\n';"
+
             var pyCode = [message, MsgImport, pubCode].join(";");
 
             return [varInits.join(""), importCode, pyCode, "return code"].join("")
@@ -478,7 +601,49 @@
             return [varInits.join(""), importCode, "var code='\\n';", pyCode, "return code"].join("")
         }
 
-        function create() {
+        function getCodeAction(block) {
+            var serverName = document.getElementById("action").value;
+            var msgtypeRaw = document.getElementById("actiontype").value;
+            var message = document.getElementById("goal").value;
+            var timeout = parseFloat(document.getElementById("actiontimeout").value);
+            timeout = (timeout % 1 == 0 ? timeout+".0": timeout ).toString();
+
+            var msgPackage = msgtypeRaw.split("/")[0];
+            var msgtype = msgtypeRaw.split("/")[1];
+
+            var importCode = [importSyntax(msgPackage + ".msg", msgtype)];
+            importCode = importCode.concat(importExtraPackages()).join("");
+
+            var varInits = [];
+            for (var inCnt = 2; inCnt <= block.args0.length; inCnt++) {
+                varInits.push("var value_var" + inCnt.toString() + "=Blockly.Python.valueToCode(block,\'var" + inCnt.toString() + "\', Blockly.Python.ORDER_ATOMIC);");
+            }
+            varInits.push("Blockly.Python.InitROS();");
+
+
+            var re = /\$([0-9]+)\$/gm;
+            while ((match = re.exec(message)) != null) {
+                if (inCnt < parseInt(match[1]) + 2) {
+                    alert("Only " + (inCnt - 2).toString() + " inputs defined, but more used in message!")
+                    return ""
+                }
+                message = message.replace(match[0], "'+value_var" + (parseInt(match[1]) + 1).toString() + "+'");
+            }
+
+            message = "var code='\\n';" + message.split("\n").map(e => "code+=\'" + e + "\\n\'").join(";");
+            var MsgImport = "code+='HobbbitLib.importMsg(\\'" + msgPackage + ".msg\\',\\'" + msgtype + "\\')\\n'";
+            
+            var clientCode = ["client = actionlib.SimpleActionClient(\\'"+serverName+"\\', "+msgtype+")","client.wait_for_server()","client.send_goal(goal)",
+        "client.wait_for_result(rospy.Duration.from_sec("+timeout+"))"];
+        
+        clientCode = clientCode.map(v => "code+='" + v + "\\n'").join(";");
+        
+            var pyCode = [message, MsgImport,clientCode].join(";");
+
+            return [varInits.join(""), importCode, pyCode+";", "return code"].join("")
+        }
+
+        function create(mode) {
             var block = getBlockDefintion();
 
             if (selectedType == "Topic") {
@@ -488,19 +653,56 @@
                 var code = getCodeService(block);
                 var metaInfo = getMetaInfoService();
             } else if (selectedType == "Action") {
-
+                var code = getCodeAction(block);
+                var metaInfo = getMetaInfoTopic();
+                // console.log(code)
+                // return
             } else return
 
             if (code && code != "") {
 
                 var newBlock = { "meta": JSON.stringify(metaInfo), "code": code, "block": JSON.stringify(block) };
 
-                $.post("/create",
-                    {
-                        block: newBlock
-                    }, function (data, status) {
+                if (mode == "create") {
+                    newBlock.id = uniqueId();
+                    $.post("/create",
+                        {
+                            block: newBlock
+                        }, function (data, status) {
+                            if (status == "success") {
+                                window.alert("Block successfully created");
+                                window.location.href = window.location.origin + window.location.pathname + "?" + newBlock.id
+                            } else {
+                                alert("Something went wrong!");
+                            }
+                        });
+                } else {
+                    newBlock.id = currentBlock.id;
+                    $.put("/update",
+                        {
+                            block: newBlock
+                        }, function (data, status) {
+                            if (status == "success") {
+                                newBlock.meta = JSON.parse(newBlock.meta);
+                                currentBlock = newBlock;
+                                setFormValues(currentBlock.meta);
+                                toggleEditMode(editMode);
+                                window.alert("Block successfully updated.");
+                            } else {
+                                alert("Something went wrong!");
+                            }
+                        });
+                }
+            }
+        }
+
+        function deleteBlock() {
+            if (confirm("Do you really want to delete this block?") == true) {
+                $.delete("/delete/" + currentBlock.id,
+                    {}, function (data, status) {
                         if (status == "success") {
-                            console.log("Block created");
+                            window.alert("Block successfully deleted.");
+                            clearform();
                         } else {
                             alert("Something went wrong!");
                         }
@@ -519,12 +721,14 @@
             document.getElementById("inputs").appendChild(x);
         }
 
-        function removeInput(force) {
-            var inputs = document.getElementById("inputs");
-            if (inputCnt > 1 || force) {
-                inputs.removeChild(inputs.childNodes[inputs.childNodes.length - 1]);
+        function removeInput() {
+            var inputsDiv = document.getElementById("inputs")
+            var inputs = document.getElementById("inputs").getElementsByTagName("INPUT");
+
+            if (inputCnt > 0) {
+                inputsDiv.removeChild(inputs[inputs.length - 1]);
                 inputCnt -= 1;
-            };
+            }
         }
 
         function addSrvField(name, value, isCode) {
@@ -576,13 +780,13 @@
         }
 
         function removeSrvField() {
-            var fields = document.getElementById("requestFields");
-            fields.removeChild(fields.childNodes[fields.childNodes.length - 1]);
+            var fieldsDiv = document.getElementById("requestFields");
+            var srvField = document.getElementById("srvMsg" + srvFieldCnt);
+            if (srvFieldCnt > 0) {
+                fieldsDiv.removeChild(srvField);
+                srvFieldCnt -= 1;
+            }
         }
-
-        function replaceInputs() {
-        }
-
 
     </script>
 </body>

@@ -240,6 +240,8 @@ function loadConfigurator(req, res) {
 
 function createBlock(req, res) {
 	var body = '';
+	var reqpath = req.path;
+
 	req.on('error', function (err) {
 		console.error(err);
 	});
@@ -256,23 +258,52 @@ function createBlock(req, res) {
 		var code = post['block[code]'];
 		var block = post['block[block]'];
 		var meta = JSON.parse(post['block[meta]']);
+		var id = post['block[id]'];
+
+		var newBlock = { id: id, meta: meta, code: code, block: block }
 
 		fs.readFile('./blocks.json', function (err, exisBlocks) {
 			var exisBlocks = JSON.parse(exisBlocks);
 
-			exisBlocks.push({ meta: meta, code: code, block: block, name: "custom" + exisBlocks.length.toString() });
+			if (reqpath == "/create") {
+				newBlock.name = "custom" + exisBlocks.length.toString();
+				exisBlocks.push(newBlock);
+			} else {
+				var idx = exisBlocks.findIndex(v => v.id == id);
+				newBlock.name = exisBlocks[idx].name;
+				exisBlocks[idx] = newBlock;
+			}
+
 
 			fs.writeFile("./blocks.json", JSON.stringify(exisBlocks), (err) => {
 				if (err) throw err;
-				console.log("New custom block created.");
+				console.log("Block "+id+" "+reqpath.substring(1)+"d.");
+				res.status(200).send(exisBlocks);
 			});
 
-			res.status(200).send("Done");
 		});
 	});
 }
 
-function getBlocks(req,res) {
+function deleteBlock(req, res) {
+	var id = req.params.blockId;
+
+	fs.readFile('./blocks.json', function (err, exisBlocks) {
+		if (err) res.status(404).send({})
+		var exisBlocks = JSON.parse(exisBlocks);
+		var idx = exisBlocks.findIndex(v => v.id == id);
+		exisBlocks.splice(idx,1);
+
+		fs.writeFile("./blocks.json", JSON.stringify(exisBlocks), (err) => {
+			if (err) throw err;
+			console.log("Block "+id+" deleted.");
+			res.status(200).send(exisBlocks)
+		});
+
+	});
+}
+
+function getBlocks(req, res) {
 	fs.readFile('./blocks.json', function (err, exisBlocks) {
 		if (err) res.status(404).send({})
 		var exisBlocks = JSON.parse(exisBlocks);
@@ -292,6 +323,8 @@ app.post('/delete', deleteDemo);
 app.get('/toolbox', loadToolbox);
 app.get('/configurator', loadConfigurator);
 app.post('/create', createBlock);
+app.put('/update', createBlock);
+app.delete('/delete/:blockId', deleteBlock);
 app.get('/blocks', getBlocks);
 
 app.listen(PORT, '0.0.0.0', function () {

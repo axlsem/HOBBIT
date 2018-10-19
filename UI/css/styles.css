@@ -210,6 +210,26 @@ section {
 	padding: 10, 20px;
 }
 
+input[type="text"][disabled] {
+	color: #777 !important;
+}
+
+#typeSelector:disabled {
+	color: #777 !important;
+ }
+
+textarea:disabled {
+	color: #777 !important;
+ }
+
+#deleteBtn {
+	background-color: rgb(234, 67, 53) !important;
+}
+
+#deleteBtn:disabled {
+	background-color: #DFDFDF !important;
+ }
+
 .dropdown-element {
 	display: block;
 	margin: 12px;
