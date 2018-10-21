@@ -261,6 +261,7 @@ function load_demo_locally() {
 function clear_ws() {
 	if (confirm("Do you really want to clear workspace?") == true) {
 		workspace.clear();
+		// localstorage();
 		console.log("Workspace cleaned.");
 	}
 };

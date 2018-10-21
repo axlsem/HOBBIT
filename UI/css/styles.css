@@ -218,6 +218,10 @@ input[type="text"][disabled] {
 	color: #777 !important;
  }
 
+#actiontimeout:disabled {
+	color: #777 !important;
+ }
+
 textarea:disabled {
 	color: #777 !important;
  }
