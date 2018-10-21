@@ -28,6 +28,7 @@ function show_blockly() {
 };
 
 function hide_blockly() {
+	home_btn.onclick = show_blockly;
 	document.getElementById("blocklyDiv").style.display = 'none';
 	document.getElementById("blocklyArea").style.display = 'none';
 	document.getElementById("editor").style.display = 'block';
@@ -285,7 +286,7 @@ var clear_btn = document.getElementById("nav-clear");
 var modal_close_btn = document.getElementsByClassName("close")[0];
 
 logo.onclick = toIndex;
-home_btn.onclick = show_blockly;
+// home_btn.onclick = show_blockly;
 run_btn.onclick = run_code;
 code_btn.onclick = hide_blockly;
 save_robot_btn.onclick = save_demo_robot;
