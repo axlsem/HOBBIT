@@ -244,17 +244,18 @@ Ace, whose name is derived from "Ajax.org Cloud9 Editor", is a standalone code e
 jQuery is a fast, small, and feature-rich JavaScript library. It makes things like HTML document traversal and manipulation, event handling, animation and ajax (Asynchronous JavaScript and XML) much simpler with an easy-to-use API that works across a multitude of browsers. \toolname{} basically uses its functionality to exchange data via RESTful (Representational State Transfer) web services and manipulating HTML elements.
 
 \section{Frontend implementation}
-The frontend of \toolname{} consists of the following four components:
+The frontend of \toolname{} consists of the following five components:
 
 \begin{itemize}
 	\item A \textbf{Demo Management} which allows the user to create, edit, delete and run demos easily.
 	\item A \textbf{Code Editor} to allow further editing of the generate code before running it on the robot.
 	\item The \textbf{Code Generation} with the help of Blockly - the heart of the tool.
+	\item An interface for managing custom blocks (\textbf{Block Configuration}, which then can be used for code generation.
 	\item Sending and receiving data from the robot via the \textbf{Backend Communication}.
 \end{itemize}
 
 \subsection{Demo Management}
-The Demo Management (\prettyref{fig:DemoManagement}) is one key feature of \toolname{} and the entry point of it. It gives an overview of all avaible demos, meaning demos, which are saved on the robot in a specific directory. It provides a graphical interface and hence makes it a lot easier to manage and run demos in contrast to the other mentioned options (\prettyref{sec:Options}), where e.g. the user needs explicity to locate the file and run. Since usability and simplicity are main requirements for this tool, such a feature is a main advantage of it.
+The Demo Management (\prettyref{fig:DemoManagement}) is one key feature of \toolname{} and the entry point of it. It gives an overview of all avaible demos, meaning demos, which are saved on the robot in a specific directory. It provides a graphical interface and hence makes it a lot easier to manage and run demos - in contrast to the other mentioned options (\prettyref{sec:Options}), where e.g. the user needs explicity to locate the file and run. Since usability and simplicity are main requirements for this tool, such a feature is a main advantage of it.
 
 \begin{figure}[htbp]
 	\centering
@@ -268,9 +269,19 @@ At the start of the tool the demos/ directory inside the tools folder on the rob
 
 \subsection{Code Editor}
 \subsection{Code Generation}
+\subsection{Block Configuration}
 \subsection{Backend Communication}
 \section{Backend implementation}
+The frontend of \toolname{} consists of the following four components:
+
+\begin{itemize}
+	\item Sending and receiving data from the user interface via the \textbf{Frontend Communication}.
+	\item A \textbf{Storage Management}, which provides the demos and custom blocks to the user.
+	\item A \textbf{Python Module} containing all necessary functionalites to provide an ROS executable code.
+	\item An interface to finally execute the generated code on the robot (\textbf{Code Execution}).
+\end{itemize}
+
 \subsection{Frontend Communication}
 \subsection{Storage Management}
-\subsection{Python module}
+\subsection{Python Module}
 \subsection{Code Execution}
