@@ -144,10 +144,10 @@ textarea {
 
 #logo{
 
-	margin: 20px 10px;
+	margin: 20px 15px;
 	float: right;
-	width: 270px;
-	height: 40px;
+	width: 164px;
+	height: 30px;
 	background: url(../img/header.png) no-repeat center;
 	display: block;
 	cursor: pointer;
