@@ -115,7 +115,7 @@ function init() {
 }
 
 function lockInputs(lock) {
-    var shapes = ["title", "tooltip", "typeSelector", "topic", "service", "msgtype", "srvtype", "message", "pckImports", "goal", "action", "actiontype", "actiontimeout", "donecb", "feedbackcb", "activecb"];
+    var shapes = ["title", "tooltip", "typeSelector", "topic", "service", "msgtype", "srvtype", "message", "pckImports", "goal", "action", "actiontype", "actiontimeout", "donecb", "feedbackcb", "activecb","serviceout"];
     var inputShapes = Array.from({ length: inputCnt }, (v, k) => "in" + (k + 1).toString());
     var srvFieldShapes = Array.from({ length: srvFieldCnt }, (v, k) => "srvField" + (k + 1).toString());
     var srvValShapes = Array.from({ length: srvFieldCnt }, (v, k) => "srvMsgVal" + (k + 1).toString());
@@ -172,6 +172,7 @@ function setFormValues(values, init) {
     } else if (values.type == "Service") {
         document.getElementById("service").value = values.service;
         document.getElementById("srvtype").value = values.srvtype;
+        document.getElementById("serviceout").checked = values.hasOutput;
 
         var srvFiledDiff = srvFieldCnt - values.fields.length;
 
@@ -215,6 +216,12 @@ function typeListener() {
     var elem = document.getElementById("config" + selectedType);
     elem.style.display = 'block';
 
+    if (selectedType == 'Service') {
+        $('#respout').show();
+    } else {
+        $('#respout').hide();
+    }
+
     for (i = 0; i < typeSelector.length; i++) {
         if (i != typeSelector.selectedIndex) {
             var t = typeSelector.options[i].text;
@@ -243,11 +250,15 @@ function getBlockDefintion() {
     }
 
     block.message0 = [title, inpMessages.join(" ")].join(" ");
-    block.previousStatement = null;
-    block.nextStatement = null;
     block.colour = 50;
     block.tooltip = tooltip;
     block.helpUrl = "";
+    if (document.getElementById('serviceout').checked) {
+        block.output = null;
+    } else {
+        block.previousStatement = null;
+        block.nextStatement = null;
+    }
 
     return block
 }
@@ -346,7 +357,8 @@ function getMetaInfoService() {
         fields: formatSrvFields(),
         inputs: inputs,
         pyImports: document.getElementById("pckImports").value,
-        tooltip: document.getElementById("tooltip").value
+        tooltip: document.getElementById("tooltip").value,
+        hasOutput: document.getElementById("serviceout").checked
 
     }
 }
@@ -399,12 +411,25 @@ function formatSrvFields() {
     return fields
 }
 
-function getCodeService(block) {
+function getCodeService(block, blockId) {
     var service = document.getElementById("service").value;
     var srvtypeRaw = document.getElementById("srvtype").value;
     var srvFields = document.getElementById("requestFields").getElementsByClassName("srvField");
     var srvChBoxes = document.getElementById("requestFields").getElementsByClassName("srvCode");
     var fieldValues = document.getElementById("requestFields").getElementsByTagName("TEXTAREA");
+    var useResponse = document.getElementById('serviceout').checked;
+
+    if (useResponse) {
+        var func = "Blockly.Python.definitions_[\'%" + blockId + "\'] = \'def srv" + blockId + "():\\n\'"
+        var addto = "func";
+        var resp = "'\\treturn '+";
+        var indent = "\\t";
+    } else {
+        var func = "";
+        var resp = "";
+        var indent = "";
+        var addto = "code";
+    }
 
     var msgPackage = srvtypeRaw.split("/")[0];
     var msgtype = srvtypeRaw.split("/")[1];
@@ -428,7 +453,7 @@ function getCodeService(block) {
     for (i = 0; i < msgNames.length; i++) {
         var name = msgNames[i];
         var isCode = codeFlags[i];
-        var value = replaceDollars(msgValues[i].replace(/\n/g, "\\n").replace(/\'/g, "\\'").replace(/\"/g, "\\'"), inCnt);
+        var value = replaceDollars(msgValues[i].replace(/\n/g, "\\n" + indent).replace(/\'/g, "\\'").replace(/\"/g, "\\'"), inCnt);
         if (value == "") return ""
 
         if (isCode) {
@@ -440,13 +465,19 @@ function getCodeService(block) {
     }
     blocklyCode.push("reqparams=(" + msgNames.join(",") + ")\\n");
 
-    var message = blocklyCode.map(v => "code+='" + v + "'").join(";");
-    var MsgImport = "code+='HobbbitLib.importMsg(\\'" + msgPackage + ".srv\\',\\'" + msgtype + "\\')\\n'";
-    var pubCode = "code+=Blockly.Python.NodeName+'.callService(\\'" + service + "\\', \\'" + msgtype + "\\', reqparams)\\n';"
+    var message = blocklyCode.map(v => addto + "+='" + indent + v + "'").join(";");
+
+    var MsgImport = "Blockly.Python.definitions_['rospy_init_node']+='\\nHobbbitLib.importMsg(\\'" + msgPackage + ".srv\\',\\'" + msgtype + "\\')\\n'";
+
+    var pubCode = addto + "+=" + resp + "Blockly.Python.NodeName+'.callService(\\'" + service + "\\', \\'" + msgtype + "\\', reqparams)\\n';"
+
+    message = useResponse ? ["var func=''", message, pubCode, func + "+func"].join(";") : message;
+    pubCode = useResponse ? "code+='srv" + blockId + "()';" : pubCode;
 
     var pyCode = [message, MsgImport, pubCode].join(";");
+    var codeinit = useResponse ? "var code='';" : "var code='\\n';";
 
-    return [varInits.join(""), importCode, "var code='\\n';", pyCode, "return code"].join("")
+    return [varInits.join(""), importCode, codeinit, pyCode, "return [code, Blockly.Python.ORDER_NONE]"].join("")
 }
 
 function getCallbacks(blockId) {
@@ -526,13 +557,14 @@ function create(mode) {
         var code = getCodeTopic(block);
         var metaInfo = getMetaInfoTopic();
     } else if (selectedType == "Service") {
-        var code = getCodeService(block);
+        var code = getCodeService(block, blockId);
         var metaInfo = getMetaInfoService();
     } else if (selectedType == "Action") {
         var code = getCodeAction(block, blockId);
         var metaInfo = getMetaInfoAction();
     } else return
-
+    // console.log(block)
+    // return
     if (code && code != "") {
 
         var newBlock = { "id": blockId, "meta": JSON.stringify(metaInfo), "code": code, "block": JSON.stringify(block) };

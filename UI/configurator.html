@@ -29,7 +29,8 @@
                 <div id="blocks-overview">
                     <div class="row" style="margin-right: 0px;">
                         <div class="collection" style="margin-bottom: 15px !important;">
-                            <a class="collection-item" id="createBlockNav" onclick="clearform()" style="font-weight: normal;">Add block</a>
+                            <a class="collection-item" id="createBlockNav" onclick="clearform()" style="font-weight: normal;">Add
+                                block</a>
                         </div>
                         <div id="blockList" class="collection">
                         </div>
@@ -61,12 +62,18 @@
                             <input placeholder="Name" id="in1" type="text" class="validate">
                         </div>
                         <div class="input-field col s6">
+                            <label class="active">Type</label>
                             <select id="typeSelector" style="display: block;border-bottom: 1px solid #8fbee5 !important;background-color: #f9f9f9;">
                                 <option value="1">Topic</option>
                                 <option value="2">Service</option>
                                 <option value="3">Action</option>
                             </select>
-                            <label class="active">Type</label>
+                            <div id="respout" style="margin-top: 5px;">
+                                <label>
+                                    <input id="serviceout" type="checkbox" class="filled-in srvCode" />
+                                    <span>use response as output</span>
+                                </label>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -123,10 +130,10 @@
                 </div>
                 <div id="configAction">
                     <div class="row">
-                            <div class="input-field col s1">
-                                    <label for="actiontimeout" class="active">Timeout</label>
-                                    <input id="actiontimeout" type="number" min="0" value="10" class="validate">
-                                </div>
+                        <div class="input-field col s1">
+                            <label for="actiontimeout" class="active">Timeout</label>
+                            <input id="actiontimeout" type="number" min="0" value="10" class="validate">
+                        </div>
                         <div class="input-field col s5">
                             <label for="action" class="active">Server</label>
                             <input placeholder="Server name" id="action" type="text" class="validate">

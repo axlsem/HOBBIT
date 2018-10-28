@@ -262,7 +262,7 @@ function load_demo_locally() {
 function clear_ws() {
 	if (confirm("Do you really want to clear workspace?") == true) {
 		workspace.clear();
-		// localstorage();
+		localStorage.removeItem("blocks_cache")
 		console.log("Workspace cleaned.");
 	}
 };
