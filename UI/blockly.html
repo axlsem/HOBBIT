@@ -31,17 +31,17 @@
 						<div id="icon-blocks" class="icon-blocks-current">Blocks</div>
 					</a>
 				</li>
-				<li>
+				<li class="hide-on-study">
 					<a id="nav-run">
 						<div id="icon-run" class="icon-run-passive">Run</div>
 					</a>
 				</li>
-				<li>
+				<li class="hide-on-study">
 					<a id="nav-code">
 						<div id="icon-code" class="icon-code-passive">Code</div>
 					</a>
 				</li>
-				<li class="nav-save-dropdown">
+				<li class="nav-save-dropdown hide-on-study">
 					<a id="nav-save">
 						<div id="icon-save" class="icon-save-passive">Save</div>
 					</a>
@@ -50,7 +50,7 @@
 						<a id="nav-save-locally" class="dropdown-element">to local file</a>
 					</div>
 				</li>
-				<li class="nav-save-dropdown">
+				<li class="nav-save-dropdown hide-on-study">
 					<a id="nav-load">
 						<div id="icon-load" class="icon-load-passive">Load</div>
 					</a>
@@ -63,6 +63,15 @@
 					<a id="nav-clear">
 						<div id="icon-clear" class="icon-clear-passive">Clear</div>
 					</a>
+				</li>
+				<li class="show-on-study" id="nav-start-wrapper" style="display: none">
+					<a id="nav-start">Start</a>
+				</li>
+				<li class="show-on-study" style="display: none" id="nav-stop-wrapper">
+					<a id="nav-stop" style="display: none">Stop</a>
+				</li>
+				<li class="show-on-study" style="display: none" id="nav-submit-wrapper">
+					<a id="nav-submit" style="display: none">Submit</a>
 				</li>
 			</ul>
 		</nav>
@@ -102,7 +111,7 @@
 		</table>
 	</section>
 
-	<div id="blocklyDiv" style="position: absolute"></div>
+		<div class="hide-on-study" id="blocklyDiv" style="position: absolute"></div>
 
 	<xml id="toolbox" style="display: none">
 		<category></category>
@@ -114,6 +123,7 @@
 	<script src="./js/python_compressed.js"></script>
 	<script src="./js/msg/js/en.js"></script>
 	<script src="./js/blockly.js"></script>
+	<script src="./js/study.js"></script>
 	<script src="./js/ace.js" type="text/javascript" charset="utf-8"></script>
 
 </body>

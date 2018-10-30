@@ -563,8 +563,7 @@ function create(mode) {
         var code = getCodeAction(block, blockId);
         var metaInfo = getMetaInfoAction();
     } else return
-    // console.log(block)
-    // return
+    
     if (code && code != "") {
 
         var newBlock = { "id": blockId, "meta": JSON.stringify(metaInfo), "code": code, "block": JSON.stringify(block) };

@@ -23,6 +23,10 @@ function loadBlockly(req, res) {
 	res.sendFile('./blockly.html', { root: __dirname });
 };
 
+function loadEditor(req, res) {
+	res.sendFile('./editor.html', { root: __dirname });
+};
+
 function runCode(req, res) {
 	var body = '';
 	var feedback = '';
@@ -277,7 +281,7 @@ function createBlock(req, res) {
 
 			fs.writeFile("./blocks.json", JSON.stringify(exisBlocks), (err) => {
 				if (err) throw err;
-				console.log("Block "+id+" "+reqpath.substring(1)+"d.");
+				console.log("Block " + id + " " + reqpath.substring(1) + "d.");
 				res.status(200).send(exisBlocks);
 			});
 
@@ -292,11 +296,11 @@ function deleteBlock(req, res) {
 		if (err) res.status(404).send({})
 		var exisBlocks = JSON.parse(exisBlocks);
 		var idx = exisBlocks.findIndex(v => v.id == id);
-		exisBlocks.splice(idx,1);
+		exisBlocks.splice(idx, 1);
 
 		fs.writeFile("./blocks.json", JSON.stringify(exisBlocks), (err) => {
 			if (err) throw err;
-			console.log("Block "+id+" deleted.");
+			console.log("Block " + id + " deleted.");
 			res.status(200).send(exisBlocks)
 		});
 
@@ -311,9 +315,47 @@ function getBlocks(req, res) {
 	});
 }
 
+function saveSubmission(req, res) {
+	var body = '';
+	var userId = req.params.userId;
+
+	req.on('error', function (err) {
+		console.error(err);
+	});
+
+	req.on('data', function (data) {
+		body += data;
+
+		if (body.length > 1e6)
+			req.connection.destroy();
+	});
+
+	req.on('end', function () {
+
+		var post = qs.parse(body);
+		var subm = JSON.parse(post['data']);
+		var subtype = subm.type;
+		var filepath = './submissions/'+subtype+'.json';
+
+		fs.readFile(filepath, function (err, data) {
+			if (err) res.status(500).send({})
+			var submissions = JSON.parse(data);
+			submissions.push(subm);
+
+			fs.writeFile(filepath, JSON.stringify(submissions), (err) => {
+				if (err) res.status(500).send(err);
+				console.log("User " + userId + " submitted " + subtype);
+				res.status(200).send(submissions)
+			});
+
+		});
+	});
+}
+
 app.use(express.static(__dirname + '/'));
 
 app.get('/', loadIndex);
+app.get('/code', loadEditor);
 app.get('/blockly', loadBlockly);
 app.post('/run', runCode);
 app.post('/save', saveWorkspace);
@@ -326,6 +368,7 @@ app.post('/create', createBlock);
 app.put('/update', createBlock);
 app.delete('/delete/:blockId', deleteBlock);
 app.get('/blocks', getBlocks);
+app.post('/submit/:userId', saveSubmission);
 
 app.listen(PORT, '0.0.0.0', function () {
 	console.log('Hobbit blockly is now listening to port ' + PORT + '!');
