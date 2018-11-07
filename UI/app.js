@@ -127,6 +127,7 @@ function saveWorkspace(req, res) {
 
 function loadDemo(req, res) {
 	var body = '';
+	var demoname = req.params.demoname;
 
 	req.on('error', function (err) {
 		console.error(err);
@@ -142,9 +143,14 @@ function loadDemo(req, res) {
 	req.on('end', function () {
 		var post = qs.parse(body);
 
-		fs.readFile(pathXML + post.filename, 'utf8', function (err, data) {
-			if (err) throw err;
-			res.status(200).send({ "result": data });
+		fs.readFile(pathXML + demoname + ".xml", 'utf8', function (err, data) {
+			if (err) {
+				console.log(err);
+				res.status(400).send("Demo " + demoname + " doesn't exist!");
+			}
+			else {
+				res.status(200).send({ "result": data })
+			};
 		});
 	});
 
@@ -269,19 +275,21 @@ function createBlock(req, res) {
 		fs.readFile('./blocks.json', function (err, exisBlocks) {
 			var exisBlocks = JSON.parse(exisBlocks);
 
-			if (reqpath == "/create") {
+			if (reqpath == '/block/create') {
 				newBlock.name = "custom" + exisBlocks.length.toString();
 				exisBlocks.push(newBlock);
+				var action = "created";
 			} else {
 				var idx = exisBlocks.findIndex(v => v.id == id);
 				newBlock.name = exisBlocks[idx].name;
 				exisBlocks[idx] = newBlock;
+				var action = "updated";
 			}
 
 
 			fs.writeFile("./blocks.json", JSON.stringify(exisBlocks), (err) => {
 				if (err) throw err;
-				console.log("Block " + id + " " + reqpath.substring(1) + "d.");
+				console.log("Block " + id + " " + action);
 				res.status(200).send(exisBlocks);
 			});
 
@@ -335,7 +343,7 @@ function saveSubmission(req, res) {
 		var post = qs.parse(body);
 		var subm = JSON.parse(post['data']);
 		var subtype = subm.type;
-		var filepath = './submissions/'+subtype+'.json';
+		var filepath = './submissions/' + subtype + '.json';
 
 		fs.readFile(filepath, function (err, data) {
 			if (err) res.status(500).send({})
@@ -357,17 +365,17 @@ app.use(express.static(__dirname + '/'));
 app.get('/', loadIndex);
 app.get('/code', loadEditor);
 app.get('/blockly', loadBlockly);
-app.post('/run', runCode);
-app.post('/save', saveWorkspace);
-app.post('/load', loadDemo);
-app.post('/demolist', showDemolist);
-app.post('/delete', deleteDemo);
-app.get('/toolbox', loadToolbox);
+app.post('/demo/run', runCode);
+app.post('/demo/save', saveWorkspace);
+app.get('/demo/load/:demoname', loadDemo);
+app.get('/demo/list', showDemolist);
+app.post('/demo/delete', deleteDemo);
+app.get('/demo/toolbox', loadToolbox);
 app.get('/configurator', loadConfigurator);
-app.post('/create', createBlock);
-app.put('/update', createBlock);
-app.delete('/delete/:blockId', deleteBlock);
-app.get('/blocks', getBlocks);
+app.post('/block/create', createBlock);
+app.put('/block/update', createBlock);
+app.delete('/block/delete/:blockId', deleteBlock);
+app.get('/block/list', getBlocks);
 app.post('/submit/:userId', saveSubmission);
 
 app.listen(PORT, '0.0.0.0', function () {

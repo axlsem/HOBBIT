@@ -74,7 +74,7 @@ function setElementVisible(elem, visible) {
 }
 
 function init() {
-    $.get("/blocks", function (data, status) {
+    $.get('/block/list', function (data, status) {
         if (status == "success") {
 
             var selectedBlock = window.location.search.substring(1);
@@ -569,7 +569,7 @@ function create(mode) {
         var newBlock = { "id": blockId, "meta": JSON.stringify(metaInfo), "code": code, "block": JSON.stringify(block) };
 
         if (mode == "create") {
-            $.post("/create",
+            $.post('/block/create',
                 {
                     block: newBlock
                 }, function (data, status) {
@@ -581,7 +581,7 @@ function create(mode) {
                     }
                 });
         } else {
-            $.put("/update",
+            $.put('/block/update',
                 {
                     block: newBlock
                 }, function (data, status) {
@@ -601,7 +601,7 @@ function create(mode) {
 
 function deleteBlock() {
     if (confirm("Do you really want to delete this block?") == true) {
-        $.delete("/delete/" + currentBlock.id,
+        $.delete("/block/delete/" + currentBlock.id,
             {}, function (data, status) {
                 if (status == "success") {
                     window.alert("Block successfully deleted.");

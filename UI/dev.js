@@ -14,7 +14,7 @@ app.get('/', function (req, res) {
 	res.sendFile('./index.html', { root: __dirname });
 });
 
-app.post('/run', function (req, res) {
+app.post('/demo/run', function (req, res) {
 	var body = '';
 	
 	req.on('error', function (err) {
@@ -53,7 +53,7 @@ app.post('/run', function (req, res) {
 	res.end();
 });
 
-app.post('/save', function (req, res) {
+app.post('/demo/save', function (req, res) {
 	var body = '';
 	
 	req.on('error', function (err) {
@@ -90,7 +90,7 @@ app.post('/save', function (req, res) {
 	
 });
 
-app.post('/load', function (req, res) {
+app.get('/demo/load', function (req, res) {
 	var body = '';
 	
 	req.on('error', function (err) {
@@ -115,7 +115,7 @@ app.post('/load', function (req, res) {
 	
 });
 
-app.post('/demolist', function (req, res) {
+app.post('/demo/list', function (req, res) {
 	var body = '';
 	
 	req.on('error', function (err) {

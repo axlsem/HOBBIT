@@ -64,7 +64,7 @@ function run_code() {
 	var pycode = getCode();
 
 	if (confirm("Do you really want to run the demo?") == true) {
-		$.post("/run",
+		$.post("/demo/run",
 			{
 				code: pycode,
 				filename: "run.py",
@@ -110,7 +110,7 @@ function save_demo_robot() {
 
 			var xml = Blockly.Xml.workspaceToDom(workspace);
 			var xml_text = Blockly.Xml.domToText(xml);
-			$.post("/save",
+			$.post("/demo/save",
 				{
 					content: xml_text,
 					demoname: demoname,
@@ -122,7 +122,7 @@ function save_demo_robot() {
 							alert("Demo saved.");
 						} else {
 							if (confirm("File already exists. Do you want overwrite it?") == true) {
-								$.post("/save",
+								$.post("/demo/save",
 									{
 										content: xml_text,
 										demoname: demoname,
@@ -163,7 +163,7 @@ function show_demolist() {
 	var hobbit_modal = document.getElementById("load-hobbit-modal");
 	hobbit_modal.style.display = 'block';
 
-	$.post("/demolist",
+	$.get("/demo/list",
 		{
 		}, function (data, status) {
 			if (status == "success") {
@@ -198,9 +198,8 @@ function load_demo_robot() {
 		if (filename == null || filename == "") {
 			console.log('Cancelled')
 		} else {
-			$.post("/load",
+			$.get("/demo/load/+filename",
 				{
-					filename: filename + '.xml'
 				}, function (data, status) {
 					if (status == "success") {
 						workspace.clear();
@@ -333,7 +332,7 @@ var workspace = Blockly.inject(blocklyDiv,
 		trashcan: true
 	});
 
-$.get("/toolbox", function (data, status) {
+$.get('/demo/toolbox', function (data, status) {
 	if (status == "success") {
 
 		for (var custBlock of data.blocks) {

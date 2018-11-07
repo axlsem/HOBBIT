@@ -1,6 +1,6 @@
 function listDemos() {
     $("#cont").empty();
-    $.post("/demolist",
+    $.get("/demo/list",
         {
         }, function (data, status) {
             if (status == "success") {
@@ -9,13 +9,13 @@ function listDemos() {
                     var cardClass = 'class="col s12 m6 l4 xl3"';
 
                     var demos = [
-                        '<div ' + cardClass + '>',
+                        '<div style="height: 140px;margin-bottom: 24px"' + cardClass + '>',
                         '<div class="card">',
                         '<div class="valign-wrapper demo">',
                         '<div class="card-content">',
                         '<div><h5>' + title + '</h5></div>',
                         '<div class="row center-align">',
-                        '<a><div class="col s4 m4" onclick={deleteDemo(\'' + title + '\')}>delete</div></a>',
+                        '<a><div class="col s4 m4 truncate" onclick={deleteDemo(\'' + title + '\')}>delete</div></a>',
                         '<a><div class="col s4 m4" onclick={runDemo(\'' + title + '\')}>run</div></a>',
                         '<a><div class="col s4 m4" onclick={showDemo(\'' + demofile + '\')}>show</div></a>',
                         '</div>', '</div>', '</div>', '</div>', '</div>'
@@ -39,7 +39,8 @@ function listDemos() {
                     '</div>', '</div>', '</div>'
                 ].join("\n");
 
-                $("#cont").append(createDemo).append(configurator);
+                $("#cont").append(createDemo);
+                $("#cont").append(configurator);
             } else {
                 alert("Something went wrong!");
             }
@@ -47,9 +48,8 @@ function listDemos() {
 }
 
 function showDemo(demofile) {
-    $.post("/load",
+    $.get("/demo/load/"+demofile.slice(0,-4),
         {
-            filename: demofile
         }, function (data, status) {
             if (status == "success") {
                 xml_demo = data.result;
@@ -63,7 +63,7 @@ function showDemo(demofile) {
 
 function deleteDemo(demoname) {
     if (confirm("Do you really want to delete this demo?") == true)
-        $.post("/delete",
+        $.post("/demo/delete",
             {
                 demoname: demoname
             }, function (data, status) {
@@ -78,7 +78,7 @@ function deleteDemo(demoname) {
 
 function runDemo(demofile) {
     if (confirm("Do you really want to run the demo?") == true) {
-        $.post("/run",
+        $.post("/demo/run",
             {
                 filename: "run.py",
                 sourcepath: "./demos/src/",
