@@ -63,9 +63,14 @@
 	\include{Conclusion}
 	% Appendix...
 	%=============
+	% \renewcommand\thesection{\Alph{section}}
 	\appendix
-	\chapter{Appendix}
-	\include{apxROS}
+	\addcontentsline{toc}{chapter}{Appendices}
+	% \section{Appendices}
+	\chapter*{Appendices}
+	\include{apxBlockConfigurationManual}
+	\include{apxBlocks}
+	% \include{apxROS}
 	
 	
 	% Literaturverzeichnis...

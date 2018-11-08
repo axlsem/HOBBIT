@@ -1,0 +1,26 @@
+\chapter{Block configuration manual} \label{apx:BlockConfigManual}
+This appendix shows step-by-step examples for configuring custom blocks using \toolname{}'s block configurator for each of the following ROS communication patterns:
+\begin{itemize}
+    \item Topic
+    \item Service
+    \item Action
+\end{itemize}
+
+\section*{Custom block using a topic}
+This example creates a custom block, which sending a message to a ROS based robot. The filled form is shown in \prettyref{fig:ExTopicForm}, the final design is shown in \prettyref{fig:ExTopicBlock}.
+
+\begin{figure}[htbp]
+	\centering
+	\begin{overpic}[width=0.8\linewidth]{./graphics/manual/ExTopicForm}
+	\end{overpic}
+	\caption{Filled form to create a custom block using a topic}%
+	\label{fig:ExTopicForm}%
+\end{figure}
+
+\begin{figure}[htbp]
+	\centering
+	\begin{overpic}[width=0.2\linewidth]{./graphics/manual/ExTopicBlock}
+	\end{overpic}
+	\caption{Resulting custom block using the block configuration shown in \prettyref{fig:ExTopicForm}}%
+	\label{fig:ExTopicBlock}%
+\end{figure}
