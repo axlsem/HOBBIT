@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Blocky for Hobbit</title>
+    <meta name="description" content="Simplifying Hobbit">
+    <meta name="author" content="Alexander Semeliker (TU Wien)">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <link rel="shortcut icon" href="../img/favicon.ico" />
+
+    <link rel="stylesheet" href="../css/styles.css">
+    <link type="text/css" rel="stylesheet" href="../css/materialize.min.css" media="screen,projection" />
+    <link type="text/css" rel="stylesheet" href="../css/collapsible.css" media="screen,projection" />
+</head>
+
+<body>
+    <div class="container">
+        <div class="row btn-rule">
+            <div style="float:left">
+                <h4>Help</h4>
+            </div>
+            <div id="logo" onclick="toIndex()"></div>
+        </div>
+        <div class="row">
+            <div class="col s3">
+                <div id="blocks-overview">
+                    <div class="row" style="margin-right: 0px;">
+                        <div id="blockList" class="collection">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col s9">
+                <h5 id="title"></h5>
+                <p id="desc"></p>
+                <h6 id="paramsheader" style="font-size:1.4rem;">Parameters</h6>
+                <ul id="params"></ul>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/help.js"></script>
+
+</body>
+
+</html>

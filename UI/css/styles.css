@@ -7,8 +7,25 @@ html, body {
 	width: 100%;
 }
 
-h4 {
+h6,h5,h4 {
 	color: #006699;
+}
+
+.help-inp-type {
+	background: #8fbee5;
+	color: #ffffff;
+	border: solid #8fbee5;
+	border-radius: 8px; 
+	margin-right: 5px;
+	padding: 2px 5px;
+}
+
+.help-dropdown-opt {
+	color: #006699;
+	border: solid #006699 2px;
+	border-radius: 8px; 
+	margin-right: 5px;
+	padding: 2px 5px;
 }
 
 .demo {
@@ -257,6 +274,15 @@ textarea:disabled {
 	height: 100%;
 	overflow: auto;
 	background-color: rgba(0,0,0,0.4);
+}
+
+.params-li {
+	float: none;
+	display: block;
+}
+
+.nested-ul {
+	margin-left: 20px;
 }
 
 .modal-content {

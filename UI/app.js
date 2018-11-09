@@ -19,6 +19,10 @@ function loadIndex(req, res) {
 	res.sendFile('./index.html', { root: __dirname });
 };
 
+function loadHelp(req, res) {
+	res.sendFile('./help.html', { root: __dirname });
+};
+
 function loadBlockly(req, res) {
 	res.sendFile('./blockly.html', { root: __dirname });
 };
@@ -365,6 +369,7 @@ app.use(express.static(__dirname + '/'));
 app.get('/', loadIndex);
 app.get('/code', loadEditor);
 app.get('/blockly', loadBlockly);
+app.get('/help', loadHelp);
 app.post('/demo/run', runCode);
 app.post('/demo/save', saveWorkspace);
 app.get('/demo/load/:demoname', loadDemo);
