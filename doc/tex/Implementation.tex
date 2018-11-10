@@ -1,0 +1,186 @@
+\chapter{Implementation}
+This chapter gives detail insights into the implementation of \toolname{}. Each component presented in the architectural overview (\prettyref{sec:ArchitectureOverview}) is explained together with the essential code snippets.
+
+\section{Backend \& Frontend Communication}
+The communication between frontend (client) and backend (server) is done via a RESTful API. A RESTful API is based on representational state transfer (REST) technology and uses HTTP (Hypertext Transfer Protocol) request methods, which are defined in RFC 2616 \cite{RFC2616}, to exchange data between web services. All implemented API endpoints, which are used to manage demos and codes are listed in \prettyref{tab:APIspec}.
+
+\begin{table}[htbp]
+	\centering
+	\begin{tabular}{l l l}
+		\toprule
+		Type   & Path                               & Description                                     \\
+		\midrule
+		GET    & /demo/list                         & list all demos saved on the robot               \\
+		GET    & /demo/load/\textit{\{demoId\}}     & get the \lstinline!.xml! tree for a demo        \\
+		POST   & /demo/save                         & save a new demo on the robot                    \\
+		POST   & /demo/run/\textit{\{demoId\}}      & run a demo                                      \\
+		DELETE & /demo/delete\textit{\{demoId\}}    & delete a demo                                   \\
+		GET    & /demo/toolbox                      & load the toolbox of the Blockly interface       \\
+		GET    & /block/list                        & list all already configured custom blocks       \\
+		POST   & /block/create                      & create a new custom block                       \\
+		PUT    & /block/update/\textit{\{blockId\}} & update a custom block                           \\
+		DELETE & /block/delete/\textit{\{blockId\}} & delete a custom block                           \\
+		\bottomrule
+	\end{tabular}
+	\caption{API endpoints for managing demos and custom blocks}
+	\label{tab:APIspec}
+\end{table}
+
+\section{Demo Management}
+The Demo Management (\prettyref{fig:DemoManagement}) is one key feature of \toolname{} and the entry point of it. It gives an overview of all avaible demos, meaning demos, which are saved on the robot in a specific directory. It provides a graphical interface and hence makes it a lot easier to manage and run demos - in contrast to the other mentioned options (\prettyref{sec:Options}), where e.g. the user needs to explicity locate the file and run it. Since usability and simplicity are main requirements for this tool, such a feature is a main advantage of it. Furthermore the main page provides the option to create new demos and a redirection to the block configuration component (\prettyref{sec:BlockConfiguration}).
+
+\begin{figure}[htbp]
+	\centering
+	\begin{overpic}[width=\linewidth]{./graphics/DemoManagementFrontend}
+	\end{overpic}
+	\caption{Demo Management Page}%
+	\label{fig:DemoManagement}%
+\end{figure}
+
+At the start of the tool the \lstinline!/demos/! directory inside the tools folder on the robot is searched for saved demos. Since we talking about a web-based tool and demos are saved on the robot, this requieres a call to the backend, which then returns a list of all demos via the RESTful API. The structure of all demos are stored in \lstinline!.xml! files, which are interpreted by Blockly.
+
+\section{Block Configuration} \label{sec:BlockConfiguration}
+There are a lot of needs a user want to create a custom block. The pre-implemented blocks are designed for the ROS architecture of \hobbit{} and any other robot won't show the desired behavior when receiving commands sent from these blocks. Even for \hobbit{} itself the provided block set doesn't cover all of its functionalites. Using another robot means publishing different data to other topics, calling other services and using other action clients. Of course, the user can walk through the whole custom block creation process described in \prettyref{sub:Blockly} to create new blocks. This requieres knowledge of progamming in JavaScript and the Blockly API. The user would then can use all of Blockly's broad range of features and advantages, especially dynamically changing of block features.
+
+On the other hand for a lot of the tasks such features aren't necessary or a workaround with less effort can be found, respectively. For this reason \toolname{} provides a block configuration interface, which allows the user to create custom blocks with the two basic visual designs: an execution block and an input block (\prettyref{fig:CustomBlockTypes}). With this interface the user can configure blocks for publishing data to topics, calling services with parameters and creating simple action clients.
+
+\begin{figure}[htbp]
+	\centering
+	\begin{overpic}[width=0.5\linewidth]{./graphics/ExCustomBlockTypes}
+	\end{overpic}
+	\caption{Basic visual designs: execution block (left) and input block (right)}%
+	\label{fig:CustomBlockTypes}%
+\end{figure}
+
+The design of the interface is shown in \prettyref{fig:BlockConfiguration}. It is devided into three sections:
+\begin{enumerate}[I.]
+	\item An overview of already created custom blocks
+	\item A form to provide general information of the block
+	\item A form to provide detail information of the block (type-specific)
+\end{enumerate}
+
+\begin{figure}[htbp]
+	\centering
+	\begin{overpic}[width=0.8\linewidth]{./graphics/BlockConfiguration}
+	\end{overpic}
+	\caption{Design of the block configuration interface}%
+	\label{fig:BlockConfiguration}%
+\end{figure}
+
+The list of all already configured custom blocks is loaded via the GET request endpoint \lstinline!/block/list! of the tool's internal RESTful API. The request delivers an object with the Blockly conform block and code definitions, the unique ID and name of the respective block as well as the block's meta data. The latter is used to set the general and detail forms in case the custom block is selected. Identification which custom block is selected is handeld via the query string of the URL, which is set to the custom block's ID if it is selected. The ID of a block is a alphanumerical 12-character string, which is generated randomly. \\
+
+The general information form is primarily used to set the visual design of the block. The user can configure the title and tooltip of the block as well as the number and names of the inputs, which then can be used in the detail section. The detail section varies depending on which type of the ROS communicating patterns is used. A topic must be specified by its name, the message type and the message itself. If the user wants to create a custom block for calling services, it is necessary to provide the name of the service, the message type and a list of all message type specific fields with their values. Furthermore it is possible to choose whether the response of the service should be used as output - which will lead to an input block - or not - then an execution block is generated (\prettyref{fig:CustomBlockTypes}). The detail section for actions includes fields for setting the execution timeout (which is defined as the time to wait for the goal to complete), the server name, the message type and the goal. It is also possible to provide the following callback functions:
+
+\begin{itemize}
+	\item done\_cb: callback that gets called on transitions to  \textit{Done} state.
+	\item active\_cb: callback that gets called on transitions to  \textit{Active} state.
+	\item feedback\_cb: callback that gets called whenever feedback for the goal is received.
+\end{itemize}
+
+All detail sections also features an input field for importing all Python packages that are needed to execute the code correctly, e.g. messages types that are used to generate the message. Some step-by-step examples for configuring custom blocks are presented in \prettyref{apx:BlockConfigManual}.
+
+\section{Code Generation} \label{sec:CodeGeneration}
+Demos are created via the user interface shown in \prettyref{fig:CodeGeneration}. It can be devided into three sections:
+
+\begin{enumerate}[I.]
+	\item the \textbf{navigation header} holds elements to directly manage the current demo,
+	\item the \textbf{toolbox} contains code blocks organized in categories,
+	\item the \textbf{workspace} where the blocks can be dragged to from the toolbox and connected with each other.
+\end{enumerate}
+
+\begin{figure}[htbp]
+	\centering
+	\begin{overpic}[width=\linewidth]{./graphics/CodeGenerationScreen}
+	\end{overpic}
+	\caption{User interface for demo and code generation}%
+	\label{fig:CodeGeneration}%
+\end{figure}
+
+Blocks which are dragged to and combined at the workspace creates are used to generate an executable code. This is done with the help of Blockly (see \prettyref{sub:Blockly}). Blockly came up with some predefined code blocks that allow some basic programming procedures.
+On top of them \toolname{} provides further blocks, which allows to connect to \hobbit{} and perform several actions (\prettyref{tab:hobbitCommands}). A list and description of these blocks can be found in \prettyref{apx:BlockOverview}. All of them are using one of the mentioned ROS communicating pattern (topic, service, action) to call the interface of the robot and have a similar structure thanks to the design of a custom Python module (\prettyref{sec:PythonModule}). \\
+
+To get a clearer understanding of the general structure of these blocks and the Blockly custom block creation (\prettyref{sub:Blockly}) an explicit example is presented. The choosen examaple shows the block and code definition to create a block, which allows to move \hobbit{} a given distance into a given direction (\prettyref{fig:ExBlockMove}).
+
+\begin{figure}[htbp]
+	\centering
+	\begin{overpic}[width=0.3\linewidth]{./graphics/blocks/move}
+	\end{overpic}
+	\caption{Example block to be created}%
+	\label{fig:ExBlockMove}%
+\end{figure}
+
+\begin{figure}[htbp]
+	\lstinputlisting[label={lst:MoveHobbitBlock},caption={Full block initialization for moving \hobbit{} forward and backward}, language={JavaScript}]{./listings/ExMoveHobbitBlock.js}
+\end{figure}
+
+The full block definition for the mentioned example is given in \prettyref{lst:MoveHobbitBlock}. Lines 2 and 3 indicates, that the block is initialized using a JavaScript function (same as in \prettyref{lst:DefineBlockEx}). In lines 1 and 4 the name and type of the block are set, which is important to get the assign the corresponding code object later on. The \lstinline!message0! key is used to set the message displayed on the block, whereas the placeholders (\%1,\%2) are replaced by the arguments given by the objects passed to the \lstinline!args0! key. In the presented case the first argument is an input field and must be a number (lines 8,10) and the second one (lines 13 to 24) a dropdown field with options "forward" and "backward" displayed. To get the passed values for code generation a name for each paramter is set (lines 9,14). Lines 27 and 28 indicates that the block has connections on the top and bottom, but there are no constraints for them. The last three lines are just used to set the color, tooltip and an optional help URL. \\
+
+
+\begin{figure}[htbp]
+	\lstinputlisting[label={lst:MoveHobbitCode},caption={Full code initialization for moving \hobbit{} forward and backward}, language={JavaScript}]{./listings/ExMoveHobbitCode.js}
+\end{figure}
+
+The corresponding code initialization is shown in \prettyref{lst:MoveHobbitCode}. Line 1 again shows the internal design of Blockly, which is based on assigning functions and objects to classes. Blockly supports code generation for several programming languages, which all are implemented in seperate classes. Since the presented tool should convert blocks into Python code, the Python class is used. Within the code initialization first the input values of the block are read through the provided API (line 2,3). Then some ROS specific initialization is done (line 4), which basically handles the import of the rospy package and the custom Python module as well as creating a ROS node. The name of the node is defined by the constant string \lstinline!Blockly.Python.NodeName! and an instance of a certain class of the Python module. \lstinline!Blockly.Python.InitROS()! is a custom command and must be included in the code initialization of each block. Finally the code string is assembled by just calling the corresponding control function of the ROS node instance with the input parameters (line 6) and then returned (line 7).
+
+The code initialization of each created block follows the mentioned steps, which can be summarized as follows:
+\begin{enumerate}
+	\item Getting the values of the inputs.
+	\item Initialization of the ROS interface
+	\item Assembly of the code string by simply calling the responding functions of the Python module
+\end{enumerate}
+
+This generic design is another decrease of the conditions - in terms of JavaScript knowledge - for using the Blockly framework, because it outsources the main and most complex task of assembling the executing code to an interface more robot programmers are familiar with. Futhermore Google provides a visual interface - using the Blockly framework itself - to easily create the block configuration object. \footnote{https://blockly-demo.appspot.com/static/demos/blockfactory/index.html}
+
+\section{Code Editor}
+The generated code can be accessed by clicking on the \textit{Code} tab on the user interface (\prettyref{fig:CodeGeneration}). It provides the opportunity to add further functionality to the code, which is not already covered by the tool, before execute the demo or save it. This could be very basic modification, e.g. just adding comments to code or inserting debugging messages, or more advanced ones, e.g. adding the functionality to subscribe to a topic.
+
+This makes \toolname{} not only to be a stand-alone solution for basic use cases, but a supporting tool for more experienced users, who don't want to build their code from the scratch.
+
+\begin{figure}[htbp]
+	\lstinputlisting[label={lst:AceInject},caption={Embedding Ace, setting preferences and displaying generated code}, language={JavaScript}]{./listings/AceInject.js}
+\end{figure}
+
+The implementation of the provided editor basically involve just embedding Ace via its API (see \prettyref{sub:jsFrameworks}). The basic embedding code is shown in \prettyref{lst:AceInject}. It also shows how connected blocks on the workspace are translated into an executable Python code usind the Blockly API (Line 2) and to display the generated code (Line 10). The variable \textit{workspace} is an instance of the static class \textit{Blockly.Workspace}. \footnote{https://developers.google.com/blockly/reference/js/Blockly}
+
+\section{Python Module} \label{sec:PythonModule}
+As described above each block of the \hobbit{} block set calls a corresponding method of the ROS node class inside the custom Python module, which then calls generic communication methods. This section describes how the module is set up and the generic methods to initiate the ROS communication for each communication pattern are implemented. It is desigend as shown in \prettyref{fig:PythonApi} with a class containing the necessary properties and methods. For all listings debugging messages are excluded.
+
+\subsubsection{Initialization}
+For any form of communication between the nodes, they have to register to the so called ROS Master - the master node, which provides naming and registration services to the rest of the nodes in the ROS system. It has to bes started as the first process, which in the case of \hobbit{} is done at its booting process. Therefore the initialization process of the custom Python module only needs to register a new client node. This is done by simply calling the corresponding \lstinline!init_node! method \footnote{http://docs.ros.org/jade/api/rospy/html/rospy-module.html#init_node} of the rospy package, which takes the node's name as parameter. Duplicate calls to \lstinline!init_node! are forbidden, for which reason the \lstinline!Blockly.Python.InitROS()! method inside every block was introduced as mentioned \prettyref{sec:CodeGeneration}. It ensures that \lstinline!init_node! is called from the main Python thread.
+
+\subsubsection{Topic}
+For publishing to topic the \lstinline!rospy.Publisher! class \footnote{http://docs.ros.org/melodic/api/rospy/html/rospy.topics.Publisher-class.html} of the rospy package is used. It takes two mandatory initialization paramters: the resource name of topic as a string and the message class. The publishing itself is executed by calling the \lstinline!publish! method of the class. It can either be called with the message instance to publish or with the constructor arguments for a new message instance. The full implementation of the generic publishing method is shown in \prettyref{lst:PyModuleTopic}. There are a few important things. First, a instance of the \lstinline!rospy.Rate! class \footnote{http://docs.ros.org/jade/api/rospy/html/rospy.timer.Rate-class.html} is created to ensure the publisher is instanced and the message is published. Second, the \lstinline!exec! Python built-in function is, so any manipulation by the user should be prevented. This is ensured by encapsulating the generic function as mentioned in the beginning of this section. Last, all message classes for the implemented commands (\prettyref{tab:hobbitCommands}) are imported at the beginning in order to successfully execute the \lstinline!exec! statement.
+
+\begin{figure}[htbp]
+	\lstinputlisting[label={lst:PyModuleTopic},caption={Implementation of a generic method to publish to a ROS topic}, language={Python}]{./listings/PyModulePublisher.py}
+\end{figure}
+
+\subsubsection{Service}
+To call ROS services first it is necessary to create an instance of the \lstinline!rospy.ServiceProxy! class \footnote{http://docs.ros.org/api/rospy/html/rospy.impl.tcpros_service.ServiceProxy-class.html} with the name and class of the desired service. Then it is recommended to wait until the service is available - which is done by calling the \lstinline!rospy.wait_for_service! method - before finally calling the instance. This basic steps are included in the generic service call method of the custom Python module (\prettyref{lst:PyModuleService}). It can be structured into three parts: the two just mentioned - creating (lines 9 to 14) and calling the instance (lines 16 to 22) - and a parameter preparation part (lines 2 to 7).
+
+The latter is introduced to create a simple and understandable execution statement when calling the service. Service parameters, which are passed as list to \lstinline!callService! method, are splitted and assigned to temporary variables \lstinline!par0,par1,...,parN!, where $N=k-1$ and $k$ being the number of service parameters. This temporary variables then are combined to a string, which seperates the parameters with a comma. This string then is passed to the execution statement. Additionally the basic error handling is outlined by excepting typical ROS provided exceptions.
+
+\begin{figure}[ht]
+	\lstinputlisting[label={lst:PyModuleService},caption={Implementation of a generic method to call a ROS service}, language={Python}]{./listings/PyModuleService.py}
+\end{figure}
+
+\subsubsection{Action}
+Although the ROS actionlib is a very powerful component, its usage is very simple, as can be seen in \prettyref{lst:PyModuleAction}. The action client and server communicate over a set of topics. The action name describes the namespace containing these topics, and the action specification message describes what messages should be passed along these topics. This infos are necessary to construct a \lstinline!SimpleActionClient! and open connections to an \lstinline!ActionServer! \footnote{http://docs.ros.org/jade/api/actionlib/html/classactionlib_1_1ActionServer.html} (line 2). Before sending the goal to the server it is requiered to wait until the connection to the server is established. Afterwards an optional argument (\lstinline!timeout!) decides how long the client should wait for the result before continuing its code execution and returning the result.
+
+
+\begin{figure}[htbp]
+	\lstinputlisting[label={lst:PyModuleAction},caption={Implementation of a generic method to send a goal to a action}, language={Python}]{./listings/PyModuleAction.py}
+\end{figure}
+
+\section{Storage Management}
+For reasons of simplicity all necessary data - such as demos, executable codes or custom blocks - are stored in raw files on the robots. They are managed by a own service within the backend. It uses the file system module \footnote{https://nodejs.org/api/fs.html} (\textit{fs}) of Node.js. All of its file system operations have synchronous and asynchronous forms. Both are used in the implementation. The following functionalites are implemented using the storage management service:
+
+\begin{itemize}
+    \item Listing all demos
+    \item Saving, deleting, showing and running a specific demo
+    \item Listing all custom blocks
+    \item Creating, editing and deleting a custom block
+    \item Providing the toolbox of Blockly's workspace
+\end{itemize}
+
+\section{Code Execution}

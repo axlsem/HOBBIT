@@ -7,4 +7,4 @@ editor.getSession().setMode("ace/mode/python");
 editor.getSession().setUseWrapMode(true);
 editor.setShowPrintMargin(false);
 // Display code
-editor.setValue(code);
+editor.setValue(code); 
