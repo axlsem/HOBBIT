@@ -1,3 +1,7 @@
+function toIndex() {
+    window.location.href = window.location.origin;
+};
+
 var blockId = window.location.search.substring(1);
 
 var allHelps = {

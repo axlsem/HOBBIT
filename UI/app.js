@@ -14,9 +14,15 @@ var locked = false;
 var param = String(process.argv.slice(2));
 
 var isDev = param == 'dev';
+var participants = 15;
+var tmpcnt = 0;
 
 function loadIndex(req, res) {
 	res.sendFile('./index.html', { root: __dirname });
+};
+
+function loadQuestionnaire(req, res) {
+	res.sendFile('./questionnaire.html', { root: __dirname });
 };
 
 function loadHelp(req, res) {
@@ -364,11 +370,42 @@ function saveSubmission(req, res) {
 	});
 }
 
+function startStudy(req, res) {
+	var cut = parseInt(participants / 2);
+	if (tmpcnt < cut) {
+		loadBlockly(req, res);
+		tmpcnt += 1;
+	} else {
+		loadEditor(req, res);
+	}
+}
+
+function checkSubmissions(req, res) {
+	var submissions = [];
+	var subtypes = req.params.subtype ? [req.params.subtype] : ["code", "blockly", "questionnaire"];
+
+	for (var subtype of subtypes) {
+		submissions = submissions.concat(checkSubmissionPerType(subtype))
+	}
+	
+	res.status(200).send(submissions)
+
+}
+
+function checkSubmissionPerType(subtype) {
+	var filepath = './submissions/' + subtype + '.json';
+	var submissions = JSON.parse(fs.readFileSync(filepath, 'utf8'));
+	submissions = submissions.map(v => JSON.stringify({ user: v.user, type: v.type })).map(v => JSON.parse(v));
+	return submissions
+
+}
+
 app.use(express.static(__dirname + '/'));
 
 app.get('/', loadIndex);
-app.get('/code', loadEditor);
+app.get('/editor', loadEditor);
 app.get('/blockly', loadBlockly);
+app.get('/questionnaire', loadQuestionnaire);
 app.get('/help', loadHelp);
 app.post('/demo/run', runCode);
 app.post('/demo/save', saveWorkspace);
@@ -382,6 +419,9 @@ app.put('/block/update', createBlock);
 app.delete('/block/delete/:blockId', deleteBlock);
 app.get('/block/list', getBlocks);
 app.post('/submit/:userId', saveSubmission);
+app.get('/study', startStudy);
+app.get('/checksub', checkSubmissions)
+app.get('/checksub/:subtype', checkSubmissions)
 
 app.listen(PORT, '0.0.0.0', function () {
 	console.log('Hobbit blockly is now listening to port ' + PORT + '!');

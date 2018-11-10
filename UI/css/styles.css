@@ -18,9 +18,11 @@ h6,h5,h4 {
 	border-radius: 8px; 
 	margin-right: 5px;
 	padding: 2px 5px;
+	font-size: 0.9em;
 }
 
 .help-dropdown-opt {
+	font-size: 0.9em;
 	color: #006699;
 	border: solid #006699 2px;
 	border-radius: 8px; 

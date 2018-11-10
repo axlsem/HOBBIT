@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Questionnaire</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/styles.css">
+    <link type="text/css" rel="stylesheet" href="./css/materialize.min.css" media="screen,projection" />
+    <link rel="shortcut icon" href="img/favicon.ico" />
+</head>
+
+<body>
+    <div class="container">
+        <div class="row btn-rule">
+            <div style="float:left">
+                <h4>Questionnaire</h4>
+            </div>
+            <div id="logo""></div>
+        </div>
+        <div id="Qcontent"></div>
+        <button id="submitBtn" class="btn waves-effect waves-light" type="submit" name="action" onclick="submit()">Submit</button>
+
+        <script src=" ./js/jquery.min.js"> </script>
+        <script>
+            var userId = localStorage.getItem('study_userId');
+
+            if (!userId) {
+                userId = Math.random().toString(36).substr(2, 16);
+                localStorage.setItem('study_userId', userId);
+            }
+
+            var questions = [
+                {
+                    Q: "How much experience do you have with programming in general?",
+                    Qtype: "experience"
+                },
+                {
+                    Q: "How much experience do you have with programming in C++/Python?",
+                    Qtype: "experience"
+                },
+                {
+                    Q: "Do you think such a tool saves time compared to your current approach?",
+                    Qtype: "feedback"
+                },
+                {
+                    Q: "How mentally demanding was the task?",
+                    Qtype: "nasatlx"
+                },
+                {
+                    Q: "How irritated, stressed, and annoyed versus content, relaxed, and complacent did you feel during the task?",
+                    Qtype: "nasatlx"
+                },
+                {
+                    Q: "How much time pressure did you feel during the task?",
+                    Qtype: "nasatlx"
+                }
+            ];
+
+            var ansTypes = {
+                experience: ["none", "moderate", "expert"],
+                feedback: ["strongly disagree", "disagree", "neutral", "agree", "strongly agree"],
+                nasatlx: ["very low", "low", "medium", "high", "very high"]
+            };
+
+            for (let i in questions) {
+                let q = questions[i];
+                let ans = ansTypes[q.Qtype];
+                $('#Qcontent').append(createQAdiv (q.Q,ans,i))
+            }
+
+            function createQAdiv (q,ans,i) {
+                return '<div class=" row">'+createQdiv(q)+createAnsDiv(ans,i)+'</div>'
+            }
+
+            function createQdiv (q) {
+                return '<div class="col s6">'+q+'</div>'
+            }
+
+            function createAnsDiv (ans,i) {
+                var allAns = [];
+
+                for (let k in ans) {
+                    let a = ans[k];
+                    let template = '<p><label><input id="ans'+i.toString()+"-"+k.toString()+'" class="with-gap q-ans" name=group"'+i+'" type="radio" /><span>'+a+'</span></label></p>';
+                    allAns.push(template);
+                }
+                return '<div class="col s6"><form action="#">'+allAns.join("")+'</form></div>'
+            }
+
+            function submit() {
+                var answers = []
+                for (var ele of document.getElementsByClassName("q-ans")) {
+                    if(ele.checked) {
+                        answers.push({
+                                q: ele.id.substring(3).split("-")[0],
+                                ans: ele.id.substring(3).split("-")[1]
+                            })
+                    }
+                }
+                if (answers.length < questions.length) alert("Please answer all questions.")
+                else {
+                    localStorage.setItem('study_questionnaire', answers);
+                    
+                    var data = { user: userId, answers: answers , type: "questionnaire"};
+                    $.post("/submit/" + userId,
+                        {
+                            data: JSON.stringify(data)
+                        }, function (data, status) {
+                            if (status == "success") {
+                                window.alert("Thank you");
+                            } else {
+                                alert("Something went wrong!");
+                            }
+                        });
+                }
+            }
+
+        </script>
+
+</body>
+
+</html>

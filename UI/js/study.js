@@ -6,6 +6,12 @@ var starttime;
 var endtime;
 var lastaction;
 var ts = [];
+var userId = localStorage.getItem('study_userId');
+
+if (!userId) {
+    userId = Math.random().toString(36).substr(2, 16);
+    localStorage.setItem('study_userId',userId);
+}
 
 $("#nav-start").click(function () {
     $('#blocklyDiv').show();
@@ -14,8 +20,6 @@ $("#nav-start").click(function () {
     ts.push(starttime);
     $('#nav-start-wrapper').hide();
     $('#nav-stop').show();
-
-
 });
 
 $('#nav-stop').click(function () {
@@ -25,12 +29,22 @@ $('#nav-stop').click(function () {
     $('#nav-submit').show();
 })
 
+$('#nav-next').click(function () {
+    if (window.location.href.indexOf('study') >= 0) {
+        var comp = 'editor';
+    } else {
+        var comp = 'questionnaire';
+    }
+    var url = window.location.origin + "/" + comp;
+    window.location.href = url;
+})
+
 $('#nav-submit').click(function () {
     var xml = Blockly.Xml.workspaceToDom(workspace);
     var xml_text = Blockly.Xml.domToText(xml);
     localStorage.setItem('study_blockly',xml_text);
-
-    var userId = prompt("Please enter user ID", "");
+    $('#nav-submit').hide();
+    $('#nav-next').show();
 
     if (typeof userId == "string") {
 
@@ -50,7 +64,7 @@ $('#nav-submit').click(function () {
 
 })
 
-function trackCahnges(event) {
+function trackChanges(event) {
     var changeTypes = [Blockly.Events.BLOCK_DELETE, Blockly.Events.BLOCK_CREATE, Blockly.Events.BLOCK_CHANGE, Blockly.Events.VAR_CREATE, Blockly.Events.VAR_DELETE, Blockly.Events.VAR_RENAME];
 
     if (changeTypes.indexOf(event.type) >= 0) {
@@ -63,4 +77,5 @@ function trackCahnges(event) {
         lastaction = t;
     }
 }
-workspace.addChangeListener(trackCahnges);
+
+workspace.addChangeListener(trackChanges);
