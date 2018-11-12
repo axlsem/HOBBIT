@@ -387,6 +387,7 @@ function checkSubmissions(req, res) {
 	for (var subtype of subtypes) {
 		submissions = submissions.concat(checkSubmissionPerType(subtype))
 	}
+	submissions = {_total: submissions.length, submissions: submissions};
 	
 	res.status(200).send(submissions)
 
