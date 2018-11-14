@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Help</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../css/styles.css">
+    <link type="text/css" rel="stylesheet" href="../css/materialize.min.css" media="screen,projection" />
+    <link rel="shortcut icon" href="../img/favicon.ico" />
+</head>
+
+<body>
+    <div class="container">
+        <div class="row btn-rule">
+            <div style="float:left">
+                <h4>Help</h4>
+            </div>
+            <div id="logo""></div>
+        </div>
+
+        <h5>Publishing to a topic</h5>
+        <p>You can create a handle to publish messages to a topic using the rospy.Publisher class. The most common usage for this is to provide the name of the topic and the message class/type of the topic. You can then call publish() on that handle to publish a message, e.g.:</p>
+        <div class="help-code">
+            <div>pub = rospy.Publisher('topic_name', std_msgs.msg.String, queue_size=10)</div>
+            <div>pub.publish(std_msgs.msg.String("foo"))</div>
+        </div>
+        <h6>Complete example</h6>
+        <div class="help-code">
+        <div>import rospy</div>
+        <div>from std_msgs.msg import String</div>
+        <div>pub = rospy.Publisher('topic_name', String, queue_size=10)</div>
+        <div>rospy.init_node('node_name')</div>
+        <div>pub.publish("hello world")</div>
+        </div>
+
+        
+
+        <script src=" ../js/jquery.min.js"> </script>
+
+</body>
+
+</html>

@@ -401,4 +401,14 @@ select {
 		display: block;
 
 	}
+
+}
+
+.help-code {
+	background-color: rgb(240, 240, 240);
+	font-size: 0.9em;
+	font-family: 'Courier New', Courier, monospace;
+	padding: 5px;
+	margin: 5px;
+	border: solid #8fbee5 0.1px;
 }
