@@ -10,7 +10,7 @@
 	% ngerman
 ]{ACIN_diploma_thesis}
 
- \Title{\toolname: A graphical tool for programming ROS based robots}
+ \Title{\toolname: A graphical user interface for programming ROS based robots}
 % \Subject{Diplomarbeit}
  \Author{Alexander Semeliker, BSc}
  \Date{29.07.2018}
@@ -50,6 +50,7 @@
 
 	% \input{macros.tex}
 	\maketitle
+	\lstlistoflistings
 	
 	% Include all the chapters...
 	%=============================
@@ -64,10 +65,12 @@
 	\include{Conclusion}
 	% Appendix...
 	%=============
-	% \renewcommand\thesection{\Alph{section}}
+	\let\svaddcontentsline\addcontentsline
+	\renewcommand\addcontentsline[3]{%
+	\ifthenelse{\equal{#1}{lof}}{}%
+	{\ifthenelse{\equal{#1}{lot}}{}{\svaddcontentsline{#1}{#2}{#3}}}}
 	\appendix
 	\addcontentsline{toc}{chapter}{Appendices}
-	% \section{Appendices}
 	\chapter*{Appendices}
 	\include{apxBlockConfigurationManual}
 	\include{apxBlocks}
@@ -76,7 +79,6 @@
 	
 	% Literaturverzeichnis...
 	%=========================
-	\lstlistoflistings
 	\printbibliography
 	
 	
