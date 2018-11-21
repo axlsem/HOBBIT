@@ -1,13 +1,13 @@
 \chapter{Block configuration manual} \label{apx:BlockConfigManual}
-This appendix shows step-by-step examples for configuring custom blocks using \toolname{}'s block configurator for each of the following ROS communication patterns:
+This appendix shows step-by-step examples for configuring custom blocks using \toolname{}'s block configurator for each of the following \gls{ros} communication patterns:
 \begin{itemize}
     \item Topic
     \item Service
     \item Action
 \end{itemize}
 
-\section{Custom block publishing to a topic} \label{sec:CustomTopic}
-This example creates a custom block, which sending a message to a ROS based robot. The filled form is shown in \prettyref{fig:ExTopicForm}, the final design is shown in \prettyref{fig:ExTopicBlock}.
+\section*{Custom block publishing to a topic} \label{sec:CustomTopic}
+This example creates a custom block, which sending a message to a \gls{ros} based robot. The filled form is shown in \prettyref{fig:ExTopicForm}, the final design is shown in \prettyref{fig:ExTopicBlock}.
 
 \begin{figure}[htbp]
 	\centering
@@ -31,7 +31,7 @@ This example creates a custom block, which sending a message to a ROS based robo
 
 The given title and inputs of the block are can be observed, when looking at the block. The tooltip only appears on mouseover events. All other information is used to generate the code. The value of an input - which is passed by connecting the corresponding input - can be used for the message creation by putting a placeholder \lstinline!$n$! (with n being the n-th input in the list - counting top down) to it. It is possible to put any code to the \textit{message} field, but it is necessary that it includes an assignment of the \lstinline!message! value. Assuming the value \textit{1} is passed to the \textit{\metres} input, the code shown in \prettyref{lst:ExTopicCode} will be generated.
 
-\section{Custom block calling a service}
+\section*{Custom block calling a service}
 Within this section the creation of an example block, which calls a service, is shown. The block can be used to ask a question to the the user and use the response as output, so that the block can be connected as input to another block. The configuration form for this block is shown in \prettyref{fig:ExServiceForm}.
 
 \begin{figure}[ht]
@@ -67,7 +67,7 @@ Again, using the values of the blocks connected to the inputs can be included by
 	\label{fig:ExServiceBlock}%
 \end{figure}
 
-\section{Custom block using actionlib}
+\section*{Custom block using actionlib}
 \prettyref{fig:ExActionForm} shows how a custom block can be defined, if it is desired that the block should send a goal to an action server.
 
 \begin{figure}[htbp]

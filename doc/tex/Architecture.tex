@@ -1,5 +1,5 @@
 \chapter{Architecture}
-This chapter describes the architectural design of \toolname{} (portmanteau of ROS and Blockly). First the requirements are presented. The purpose and need of the tool are explained. Based on this constraints the options implemtenting the tool are presented as well as an explanation of the decision. Then a overview of the architecture is given, followed by a short description of all supporting frameworks & dependencies, which are: the robot operating system ROS with its concepts and some JavaScript frameworks, which eased the implementation effort.
+This chapter describes the architectural design of \toolname{} (portmanteau of \gls{ros} and Blockly). First the requirements are presented, then the purpose and need of the tool are explained. Based on this constraints the options implemtenting the tool are presented as well as an explanation of the decision. Then a overview of the architecture is given, followed by a short description of all supporting frameworks and dependencies, which are: the robot operating system \gls{ros} with its concepts and some JavaScript frameworks, which eased the implementation effort.
 
 \section{Requirements} \label{sec:requirements}
 In the field of software engineering constraints are the basic design parameters. Therefore it is necessary to provide them as detailed as possible. In the given case the basic constraints are given by the purpose of the tool and the architecture of the robot.
@@ -15,7 +15,7 @@ The HOBBIT PT2 (prototype 2) platform was developed within the EU project of the
 	\label{fig:HobbitPic}%
 \end{figure}
 
-In terms of technology \hobbit{} (see \prettyref{fig:HobbitPic}) is based on the robot operating system ROS (\prettyref{sub:ros}), which allows easy communication between all components. The system is set up to be used on Ubuntu 16.04 together with the ROS distribution \textit{Kinetic}. All ROS nodes are implemented in either Python or \Cpp{}. In order to provide a fast and simple way to implement new behaviours several commands should be pre-implemented. These commands are performed either by publishing messages to topics or services, or executing callbacks defined in the corresponding action's client. The common commands and their description are listed in \prettyref{tab:hobbitCommands}. A detailed list of possible messages for each command will be presented in \prettyref{sub:ros} after furher explanation of the ROS architecture.
+In terms of technology \hobbit{} (see \prettyref{fig:HobbitPic}) is based on the robot operating system \gls{ros} (\prettyref{sub:ros}), which allows easy communication between all components. The system is set up to be used on Ubuntu 16.04 together with the \gls{ros} distribution \textit{Kinetic}. All \gls{ros} nodes are implemented in either Python or \Cpp{}. In order to provide a fast and simple way to implement new behaviours several commands should be pre-implemented. These commands are performed either by publishing messages to topics or services, or executing callbacks defined in the corresponding action's client. The common commands and their description are listed in \prettyref{tab:hobbitCommands}. A detailed list of possible messages for each command is presented in \prettyref{cha:RefROS}.
 
 \begin{table}
 	\centering
@@ -45,50 +45,50 @@ In terms of technology \hobbit{} (see \prettyref{fig:HobbitPic}) is based on the
 	\item \hobbit{} picks up an object
 \end{itemize}
 
-All of the demos can be started via the UI running on \hobbit{}'s tablet, but re-writing new demos would assume a detailed knowledge of the robot's setup. In order to implement new behaviours and demos more easily it is necessary to provide a programming interface, which provides a powerful, generic base to cover a wide range of \hobbit's features as well as an intuitive handling.\\
+All of the demos can be started via the user interface running on \hobbit{}'s tablet, but re-writing new demos would assume a detailed knowledge of the robot's setup. In order to implement new behaviours and demos more easily it is necessary to provide a programming interface, which provides a powerful, generic base to cover a wide range of \hobbit's features as well as an intuitive handling.\\
 
 Furthermore the \ACIN{} of the TU Wien is part of the Educational Robotics for STEM (ER4STEM) project, which aims to turn curious young children into young adults passionate about science and technology with hands-on workshops on robotics. The ER4STEM framework will coherently offer students aged 7 to 18 as well as their educators different perspectives and approaches to find their interests and strengths in robotics to pursue STEM careers through robotics and semi-autonomous smart devices. \cite{ER4STEMACIN} Providing an intuitive programming tool would allow the integration of \hobbit{} into the project, which would be an extra input evaluation parameter.\\
 
-At last the framework should be implement to be re-used for other ROS based robots. This means, that it should not only provide an interface to the mentioned commands for \hobbit{}, but an open, adpatable framework. It should be able to allow a flexible configuration and assembly of the provided functions.
+At last the framework should be implement to be re-used for other \gls{ros} based robots. This means, that it should not only provide an interface to the mentioned commands for \hobbit{}, but an open, adpatable framework. It should be able to allow a flexible configuration and assembly of the provided functions.
 
 \section{Options} \label{sec:Options}
 There are several approaches to fulfill the mentioned requirements. In the following subsections three different options are presented by a simple example: the implementation of picking up an object from the floor an putting it on the table. This should give a rough overview in terms of complexity of the usability as well as the implementation of the corresponding approach. For reasons of simplicity tasks like searching and detecting the object or gripper positioning are excluded.
 
 \subsection{Custom API}
 \label{sub:PyApi}
-The most obvious way to fulfill the requirements is to provide an application programming interface (API) for the desired programming languages (Python, \Cpp{}). An API is a set of commands, functions, protocols, and objects that programmers can use to create software or interact with an external system. It provides developers with standard commands for performing common operations so they do not have to write the code from scratch. In the present case such a API could consists of the following components:
+The most obvious way to fulfill the requirements is to provide an \gls{api} for the desired programming languages (Python, \Cpp{}). An \gls{api} is a set of commands, functions, protocols, and objects that programmers can use to create software or interact with an external system. It provides developers with standard commands for performing common operations so they do not have to write the code from scratch. In the present case such a \gls{api} could consists of the following components:
 
 \begin{itemize}
-	\item Initialization: setting up communication and intial states - e.g. creating ROS nodes, starting the arm referencing or undocking from charger
-	\item Topic management: managing the messages published to ROS topics and creating subscriber nodes if applicable
-	\item Service management: managing the ROS services of \hobbit{} - e.g. the tablet user interface
-	\item Action management: creating ROS action clients for e.g. navigation or arm movement
+	\item Initialization: setting up communication and intial states - e.g. creating \gls{ros} nodes, starting the arm referencing or undocking from charger
+	\item Topic management: managing the messages published to \gls{ros} topics and creating subscriber nodes if applicable
+	\item Service management: managing the \gls{ros} services of \hobbit{} - e.g. the tablet user interface
+	\item Action management: creating \gls{ros} action clients for e.g. navigation or arm movement
 	\item Common commands: providing common commands (see \prettyref{tab:hobbitCommands})
 \end{itemize}
 
-It should be noted, that the components doesn't re-implement ROS functionality, but extend it and prvovide a simpler use of it. Depending of how generic the API is implemented it is possible that the user can control the robot without any detailed knowledge of the technical setup of it. Nevertheless this approach would assume the user to have knowledge of the programming language the API is desigend for. Refering to the required commands in \prettyref{tab:hobbitCommands} an API for Python could be designed as shown in \prettyref{fig:PythonApi}. The highest usability would be reached, if all input parameters are from common variable types such as interger and string. Indeed, this would increase the implementation effort, especially in terms of error handling, as well as the extent of the documentation,  which are huge disadvantages of writing an API. \\
+It should be noted, that the components doesn't re-implement \gls{ros} functionality, but extend it and prvovide a simpler use of it. Depending of how generic the \gls{api} is implemented it is possible that the user can control the robot without any detailed knowledge of the technical setup of it. Nevertheless this approach would assume the user to have knowledge of the programming language the \gls{api} is desigend for. Refering to the required commands in \prettyref{tab:hobbitCommands} an \gls{api} for Python could be designed as shown in \prettyref{fig:PythonApi}. The highest usability would be reached, if all input parameters are from common variable types such as interger and string. Indeed, this would increase the implementation effort, especially in terms of error handling, as well as the extent of the documentation,  which are huge disadvantages of writing an \gls{api}. \\
 
 \begin{figure}[htbp]
 	\centering
 	\begin{overpic}[width=0.8\linewidth]{./graphics/PythonApi}
 	\end{overpic}
-	\caption{Exemplary design of API for Python}%
+	\caption{Exemplary design of an API for Python}%
 	\label{fig:PythonApi}%
 \end{figure}
 
-Assuming the API would be implemented as explained before and the Python module would be named \textit{HobbitRosModule}, \prettyref{lst:PythonApiEx} shows a sample code for the mentioned use case to pick up an object. Note that the code is very short and easy to read, which - on the other hand - means that the implementation of the API must cover a broad technical range, such as error handling for unsupported inputs and communication errors.
+Assuming the \gls{api} would be implemented as explained before and the Python module would be named \textit{HobbitRosModule}, \prettyref{lst:PythonApiEx} shows a sample code for the mentioned use case to pick up an object. Note that the code is very short and easy to read, which - on the other hand - means that the implementation of the \gls{api} must cover a broad technical range, such as error handling for unsupported inputs and communication errors.
 
 \begin{figure}[htbp]
 	\lstinputlisting[label={lst:PythonApiEx},caption={Example Python code using the API shown in \prettyref{fig:PythonApi}}, language={Python}]{./listings/PythonApiEx.py}
 \end{figure}
 
 \subsection{\smach{}}
-\smach{} is a task-level architecture for rapidly creating complex robot behavior. At its core, \smach{} is a ROS-independent Python library to build hierarchical state machines. \cite{SmachROS}. Since that, this approach would also end up in providing an API for the user, but allows to create more complex demos with less effort than the one described in \prettyref{sub:PyApi}. \smach{} also provides a powerful graphical viewer to visualize and introspect state machines as well as an integration with ROS, of course. Since the aforementioned example is a very simple one and doesn't require a lot of the provided \smach{} functionality, this section only covers the needed ones to fulfill the requirements. For a detail description on how to use \smach{} refer to \cite{SmachROS}. \\
+\smach{} is a task-level architecture for rapidly creating complex robot behavior. At its core, \smach{} is a \gls{ros}-independent Python library to build hierarchical state machines. \cite{SmachROS}. Since that, this approach would also end up in providing an \gls{api} for the user, but allows to create more complex demos with less effort than the one described in \prettyref{sub:PyApi}. \smach{} also provides a powerful graphical viewer to visualize and introspect state machines as well as an integration with \gls{ros}, of course. Since the aforementioned example is a very simple one and doesn't require a lot of the provided \smach{} functionality, this section only covers the needed ones to fulfill the requirements. For a detail description on how to use \smach{} refer to \cite{SmachROS}. \\
 
-The arm of \hobbit{} is controlled via the hobbit\_arm action. \smach{} supports calling ROS action interfaces with it's so called \textit{SimpleActionState}, a state class that acts as a proxy to an \textit{actionlib} (see \prettyref{sub:ros}) action. The instantiation of the state takes a topic name, action type, and some policy for generating a goal. When a state finishes, it returns a so called \textit{outcome} - a string that describes how the state finishes. The transition to the next state will be specified based on the outcome of the previous state. \prettyref{lst:SmachExCode} shows a possible implementation of picking up a object an placing it on the table. After the imports of the necessary modules (lines 1 to 4), the state machine is instanced (line 7), to which the required states are added (lines 17-22). The parameters passed to \textit{SimpleActionState} are
+The arm of \hobbit{} is controlled via the hobbit\_arm action. \smach{} supports calling \gls{ros} action interfaces with it's so called \textit{SimpleActionState}, a state class that acts as a proxy to an \textit{actionlib} (see \prettyref{sub:ros}) action. The instantiation of the state takes a topic name, action type, and some policy for generating a goal. When a state finishes, it returns a so called \textit{outcome} - a string that describes how the state finishes. The transition to the next state will be specified based on the outcome of the previous state. \prettyref{lst:SmachExCode} shows a possible implementation of picking up a object an placing it on the table. After the imports of the necessary modules (lines 1 to 4), the state machine is instanced (line 7), to which the required states are added (lines 17-22). The parameters passed to \textit{SimpleActionState} are
 
 \begin{itemize}
-	\item the name of the action as it will be broadcast over ROS (e.g. \textit{hobbit\_arm})
+	\item the name of the action as it will be broadcast over \gls{ros} (e.g. \textit{hobbit\_arm})
 	\item the type of action to which the client will connect (e.g. \textit{ArmServerAction}) and
 	\item the goal message.
 \end{itemize}
@@ -107,7 +107,7 @@ For reasons of readability the goals are declared at a seperate code block (line
 	\label{fig:SmachSM}%
 \end{figure}
 
-Providing just the \smach{} interface has some disadvantages and would not be practicable. First the user would need an advanced knowledge of Python. Depending on the design of the self-implemented API (\prettyref{sub:PyApi}) the knowledge has to be at least at the same level. Next the user would have to understand the API and needs to find a design to fit for the corresponding demo case. Furthermore it requires the user also to exactly know the ROS specification of the robot. So, if \smach{} would be choosen as the underlying framework, it would also be necessary to provide a more abstract API - basically with the same interfaces as shown in \prettyref{fig:PythonApi}.
+Providing just the \smach{} interface has some disadvantages and would not be practicable. First the user would need an advanced knowledge of Python. Depending on the design of the self-implemented \gls{api} (\prettyref{sub:PyApi}) the knowledge has to be at least at the same level. Next the user would have to understand the \gls{api} and needs to find a design to fit for the corresponding demo case. Furthermore it requires the user also to exactly know the \gls{ros} specification of the robot. So, if \smach{} would be choosen as the underlying framework, it would also be necessary to provide a more abstract \gls{api} - basically with the same interfaces as shown in \prettyref{fig:PythonApi}.
 
 \subsection{Blockly} \label{sub:Blockly}
 Blockly is a library that adds a visual code editor to web and Android apps. The Blockly editor uses interlocking, graphical blocks to represent code concepts like variables logical expressions, loops, and more. It allows users to apply programming principles without having to worry about syntax or the intimidation of a blinking cursor on the command line. \cite{BlocklyIntro} So for the present case, in contrast to the other approaches the user would not need to have any technical knowledge of \hobbit{}, its components and interfaces. Furthermore such a editor would not require the user to master any programming language. On the other hand implementing this approach would require knowledge of web applications (i.e. JavaScript, HTML and CSS) additionally. \\
@@ -120,7 +120,7 @@ Blockly is a library that adds a visual code editor to web and Android apps. The
 	\label{fig:BlocklyEx}%
 \end{figure}
 
-\prettyref{fig:BlocklyEx} shows an exemplary injection and use as well as the basic structure of Blockly applications. It consists of a toolbox, from where the progamming blocks can dragged to the workspace, where they are connected. The Blockly API \cite{BlocklyAPI} provides a function to generate code for all blocks in the workspace to several languages: JavaScript, Python, PHP, Lua, Dart and XML. In the shown example for each of them a tab is avaible to show the generated code. The blocks dragged to the workspace in \prettyref{fig:BlocklyEx} are already customized blocks, with whom an object can be picked up and be placed on the table. There are basically four steps requierd in order to create and use a custom block, which are described briefly in the following paragraphs. A detailed documentation is given in \cite{BlocklyCustomBlocks}.
+\prettyref{fig:BlocklyEx} shows an exemplary injection and use as well as the basic structure of Blockly applications. It consists of a toolbox, from where the progamming blocks can dragged to the workspace, where they are connected. The Blockly \gls{api} \cite{BlocklyAPI} provides a function to generate code for all blocks in the workspace to several languages: JavaScript, Python, PHP, Lua, Dart and \gls{xml}. In the shown example for each of them a tab is avaible to show the generated code. The blocks dragged to the workspace in \prettyref{fig:BlocklyEx} are already customized blocks, with whom an object can be picked up and be placed on the table. There are basically four steps requierd in order to create and use a custom block, which are described briefly in the following paragraphs. A detailed documentation is given in \cite{BlocklyCustomBlocks}.
 
 \subsubsection{Defining the block}
 Blocks are defined in the \lstinline!/blocks/! directory of the source code by adding either JSON objects or JavaScript functions to the \lstinline!Blockly.Blocks! mapping. It includes the specification of the shape, fields, tooltip and connection points. An exampe definition using a JavaScript function of the \textit{gripper} block is shown in \prettyref{lst:DefineBlockEx}. Attention should be payed to lines 6 to 21, where the input fields are defined (line 8). Here a dropdown field with two options ("Open" and "Close") is created. The name ("gripper\_position") is used to refer to it later.
@@ -130,7 +130,7 @@ Blocks are defined in the \lstinline!/blocks/! directory of the source code by a
 \end{figure}
 
 \subsubsection{Providing the code}
-Similar to the definition of a block, the code, which is generated out of them, is stored in a mapping variable inside the Blockly library. Since different languages are supported, the code definition has to be in the right directory. Note that it is not necessary to provided code for each language. The code generation is handled in the \lstinline!/generator/! directory of the library. Each language has it's own helper functions file (e.g. \lstinline!python.js!) and subdirectory, where the code for each block is defined. There are several interfaces functions provided by Blockly to manage interaction with a block - such as collecting arguments of the block. A short example to control \hobbit{}'s gripper is shown \prettyref{lst:DefineCodeEx}. In line 2 the \lstinline!block.getFieldValue()! function is used to get the user's selection of the dropdown field. Note that the generator always returns a string variable including the code in the desired language (line 4). So the shown example requires to use a custom Python API (such as \prettyref{fig:PythonApi}), because \lstinline!node.gripper()! is not a built-in function of Python. \\
+Similar to the definition of a block, the code, which is generated out of them, is stored in a mapping variable inside the Blockly library. Since different languages are supported, the code definition has to be in the right directory. Note that it is not necessary to provided code for each language. The code generation is handled in the \lstinline!/generator/! directory of the library. Each language has it's own helper functions file (e.g. \lstinline!python.js!) and subdirectory, where the code for each block is defined. There are several interfaces functions provided by Blockly to manage interaction with a block - such as collecting arguments of the block. A short example to control \hobbit{}'s gripper is shown \prettyref{lst:DefineCodeEx}. In line 2 the \lstinline!block.getFieldValue()! function is used to get the user's selection of the dropdown field. Note that the generator always returns a string variable including the code in the desired language (line 4). So the shown example requires to use a custom Python \gls{api} (such as \prettyref{fig:PythonApi}), because \lstinline!node.gripper()! is not a built-in function of Python. \\
 
 \begin{figure}[htbp]
 	\lstinputlisting[label={lst:DefineCodeEx},caption={Defintion of a code generator in Blockly for Python}, language={JavaScript}]{./listings/BlocklyCodeInitEx.js}
@@ -147,10 +147,10 @@ After the customized block and it's code generator are defined, the whole Blockl
 \end{itemize}
 
 \subsubsection{Add it to the toolbox}
-Once the building is completed and the necessary files are included to the web application, the custom block needs to be included in the toolbox. The toolbox is specified in XML and passed to Blockly when it is injected. Assuming the blocks shown in \prettyref{fig:BlocklyEx} are build as described in the previous paragraphs, they can be add to the toolbox as shwon in \prettyref{lst:DefineToolboxEx}. \\
+Once the building is completed and the necessary files are included to the web application, the custom block needs to be included in the toolbox. The toolbox is specified in \gls{xml} and passed to Blockly when it is injected. Assuming the blocks shown in \prettyref{fig:BlocklyEx} are build as described in the previous paragraphs, they can be add to the toolbox as shwon in \prettyref{lst:DefineToolboxEx}. \\
 
 \begin{figure}[htbp]
-	\lstinputlisting[label={lst:DefineToolboxEx},caption={Minimal example of adding two blocks to a Blockly toolbox}, language={XML}]{./listings/BlocklyToolboxEx.xml}
+	\lstinputlisting[label={lst:DefineToolboxEx},caption={Minimal example of adding two blocks to a Blockly toolbox}, language={\gls{xml}}]{./listings/BlocklyToolboxEx.xml}
 \end{figure}
 
 \subsection{Decision}
@@ -166,7 +166,7 @@ In order to select the best fitting solution the requirements explained in \pret
 	\item The tool should be maintable, meaning it should have clear interfaces and as less dependencies as possible.
 \end{itemize}
 
-The selection is based on rating each of the approaches in regards of each single requirement mentioned with a score ranging from 0 (lowest) to 5 (highest). The approach with the highest overall score is seen as the best fitting one and will be implemented. \prettyref{tab:decision} shows the result of the evaluation. In the end the Blockly convinced with its very intuitive interface, which requires the user to have very little previous knowledge to build demos. Despite the fact that maintainability and scalability suffer from the high abstraction and encapsulation of the libary, the effort in terms of implementation is not worth mentioning compared to the other approaches. This results from the circumstance each one would require the design of a custom API. Instead of just abstracting the given ROS functionality, Blockly adds a much more user-friendly option to create demos - in contrast to the others.
+The selection is based on rating each of the approaches in regards of each single requirement mentioned with a score ranging from 0 (lowest) to 5 (highest). The approach with the highest overall score is seen as the best fitting one and will be implemented. \prettyref{tab:decision} shows the result of the evaluation. In the end the Blockly convinced with its very intuitive interface, which requires the user to have very little previous knowledge to build demos. Despite the fact that maintainability and scalability suffer from the high abstraction and encapsulation of the libary, the effort in terms of implementation is not worth mentioning compared to the other approaches. This results from the circumstance each one would require the design of a custom \gls{api}. Instead of just abstracting the given \gls{ros} functionality, Blockly adds a much more user-friendly option to create demos - in contrast to the others.
 
 \begin{table}[htbp]
 	\centering
@@ -206,7 +206,7 @@ the backend is made up of the following four:
 \begin{itemize}
 	\item sending and receiving data from the user interface via the \textbf{Frontend Communication},
 	\item a \textbf{Storage Management}, which provides the demos and custom blocks to the user,
-	\item a \textbf{Python Module} containing all necessary functionalites to provide an ROS executable code,
+	\item a \textbf{Python Module} containing all necessary functionalites to provide an \gls{ros} executable code,
 	\item an interface to finally execute the generated code on the robot (\textbf{Code Execution}).
 \end{itemize}
 
@@ -222,27 +222,27 @@ the backend is made up of the following four:
 \section{Supporting frameworks \& dependencies}
 As described the components can be clustered into frontend and backend, but they also can be seen in respect of their functional interfaces. On the one hand there is a connection to the robots sensors and actuators, on the other hand there is an interface to the human using the tool. Both functionalites are build up with the support of software frameworks, which are described in the following sections.
 
-\subsection{ROS} \label{sub:ros}
-ROS (Robot Operating System) provides libraries and tools to help software developers create robot applications. It provides hardware abstraction, device drivers, libraries, visualizers, message-passing, package management, and more. Since ROS is licensed under an open source, BSD license it used for a wide range of robots, sensors and motors. Covering all of its features would go beyond the scope of this thesis, so just the concepts, which are needed to implement \toolname{}, are summarized. \cite{WikiROS}
+\subsection{\gls{ros}} \label{sub:ros}
+\gls{ros} provides libraries and tools to help software developers create robot applications. It provides hardware abstraction, device drivers, libraries, visualizers, message-passing, package management, and more. Since \gls{ros} is licensed under an open source, BSD license it used for a wide range of robots, sensors and motors. Covering all of its features would go beyond the scope of this thesis, so just the concepts, which are needed to implement \toolname{}, are summarized. \cite{WikiROS}
 
 \subsubsection{Packages}
-Software in ROS is organized in packages. A package might contain ROS nodes, a ROS-independent library, a dataset, configuration files, a third-party piece of software, or anything else that logically constitutes a useful module. The goal of these packages is to provide this useful functionality in an easy-to-consume manner so that software can be easily reused.
+Software in \gls{ros} is organized in packages. A package might contain \gls{ros} nodes, a \gls{ros}-independent library, a dataset, configuration files, a third-party piece of software, or anything else that logically constitutes a useful module. The goal of these packages is to provide this useful functionality in an easy-to-consume manner so that software can be easily reused.
 
 \subsubsection{Nodes}
-A node is a process that performs computation and are written with the use of a ROS client library, such as roscpp (for \Cpp{}) or rospy (for Python). Nodes are combined together into a graph and communicate with one another using streaming topics, RPC (Remote Procedure Call) services, and the Parameter Server. A robot control system will usually comprise many nodes. For example, one node controls a laser range-finder, one node controls the robot's wheel motors, one node performs localization, one node performs path planning, and so on.
+A node is a process that performs computation and are written with the use of a \gls{ros} client library, such as roscpp (for \Cpp{}) or rospy (for Python). Nodes are combined together into a graph and communicate with one another using streaming topics, RPC (Remote Procedure Call) services, and the Parameter Server. A robot control system will usually comprise many nodes. For example, one node controls a laser range-finder, one node controls the robot's wheel motors, one node performs localization, one node performs path planning, and so on.
 
 \subsubsection{Topics}
-Topics are named buses over which nodes exchange messages. Topics have anonymous publish/subscribe semantics, which decouples the production of information from its consumption. In general, nodes are not aware of who they are communicating with. Instead, nodes that are interested in data subscribe to the relevant topic; nodes that generate data publish to the relevant topic. There can be multiple publishers and subscribers to a topic. Each topic is strongly typed by the ROS message type used to publish to it and nodes can only receive messages with a matching type.
+Topics are named buses over which nodes exchange messages. Topics have anonymous publish/subscribe semantics, which decouples the production of information from its consumption. In general, nodes are not aware of who they are communicating with. Instead, nodes that are interested in data subscribe to the relevant topic; nodes that generate data publish to the relevant topic. There can be multiple publishers and subscribers to a topic. Each topic is strongly typed by the \gls{ros} message type used to publish to it and nodes can only receive messages with a matching type.
 
 \subsubsection{Messages}
-A message is a simple data structure, comprising typed fields. Standard primitive types (integer, floating point, boolean, etc.) are supported, as are arrays of primitive types. Messages can include arbitrarily nested structures and arrays. Nodes can also exchange a request and response message as part of a ROS service call. Message descriptions are stored in .msg files in the \lstinline!/msg/! subdirectory of a ROS package.
+A message is a simple data structure, comprising typed fields. Standard primitive types (integer, floating point, boolean, etc.) are supported, as are arrays of primitive types. Messages can include arbitrarily nested structures and arrays. Nodes can also exchange a request and response message as part of a \gls{ros} service call. Message descriptions are stored in .msg files in the \lstinline!/msg/! subdirectory of a \gls{ros} package.
 
 \subsubsection{Services}
-The publish-subscribe model is a very flexible communication paradigm, but its many-to-many one-way transport is not appropriate for RPC request-reply interactions, which are often required in a distributed system. Request-reply in ROS is done via a service, which is defined by a pair of messages: one for the request and one for the reply. Services are defined using .srv files, which are compiled into source code by a ROS client library.
+The publish-subscribe model is a very flexible communication paradigm, but its many-to-many one-way transport is not appropriate for RPC request-reply interactions, which are often required in a distributed system. Request-reply in \gls{ros} is done via a service, which is defined by a pair of messages: one for the request and one for the reply. Services are defined using .srv files, which are compiled into source code by a \gls{ros} client library.
 
 \subsubsection{Actions}
 In some cases, e.g. if a service takes a long time to execute, the user might want the ability to cancel the request during execution or get periodic feedback about how the request is progressing. The actionlib package provides tools to create servers that execute long-running goals that can be preempted. It also provides a client interface in order to send requests to the server.
-The action client and action server communicate via the ROS Actionlib Protocol \footnote{http://wiki.ros.org/actionlib}, which is built on top of ROS messages. The client and server then provide a simple API for users to request goals (on the client side) or to execute goals (on the server side) via function calls and callbacks.
+The action client and action server communicate via the \gls{ros} Actionlib Protocol\footnote{http://wiki.ros.org/actionlib}, which is built on top of \gls{ros} messages. The client and server then provide a simple \gls{api} for users to request goals (on the client side) or to execute goals (on the server side) via function calls and callbacks.
 
 \subsection{JavaScript frameworks} \label{sub:jsFrameworks}
 Since \toolname{} is a web application all of the functionality blocks do touch JavaScript in any way. And since there are a lot of JavaScript frameworks supporting the development of web applications, it's necessary to get an overview of the important ones - besides Blockly (see \prettyref{sub:Blockly}) - used to implement \toolname{} before diving into the implementation itself.
@@ -259,7 +259,7 @@ Express is a minimal and flexible Node.js web application framework, providing a
 \end{figure}
 
 \subsubsection{Ace}
-Ace, whose name is derived from "Ajax.org Cloud9 Editor", is a standalone code editor written in JavaScript. Ace is developed as the primary editor for Cloud9 IDE - an online integrated development environment -  and the successor of the Mozilla Skywriter (formerly Bespin) Project. It supports syntax highlighting and auto formatting of the code as well as customizable keyboard shortcuts.
+Ace, whose name is derived from "Ajax.org Cloud9 Editor", is a standalone code editor written in JavaScript. Ace is developed as the primary editor for Cloud9 \gls(ide) - an online integrated development environment -  and the successor of the Mozilla Skywriter (formerly Bespin) Project. It supports syntax highlighting and auto formatting of the code as well as customizable keyboard shortcuts.
 
 \subsubsection{jQuery}
-jQuery is a fast, small, and feature-rich JavaScript library. It makes things like HTML document traversal and manipulation, event handling, animation and ajax (Asynchronous JavaScript and XML) much simpler with an easy-to-use API that works across a multitude of browsers. \toolname{} basically uses its functionality to exchange data via RESTful (Representational State Transfer) web services and manipulating HTML elements.
+jQuery is a fast, small, and feature-rich JavaScript library. It makes things like HTML document traversal and manipulation, event handling, animation and ajax (Asynchronous JavaScript and \gls{xml}) much simpler with an easy-to-use \gls{api} that works across a multitude of browsers. \toolname{} basically uses its functionality to exchange data via RESTful (Representational State Transfer) web services and manipulating HTML elements.

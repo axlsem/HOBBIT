@@ -1,8 +1,80 @@
 \chapter{Related Work}
-\section{Choregraphe}
-\section{evablockly\_ros - Inovasyon Muhendislik}
-\section{robot\_blockly - erlerobotics}
-\section{Open Roberta Lab}
-\section{RobotC}
-\section{Ardublock}
-\section{Grape – Graphical Robot Programming for Beginners}
+This chapter examines the related work of fields this work is placed in. It starts with a brief summary of the fundamental development of \glspl{vpl}, then presents a classification of them and provides some representative examples. In the next section graphical environments for programming robots are summarized. Then an overview of researches and already existings user interfaces is given. Finally, there is a comparison between matured interfaces with the one presented in this work.
+
+\section{Visual Programming Languages}
+There were basically two milestones in the development of an \gls{vpl} as we know it nowadays. The first milestone was Sketchpad, presented by Ivan Sutherland \cite{Sutherland:1963}. It was designed in 1963 on the TX-2 computer at MIT (Massachusetts Institute of Technology) and has been called the first computer graphics application. The system allowed users to work with a lightpen to create 2D graphics by creating simple primitives, like lines and circles, and then applying operations, such as copy, and constraints on the geometry of the shapes. Its graphical interface and support for user-specifiable constraints stand out as Sketchpad's most important contributions to visual programming languages. By defining appropriate constraints, users could develop structures such as complicated mechanical linkages and then move them about in real time.\cite{Boshernitsan:CSD-04-1368} David Canfield Smith achieved the next major, groundbreaking step in the history of \glspl{vpl}. In his PhD dissertation \cite{Smith:1975:PCP:907074} he introduced both the use of small pictorial objects, called icons, and the notion of programming by demonstration. \\
+
+The field of \glspl{vpl} has grown rapidley in recent years and therefore more and more interest has been focused on creating a robust, standardized classification for work in the area. A lot of frameworks and environments are established in different fields of use, including education, multimedia, video games, simulation and automation processes. Since there are different focuses across these fields, the usage and design variies in a broad spectrum, and it is reasonable to classify them. As \cite{Boshernitsan:CSD-04-1368} outlines it is possible to cluster them according to the way users interact with them - e.g. differing \textit{purely visual languages} and \textit{hybrid text and visual systems}. Another appropiate classification scheme is the following, which focuses more on the data and input processing:
+
+\begin{itemize}
+    \item Block-based languages
+    \item Flowcharts
+    \item Dataflow programming languages
+    % \item Finite-state machines
+    % \item Behavior trees
+\end{itemize}
+
+\subsection{Block-based languages}
+Block-based \glspl{vpl} are especially used in tools for reducing barriers for non-programmers or for teaching children programming. The core of these languages is a set of blocks, which can be connected with each other to form an executable program. Each block represents a specific paradigm of the proper programming language. A typical editor consists of a toolbox which contains the code blocks and a workspace, where the blocks can be placed - usually via a drag-and-drop, which is a key feature and make these \glspl{vpl} considered most intuitive and user-friendly.
+
+The field of application of block-based \glspl{vpl} covers a wide range: Ardublock\footnote{http://blog.ardublock.com/} is a graphical programming add-on to the default Arduino \gls{ide} - an open-source electronics platform based on easy-to-use hardware and software, which has a broad community. The MIT App Inventor is a drag-and-drop visual programming tool for designing and building fully functional mobile apps for Android.\cite{AppInventor} In the fields of education Scratch\footnote{https://scratch.mit.edu/}, developed in 2007, plays an important role, since it is designed to be highly interactive. The name highlights the idea of tinkering, as it comes from the scratching technique used by hip-hop disc jockeys. In Scratch programming, the activity is similar, mixing graphics, animations, photos, music, and sound. The scripting area in the Scratch interface is intended to be used like a physical desktop (see \prettyref{fig:ScratchUI})\cite{Scratch}.
+
+\begin{figure}[htbp]
+	\centering
+	\begin{overpic}[width=0.9\linewidth]{./graphics/ScratchUI}
+	\end{overpic}
+    \caption[Scratch user interface]%
+            {Scratch user interface (Source:\cite{Scratch})}%
+	\label{fig:ScratchUI}%
+\end{figure}
+
+\subsection{Flowcharts}
+These \glspl{vpl} are able to translate an algorithm's logic given as flowchart into executable machine instructions. According to \cite{ISO2382} a flowchart is the graphical representation of a process or the step-by-step solution of a problem, using suitably annotated geometric figures connected by flowlines for the purpose of designing or documenting a process or program. Flowcharts are typically used in the fields of automation. Grafcet \cite{Grafcet} is a tool, drawing its inspiration from Petri nets (a general purpose mathematical tool allowing various discrete-event systems to be described), whose aim is the specification of \glspl{plc}. It is the basis of the \gls{sfc}, an International Standard in 1987. An implementation of the Grafcet norm can be found in S7-GRAPH, developed by Siemens AG and part of their STEP 7 software for programming \glspl{plc} (see \prettyref{fig:S7Graph}).
+
+Another application using a flowchart \gls{vpl} is KTechLab\footnote{https://sourceforge.net/projects/ktechlab/}, which is an \gls{ide} for microcontrollers and electronics. It supports circuit simulation, program development for microcontrollers and simulating the programmed microcontroller together with its application circuit.
+
+\subsection{Dataflow programming languages}
+Similar to flowcharts dataflow programming is used for professional applications primarily, aimed at designers rather than end users or programmation beginners. Dataflow programming is a programming paradigm whose execution model can be represented by a directed graph, representing the flow of data between nodes, similarly to a dataflow diagram. Considering this comparison, each node is an executable block that has data inputs, performs transformations over it and then forwards it to the next block. A dataflow application is then a composition of processing blocks, with one or more initial source blocks and one or more ending blocks, linked by a directed edge.\cite{Sousa2012DataflowPC} National Instruments LabVIEW \cite{LabView} and Simulink (\prettyref{fig:Simulink}) can be mentioned as the representatives of this big group.
+
+\begin{figure}[ht]
+	\centering
+	\begin{overpic}[width=0.65\linewidth]{./graphics/S7Graph}
+	\end{overpic}
+    \caption[S7-GRAPH interface of  STEP 7]%
+        % {S7-GRAPH interface of  STEP 7 (Source \footnotemark)}
+        {S7-GRAPH interface of  STEP 7 (Source \footnote{https://w3.siemens.com/mcms/simatic-controller-software/en/step7/simatic-s7-graph/pages/default.aspx})}
+	\label{fig:S7Graph}%
+\end{figure}
+% \footnotetext{https://w3.siemens.com/mcms/simatic-controller-software/en/step7/simatic-s7-graph/pages/default.aspx}
+
+\begin{figure}[!hb]
+	\centering
+	\begin{overpic}[width=0.65\linewidth]{./graphics/Simulink}
+	\end{overpic}
+    \caption[User interface of Simulink to use simulation models]%
+    % {User interface of Simulink to use simulation models (Source\footnotemark)}
+    {User interface of Simulink to use simulation models (Source\footnote{https://www.mathworks.com/products/simulink.html})}
+	\label{fig:Simulink}%
+\end{figure}
+% \footnotetext{https://www.mathworks.com/products/simulink.html}
+
+\section{Graphical Robot Programming Environments}
+The driving force of \glspl{vpl} in terms of graphical programming of robots is education. Teachers rely on simple educational robots and intuitive programming environments and graphical programming environments have become a frequent starting point for young students. The used environments mostly depends on the robot the corresponding class is programming and therefore there are many offerings.
+
+A famous environment is the \textit{Lego Mindstorms} system\footnote{https://www.lego.com/en-us/mindstorms} - a hardware and software platform for the development of programmable robots based on Lego building bricks. It comes up with an \gls{ide} that is available on Windows PC or Mac. Its programming software is based on LabVIEW and provides the ability to downloading programs to the programmable brick, which can be connected to different sensors and actuators. Besides of the default editor the platform also supports the use of third-party environments as outlined in \cite{Hirst2003}.
+
+Dataflow oriented \glspl{vpl}, like used in the mentioned Lego Mindstorms system, may be not suitable for absolute beginners, as described in \cite{Grape}. The author mention, that the procedural approach where a program is firstly considered as a sequence of statements is much easier to learn than the data flow or functional approach. Therefore a new graphical programming environment, called \textit{Grape}, was developed. With its help a flowchart can be built and the meaning of the individual elements of the flowchart are defined. It comes up with a list of predefined classes for robot programming and provides the feature to extend the list by own classes using a simple \gls{xml} syntax. The code generation itself also uses \gls{xml} representation: first the graphical structure of the program is converted into a \gls{xml} tree, which then is translated into \Cpp{} code via a mapping schema.
+
+One of the most powerful graphical robot programming environment is the Open Roberta platform \cite{OpenRoberta}. The connection to the user is called \textit{Open Roberta Lab}, a cloud-­based application, which enables children and adolescents to visually program real robot hardware directly from the web browser or by using a build in online robot simulator. It also provides platform features like user login, program saving/sharing and easy hardware pairing over Wi-Fi as well as USB and Bluetooth connection.\cite{Ketterl_Jost_Leimbach_Budde_2015} Its programming language is called \textit{NEPO} and is built up on Google's Blockly, which also plays a fundamental part in this work (see \prettyref{sub:Blockly} and \prettyref{sec:CodeGeneration}).
+
+When it comes to humanoid robots, by now, there are three major representatives: Nao\cite{Nao5152516}, Pepper\footnote{https://www.softbankrobotics.com/emea/en/pepper} and Romeo\footnote{https://projetromeo.com/}. All are developed by SoftBank Robotics and come up with a powerful \gls{sdk} called \textit{NAOqi}. Besides of \glspl{sdk} for Python, \Cpp{}, Java, JavaScript and \gls{ros}, the framework also provides a graphical programming tool: Choregraphe\cite{Choregraphe5326209}.
+
+\section{Environments for ROS-based robots}
+
+% \section{Choregraphe}
+
+% \section{evablockly\_ros - Inovasyon Muhendislik}
+
+% \section{robot\_blockly - erlerobotics}
+
+% \section{RobotC}

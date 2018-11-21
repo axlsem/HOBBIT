@@ -10,7 +10,7 @@
 	% ngerman
 ]{ACIN_diploma_thesis}
 
- \Title{\toolname: A graphical user interface for programming ROS based robots}
+ \Title{\toolname: A graphical user interface for programming ROS-based robots}
 % \Subject{Diplomarbeit}
  \Author{Alexander Semeliker, BSc}
  \Date{29.07.2018}
@@ -36,6 +36,7 @@
 
 % include necessary packages, add additional packages there!
 \input{packages}
+\input{glossary}
 
 % include file with settings
 %\input{settings}
@@ -50,7 +51,6 @@
 
 	% \input{macros.tex}
 	\maketitle
-	\lstlistoflistings
 	
 	% Include all the chapters...
 	%=============================
@@ -68,13 +68,16 @@
 	\let\svaddcontentsline\addcontentsline
 	\renewcommand\addcontentsline[3]{%
 	\ifthenelse{\equal{#1}{lof}}{}%
-	{\ifthenelse{\equal{#1}{lot}}{}{\svaddcontentsline{#1}{#2}{#3}}}}
+	{\ifthenelse{\equal{#1}{lol}}{}
+	{\ifthenelse{\equal{#1}{lot}}{}{\svaddcontentsline{#1}{#2}{#3}}}}}
 	\appendix
 	\addcontentsline{toc}{chapter}{Appendices}
 	\chapter*{Appendices}
+	% \printglossaries
+	\printglossary[type=\acronymtype,title={List of Abbreviations}]
 	\include{apxBlockConfigurationManual}
 	\include{apxBlocks}
-	% \include{apxROS}
+	\include{apxROS}
 	
 	
 	% Literaturverzeichnis...
