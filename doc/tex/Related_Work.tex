@@ -1,5 +1,5 @@
 \chapter{Related Work}
-This chapter examines the related work of fields this work is placed in. It starts with a brief summary of the fundamental development of \glspl{vpl}, then presents a classification of them and provides some representative examples. In the next section graphical environments for programming robots are summarized. Then an overview of researches and already existings user interfaces is given. Finally, there is a comparison between matured interfaces with the one presented in this work.
+This chapter examines the related work of fields this work is placed in. It starts with a brief summary of the fundamental development of \glspl{vpl}, then presents a classification of them and provides some representative examples. In the next section graphical environments for programming robots are summarized. Then an overview of researches and already existings \glspl{ui} is given. Finally, there is a comparison between matured interfaces with the one presented in this work.
 
 \section{Visual Programming Languages}
 There were basically two milestones in the development of an \gls{vpl} as we know it nowadays. The first milestone was Sketchpad, presented by Ivan Sutherland \cite{Sutherland:1963}. It was designed in 1963 on the TX-2 computer at MIT (Massachusetts Institute of Technology) and has been called the first computer graphics application. The system allowed users to work with a lightpen to create 2D graphics by creating simple primitives, like lines and circles, and then applying operations, such as copy, and constraints on the geometry of the shapes. Its graphical interface and support for user-specifiable constraints stand out as Sketchpad's most important contributions to visual programming languages. By defining appropriate constraints, users could develop structures such as complicated mechanical linkages and then move them about in real time.\cite{Boshernitsan:CSD-04-1368} David Canfield Smith achieved the next major, groundbreaking step in the history of \glspl{vpl}. In his PhD dissertation \cite{Smith:1975:PCP:907074} he introduced both the use of small pictorial objects, called icons, and the notion of programming by demonstration. \\
@@ -34,42 +34,111 @@ These \glspl{vpl} are able to translate an algorithm's logic given as flowchart 
 Another application using a flowchart \gls{vpl} is KTechLab\footnote{https://sourceforge.net/projects/ktechlab/}, which is an \gls{ide} for microcontrollers and electronics. It supports circuit simulation, program development for microcontrollers and simulating the programmed microcontroller together with its application circuit.
 
 \subsection{Dataflow programming languages}
-Similar to flowcharts dataflow programming is used for professional applications primarily, aimed at designers rather than end users or programmation beginners. Dataflow programming is a programming paradigm whose execution model can be represented by a directed graph, representing the flow of data between nodes, similarly to a dataflow diagram. Considering this comparison, each node is an executable block that has data inputs, performs transformations over it and then forwards it to the next block. A dataflow application is then a composition of processing blocks, with one or more initial source blocks and one or more ending blocks, linked by a directed edge.\cite{Sousa2012DataflowPC} National Instruments LabVIEW \cite{LabView} and Simulink (\prettyref{fig:Simulink}) can be mentioned as the representatives of this big group.
+Similar to flowcharts dataflow programming is used for professional applications primarily, aimed at designers rather than end users or programmation beginners. Dataflow programming is a programming paradigm whose execution model can be represented by a directed graph, representing the flow of data between nodes, similarly to a dataflow diagram. Considering this comparison, each node is an executable block that has data inputs, performs transformations over it
 
-\begin{figure}[ht]
+\begin{figure}[!h]
+% \begin{figure}[ht]
 	\centering
 	\begin{overpic}[width=0.65\linewidth]{./graphics/S7Graph}
 	\end{overpic}
     \caption[S7-GRAPH interface of  STEP 7]%
-        % {S7-GRAPH interface of  STEP 7 (Source \footnotemark)}
-        {S7-GRAPH interface of  STEP 7 (Source \footnote{https://w3.siemens.com/mcms/simatic-controller-software/en/step7/simatic-s7-graph/pages/default.aspx})}
+        {S7-GRAPH interface of  STEP 7 (Source \footnotemark)}
+        % {S7-GRAPH interface of  STEP 7 (Source \footnote{https://w3.siemens.com/mcms/simatic-controller-software/en/step7/simatic-s7-graph/pages/default.aspx})}
 	\label{fig:S7Graph}%
 \end{figure}
-% \footnotetext{https://w3.siemens.com/mcms/simatic-controller-software/en/step7/simatic-s7-graph/pages/default.aspx}
+\footnotetext{https://w3.siemens.com/mcms/simatic-controller-software/en/step7/simatic-s7-graph/pages/default.aspx}
 
-\begin{figure}[!hb]
+\begin{figure}[!h]
+% \begin{figure}[!hb]
 	\centering
 	\begin{overpic}[width=0.65\linewidth]{./graphics/Simulink}
 	\end{overpic}
     \caption[User interface of Simulink to use simulation models]%
-    % {User interface of Simulink to use simulation models (Source\footnotemark)}
-    {User interface of Simulink to use simulation models (Source\footnote{https://www.mathworks.com/products/simulink.html})}
+    {User interface of Simulink to use simulation models (Source\footnotemark)}
+    % {User interface of Simulink to use simulation models (Source\footnote{https://www.mathworks.com/products/simulink.html})}
 	\label{fig:Simulink}%
 \end{figure}
-% \footnotetext{https://www.mathworks.com/products/simulink.html}
+\footnotetext{https://www.mathworks.com/products/simulink.html}
 
-\section{Graphical Robot Programming Environments}
-The driving force of \glspl{vpl} in terms of graphical programming of robots is education. Teachers rely on simple educational robots and intuitive programming environments and graphical programming environments have become a frequent starting point for young students. The used environments mostly depends on the robot the corresponding class is programming and therefore there are many offerings.
+and then forwards it to the next block. A dataflow application is then a composition of processing blocks, with one or more initial source blocks and one or more ending blocks, linked by a directed edge.\cite{Sousa2012DataflowPC} National Instruments LabVIEW \cite{LabView} and Simulink (\prettyref{fig:Simulink}) can be mentioned as the representatives of this big group.
 
-A famous environment is the \textit{Lego Mindstorms} system\footnote{https://www.lego.com/en-us/mindstorms} - a hardware and software platform for the development of programmable robots based on Lego building bricks. It comes up with an \gls{ide} that is available on Windows PC or Mac. Its programming software is based on LabVIEW and provides the ability to downloading programs to the programmable brick, which can be connected to different sensors and actuators. Besides of the default editor the platform also supports the use of third-party environments as outlined in \cite{Hirst2003}.
+\section{Graphical Robot Programming Environments} \label{sec:GraphicalEnvs}
+The driving force of \glspl{vpl} in terms of graphical programming of robots is education. Teachers rely on simple educational robots and intuitive programming environments and graphical programming environments have become a frequent starting point for young students. The used environments mostly depends on the robot the corresponding class is programming and therefore there are many offerings. \\
 
-Dataflow oriented \glspl{vpl}, like used in the mentioned Lego Mindstorms system, may be not suitable for absolute beginners, as described in \cite{Grape}. The author mention, that the procedural approach where a program is firstly considered as a sequence of statements is much easier to learn than the data flow or functional approach. Therefore a new graphical programming environment, called \textit{Grape}, was developed. With its help a flowchart can be built and the meaning of the individual elements of the flowchart are defined. It comes up with a list of predefined classes for robot programming and provides the feature to extend the list by own classes using a simple \gls{xml} syntax. The code generation itself also uses \gls{xml} representation: first the graphical structure of the program is converted into a \gls{xml} tree, which then is translated into \Cpp{} code via a mapping schema.
+A famous environment is the \textit{Lego Mindstorms} system\footnote{https://www.lego.com/en-us/mindstorms} - a hardware and software platform for the development of programmable robots based on Lego building bricks. It comes up with an \gls{ide} that is available on Windows PC or Mac. Its programming software is based on LabVIEW and provides the ability to downloading programs to the programmable brick, which can be connected to different sensors and actuators. Besides of the default editor the platform also supports the use of third-party environments as outlined in \cite{Hirst2003}. \\
 
-One of the most powerful graphical robot programming environment is the Open Roberta platform \cite{OpenRoberta}. The connection to the user is called \textit{Open Roberta Lab}, a cloud-­based application, which enables children and adolescents to visually program real robot hardware directly from the web browser or by using a build in online robot simulator. It also provides platform features like user login, program saving/sharing and easy hardware pairing over Wi-Fi as well as USB and Bluetooth connection.\cite{Ketterl_Jost_Leimbach_Budde_2015} Its programming language is called \textit{NEPO} and is built up on Google's Blockly, which also plays a fundamental part in this work (see \prettyref{sub:Blockly} and \prettyref{sec:CodeGeneration}).
+Dataflow oriented \glspl{vpl}, like used in the mentioned Lego Mindstorms system, may be not suitable for absolute beginners, as described in \cite{Grape}. The author mention, that the procedural approach where a program is firstly considered as a sequence of statements is much easier to learn than the data flow or functional approach. Therefore a new graphical programming environment, called \textit{Grape}, was developed. With its help a flowchart can be built and the meaning of the individual elements of the flowchart are defined. It comes up with a list of predefined classes for robot programming and provides the feature to extend the list by own classes using a simple \gls{xml} syntax. The code generation itself also uses \gls{xml} representation: first the graphical structure of the program is converted into a \gls{xml} tree, which then is translated into \Cpp{} code via a mapping schema. \\
 
-When it comes to humanoid robots, by now, there are three major representatives: Nao\cite{Nao5152516}, Pepper\footnote{https://www.softbankrobotics.com/emea/en/pepper} and Romeo\footnote{https://projetromeo.com/}. All are developed by SoftBank Robotics and come up with a powerful \gls{sdk} called \textit{NAOqi}. Besides of \glspl{sdk} for Python, \Cpp{}, Java, JavaScript and \gls{ros}, the framework also provides a graphical programming tool: Choregraphe\cite{Choregraphe5326209}.
+One of the most powerful graphical robot programming environment is the Open Roberta platform \cite{OpenRoberta}. The connection to the user is called \textit{Open Roberta Lab}, a cloud-­based application, which enables children and adolescents to visually program real robot hardware directly from the web browser or by using a build in online robot simulator. It also provides platform features like user login, program saving/sharing and easy hardware pairing over Wi-Fi as well as USB and Bluetooth connection.\cite{Ketterl_Jost_Leimbach_Budde_2015} Its programming language is called \textit{NEPO} and is built up on Google's Blockly, which also plays a fundamental part in this work (see \prettyref{sub:Blockly} and \prettyref{sec:CodeGeneration}). \\
 
-\section{Environments for ROS-based robots}
+When it comes to humanoid robots, by now, there are three major representatives: Nao\cite{Nao5152516}, Pepper\footnote{https://www.softbankrobotics.com/emea/en/pepper} and Romeo\footnote{https://projetromeo.com/}. All are developed by SoftBank Robotics and come up with a powerful \gls{sdk} called \textit{NaoQi}. Besides of \glspl{sdk} for Python, \Cpp{}, Java, JavaScript and \gls{ros}, the framework also provides a graphical programming tool: Choregraphe\cite{Choregraphe5326209}. Actually, Choregraphe is a specific module of NaoQi and more or less just a graphical representation of NaoQi's functions. The Choregraphe module produces an \gls{xml} file describing the program (i.e. the application, the boxes, the connections between them, the included scripts etc.). For execution, the file is interpreted by the XML module of NaoQi. Since the architecture of humanoid robots is very complex, even experienced programmers, at least partly, rely on interfaces like Choregraphe and therefore it is not exclusively used for education. \\
+
+Another hybrid robot programming environment is provided by Aseba Studio\footnote{https://www.thymio.org/en:asebastudio} \gls{ide} of the Thymio II, a small and low-priced educational robot. It provides pure visual programming, two block based \gls{vpl} (Scratch, Blockly) as well as an editor and an \gls{api} for text programming. It is also possible to connect the robot an directly run and debug the program via the user interface.
+
+\section{Environments for ROS-based robots} \label{sec:RosEnvs}
+As stated in the beginning, \gls{ros} is considered as the de-facto standard framework for robot software development. Nonetheless the environments explained in \prettyref{sec:GraphicalEnvs}, as well as other frameworks too, does not provide \gls{ros} connectivity out-of-the-box.
+
+This might be reasonable when thinking of purchasing a robot is not cheap. If an user needs to control just one robot, there is no necessity to search for a generic tool - especially because such a tool most likley would not provide as powerful capabilities as the default programming interface would do. Assuming the case of a lab, where several people might working with different robot or just quick showcases are desired, it is reasonable to design such an interface. Right now, there a only a few frameworks available for such purposes. \\
+
+Erle Robotics developed a web-based visualization and block programming tool, called \textit{robot\_blockly}, which supports their own robots and drones \cite{erleblockly}. It comes preinstalled with their Linux-based artificial robotic brain \textit{Erle-Brain}\footnote{http://docs.erlerobotics.com/brains/erle-brain-3} and also provides a rudimentary interface for all other robots. It uses the standard block creation process of Blockly (\prettyref{sub:Blockly}). Therefore the user needs to update different files of the source code, must follow some naming rules, recompile Blockly and the package and also needs - apart from \gls{ros} - basic JavaScript knowledge. The \gls{ros} connectivity and all execution routines can be implemented in a Python file, which is read from a specific directory and then included into the Blockly source code. \\
+
+Another Blockly-based tool for controlling \gls{ros}-based robots is the \textit{evablockly\_ros} package, developed by Inovasyon Muhendislik\cite{evablocklyros}. The provided blocks are mainly created specifically for operations that can be performed by using evarobot, a mobile robot platform built by the author. Apart from them the package also provides the following basic \gls{ros} connectivity features:
+
+\begin{itemize}
+	\item set up server connection
+	\item create a publisher to send data
+	\item send data via created publisher
+	\item create a subscriber to receive data
+	\item perform operations when data is received from determined subscriber
+\end{itemize}
+
+\section{Comparison of visual programming tools}
+This section provides a comparison some visual programming tools presented in the previous sections with this work in respect of their features. The following systems were considered: robot\_blockly\cite{erleROS}, Choregraphe\cite{Choregraphe5326209}, Open Roberta Lab\cite{Ketterl_Jost_Leimbach_Budde_2015}, Grape\cite{Grape} and EV3\cite{LegoEV3}. The specified features aiming two important fields of the tool decision process - platform independency and usablity. Those two main features are broken down to several minor criterias, as \prettyref{tab:Comparison} shows. All of the mentioned tools come with an \gls{ide} for multiple computer platforms and operation systems. \\
+
+Most of the tools provide a block-based programming interface, which tends to be the simplest \gls{vpl} type in terms of usablity. Conclusively, the two most popular educational programming platforms, EV3 - the newest generation of the Lego Mindstorms system - Open Roberta Lab, are included. Since EV3 also provides the ability to use third-party environments, all \glspl{vpl} are supported as well as pure coding itself. When looking at the provided programming options of Choregraphe, it is highlighted that it is possible to create complex programms with it, but getting there requires more technical expertise. The tool presented in this work, \toolname{}, trys to reach both audiences. \\
+
+Open Roberta Lab supports seven different robot platforms out of the box, which is significantly more than the other tools. Besides its own programming brick, EV3 supports its
+preceding robot system NXT partially at the moment, but allows the integration of third-party sensors and motors. Choregraphe Suite supports platforms providing the NaoQi \gls{sdk}, which are currently three physical robots. All other tools only provide connectivity to one robot though, but are able to be upgraded via different interfaces. Only \toolname{} comes up with an assistent, the others require to touch or recompile the source code. \\
+
+Besides the number of robots, which can be connected to a system, platform independency also means, that different operating systems are supported. Web-based applications are the most independent ones, since users are not required to install software on their computers. Running the infrastructure on a server allows users to connect to the robot remotely and use it on mobile devices too. EV3 currently supports mobile devices with the following minimum versions: Android 4.2, iOS 8.0. Of the evaluated tools \toolname{}, robot\_blockly and Open Roberta Lab are fully web-based. All of them are based on Google's Blockly framework. \\
+
+Development support interfaces such as a robot simulatior and a debugging tool are only provided by two tools. When comparing this to the programming types, a pattern could be obatined. One of the advantages using a block-based \gls{vpl} is that the translated code is always syntactically correct, so a major reason using such support during development, is obsolete. \\
+
+When it comes to \gls{ros} connectivity the classification outlined in \prettyref{sec:GraphicalEnvs} and \prettyref{sec:RosEnvs} can be applied. Except EV3 it is possible to create \gls{ros} nodes with each tool. It is worthy of remark thaht Choregraphe's NaoQi \gls{sdk} provides \gls{ros} connectivity only via code represention, i.e. it is not possible to use \gls{ros} communication within the graphical programming interface. Of the tools enabling updates for both \gls{ros} connectivity and robot platforms, all provide a manual, but only the workflow of \toolname{} is tool assisted. This means that upgrading is more of a configuration than programming process - depending on how complex the desired block should be. Therefore less programming knowledge is required - especially in terms of the communication patterns of \gls{ros}. Not touching the source code also means no recompiling, which therefore leads to the fact, that - once deployed - \toolname{} runs autonomously without any internet connection required.
+
+\def\rotdeg{90}
+\begin{table}[htbp]
+	\begin{minipage}{\textwidth}
+		\centering
+		\begin{tabular}{l | l | c c c c c c}
+			\multicolumn{2}{c}{Feature} & \rotatebox{\rotdeg}{\toolname{}} & \rotatebox{\rotdeg}{robot\_blockly} & \rotatebox{\rotdeg}{Choregraphe} & \rotatebox{\rotdeg}{Open Roberta Lab} & \rotatebox{\rotdeg}{Grape} & \rotatebox{\rotdeg}{EV3} \\
+			\toprule
+			\multirow{4}{*}{Programming} & block-based & \checkmark & \checkmark & & \checkmark & & \checkmark \\
+			& flowchart & & & & & \checkmark & \checkmark \\
+			& dataflow & & & \checkmark & & & \checkmark \\
+			& code & \checkmark & & \checkmark & & & \checkmark \\
+			\hline
+			\multirow{2}{*}{Robot platforms} & out-of-the-box & 1 & 1 & 1 & 7 & 1 & 2\footnote{third-party sensors and motors are supported} \\
+			& upgradeable & \checkmark & \checkmark &  & \checkmark & \checkmark & \\
+			\hline
+			\multirow{4}{*}{User interface} & upgrade assistent & \checkmark & & & & & \\
+			& web-based & \checkmark & \checkmark &  & \checkmark & & \\
+			& simulator & & & \checkmark & & & \\
+			& debugging & & & \checkmark & & & \checkmark \\
+			\hline
+			\multirow{2}{*}{\gls{ros} connectivity} & out-of-the-box & \checkmark & \checkmark &  &  & & \\
+			& upgradeable & & & (\checkmark)\footnote{not for visual programming environment} & \checkmark & \checkmark &\\
+			\hline
+			\multirow{4}{*}{Upgrade workflow} & tool assisted & \checkmark & & - & & & -\\
+			& manual & \checkmark & \checkmark & - & \checkmark & \checkmark & -\\
+			& programming languages & 1 & 2 & - & 2 & 2 & - \\
+			& recompiling & & \checkmark & - & \checkmark & & - \\
+			\bottomrule
+		\end{tabular}
+		\caption{Comparison of visual programming platforms}
+		\label{tab:Comparison}
+	\end{minipage}
+\end{table}
 
 % \section{Choregraphe}
 
