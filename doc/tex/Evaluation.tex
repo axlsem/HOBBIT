@@ -1,4 +1,77 @@
 \chapter{Evaluation}
-\section{Methods}
+The following chapter describes how the implemented tool was evaluated. An experiment was used for that purpose which will be described in the following sections. Furthermore, the data acquisition is presented as well as how this data was analysed.
+
+\section{Experiment Setup}
+The implemented tool was evaluated with X professional robotics software developers. Two different use cases were designed. Each participant had to work with \toolname{} on the first use case and then was asekd to write a code for the second use case. When working on the code the group was supported by material covering explanation of the necessary \gls{ros} concepts including examples. Furthermore a list of the necessary \gls{ros} specifications (topics, services, actions, messages etc.) were provided. The participants were asked to use a customized code editor, which were able to perform basic measurements. They were free to choose whether implementing in Python or \Cpp{}. This instrumentation ensures that the results and measurements of both tasks are compareable in terms of explore the impact of programming knowledge. All materials, also including the task description of the use cases, were reviewed by a colleague not participating in the experiment in advance to guarantee its understandability and soundness. At the beginning of the experiment the tool was introduced using a short live demo showing all concepts and how it should be worked with the tool and the code editor, respectivley. The participants worked on each task for a total of XX minutes. \\
+While working on the use cases two measurements are performed for each participant: total time (the time to accomplish tasks) and pauses (number of occurrences, where the programm has not changed within XX seconds during development). The measurements are done for both task, working with \toolname{} and coding. For this purpose a routine using the Blockly API was implemented, which listened to changes in the tool's workspace - i.e. creating, updating or deleting blocks. The provided editor was also customized with a feature, which recorded the timestamps of changes. At the start of each task the participants had to click on a \textit{Start} buttom, which started the timer. It was stopped, when the participant clicked the \textit{Stop} button. The implemented function then submitted the following information:
+
+\begin{itemize}
+    \item User ID: a randomly generated alphanumeric ID to assign submissions
+    \item Total time taken to accomplish task
+    \item Timestamps of pauses
+    \item Type of submission (tool or code)
+    \item Content of submission (e.g. full code)
+\end{itemize}
+
+\subsection{Questionnaire}
+Additionally to the mentioned time based measurements a questionnaire was also included into the evaluation process. The questions can be classified into four categories: demographic factors, experience questions, feedback questions and workload questions. Each of them are discussed in the following.
+
+\subsubsection*{Demographic Factors}
+Demographic questions are designed to help survey researchers determine what factors may influence a respondent's answers, interests, and opinions. Participants of this experience were asked the following questions:
+
+\begin{itemize}
+    \item \textit{DF1}: What is your age?
+    % \begin{itemize}
+    %     \item Under 18
+    %     \item 18-24
+    %     \item 25-34
+    %     \item 35-44
+    %     \item 45-54
+    %     \item Above 54
+    % \end{itemize}
+    \item \textit{DF2}: What is your highest qualification?
+    \item \textit{DF3}: What is your current employment status?
+    \item \textit{DF4}: What is your current field of work?
+\end{itemize}
+
+\textit{DF1} was ask to roughly determine the participant's knowledge and experience. There possible answers ranged from \textit{under 18} to \textit{above 54}. A more detailed information regarding the knowledge of the participant is delivered by question \textit{DF2}. The possible answers were: less than high school, high school diploma or equivalent degree, bachelor's degree, master's degree, higher than master's degree, no degree. Questions \textit{DF3} and \textit{DF4} were asked to determine whether a participant has experience in any related field and, if so, how much.
+
+\subsubsection*{Experience Questions}
+The main motivation for having experience questions is that the enable the correlation between results of the experiment and the experience for each participant. The following questions were asked to collect this information:
+
+\begin{itemize}
+    \item \textit{EQ1}: How much experience do you have with \gls{ros}?
+    \item \textit{EQ2}: How much experience do you have with programming in \Cpp{}/Python?
+    \item \textit{EQ3}: How much experience do you have with programming in general?
+    \item \textit{EQ4}: How much experience do you have with block-based \glspl{vpl} (e.g. Blockly)?
+    % \item \textit{EQ5}: How much experience do you have with other visual programming languages (e.g. LabView, MATLAB/Simulink)?
+\end{itemize}
+
+A scale including the answers \textit{none}, \textit{moderate} and \textit{expert} was used. The answers can easily be mapped onto a numeric scale. The set of answers was also chosen to be that limited to minimize the variability of the answers. The questions are structured according to the level of abstraction. In particular \textit{EQ1} was chosen since the implemented tool provides an environment which should support people without detailed knowledge of \gls{ros}. Experience with \gls{ros} therefore could influence the outcome of the experiment. Another influence could be the programming experience in \Cpp{} and Python, which are the main languages for programming \gls{ros} nodes (see \textit{EQ2}). Especially when comparing the results of the coding task, this could explain differences. General programming experience may not influence the coding task, but could decrease the effort when working with the tool - e.g. when looking at the participants' pauses (see \textit{EQ3}). Participants with experience in block-based languages are expected to find their way through the \toolname{} workspace more easily than novices (see \textit{EQ4}).
+
+\subsubsection*{Feedback Questions}
+
+\begin{itemize}
+    \item \textit{FQ1}: Do you think such a tool saves time compared to your current approach?
+    \item \textit{FQ2}: Do you think such a tool allows more flexibility compared to your current approach?
+    \item \textit{FQ3}: Do you think such a tool provides scalable solutions for tasks you are facing in your work?
+    \item \textit{FQ4}: Do you think the usage of the tool is intuitive?
+\end{itemize}
+
+\subsubsection*{Workload Questions}
+
+\begin{itemize}
+    \item \textit{WQ1}: How mentally demanding was the task?
+    \item \textit{WQ2}: How much time pressure did you feel during the task?
+    \item \textit{WQ3}: How hard did you have to work to accomplish your level of performance?
+    \item \textit{WQ4}: How insecure, discouraged, irritated, stressed and annoyed were you?
+\end{itemize}
+
+\subsection{Use Cases}
+This section presents the use cases the participants were asked to work on. It starts with the description of each use case, then the goals are explained and finally a referene solution used for validating the results is presented.
+
+
+
 \section{Results}
+
 \section{Discussion}
