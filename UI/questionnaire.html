@@ -135,7 +135,7 @@
                             if (status == "success") {
                                 var subbtn = document.getElementById("submitBtn");
                                 subbtn.disabled = true;
-                                Object.keys(localStorage).filter(v=>v.indexOf("study_")>=0).forEach(v=>localStorage.removeItem(v))
+                                // Object.keys(localStorage).filter(v=>v.indexOf("study_")>=0).forEach(v=>localStorage.removeItem(v))
                                 window.alert("Thanks for participating");
                             } else {
                                 alert("Something went wrong!");
