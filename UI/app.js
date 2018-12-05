@@ -447,16 +447,30 @@ app.get('/checksub', checkSubmissions)
 app.get('/checksub/:subtype', checkSubmissions)
 app.get('/evaluation',evaluationMgmt)
 
-app.get('/startblockly', function(req,res) {
-	blocklyEnabled = true;
-	console.log("Blockly is enabled: "+blocklyEnabled)
-	res.status(200).send("Editor is enabled")
+app.get('/start/:step', function(req,res) {
+	var step = req.params.step;
+	
+	if (step=="blockly") {
+		blocklyEnabled = true;
+	} else if (step=="questions") {
+		quesEnabled = true;
+	}
+	let txt = "Enabled: "+step;
+	console.log(txt)
+	res.status(200).send(txt)
 });
 
-app.get('/startqs', function(req,res) {
-	quesEnabled = true;
-	console.log("Questions are open: "+quesEnabled)
-	res.status(200).send("Questions are open")
+app.get('/end/:step', function(req,res) {
+	var step = req.params.step;
+	
+	if (step=="blockly") {
+		blocklyEnabled = false;
+	} else if (step=="questions") {
+		quesEnabled = false;
+	}
+	let txt = "Disabled: "+step;
+	console.log(txt)
+	res.status(200).send(txt)
 });
 
 app.listen(PORT, '0.0.0.0', function () {
