@@ -20,7 +20,7 @@
             <div id="logo""></div>
         </div>
         <div id="Qcontent"></div>
-        <button id="submitBtn" class="btn waves-effect waves-light" type="submit" name="action" onclick="submit()">Submit</button>
+        <button id="submitBtn" style="margin-bottom: 20px;" class="btn waves-effect waves-light" type="submit" name="action" onclick="submit()">Submit</button>
 
         <script src=" ./js/jquery.min.js"> </script>
         <script>
@@ -33,7 +33,7 @@
 
             var questions = [
                 {
-                    Q: "How much experience do you have with programming in general?",
+                    Q: "How much experience do you have with ROS?",
                     Qtype: "experience"
                 },
                 {
@@ -41,7 +41,27 @@
                     Qtype: "experience"
                 },
                 {
+                    Q: "How much experience do you have with programming in general?",
+                    Qtype: "experience"
+                },
+                {
+                    Q: "How much experience do you have with block-based VPLs (e.g. Blockly)?",
+                    Qtype: "experience"
+                },
+                {
                     Q: "Do you think such a tool saves time compared to your current approach?",
+                    Qtype: "feedback"
+                },
+                {
+                    Q: "Do you think such a tool allows more flexibility compared to your current approach?",
+                    Qtype: "feedback"
+                },
+                {
+                    Q: "Do you think such a tool provides scalable solutions for tasks you are facing in your work?",
+                    Qtype: "feedback"
+                },
+                {
+                    Q: "Do you think the usage of the tool is intuitive?",
                     Qtype: "feedback"
                 },
                 {
@@ -49,11 +69,15 @@
                     Qtype: "nasatlx"
                 },
                 {
-                    Q: "How irritated, stressed, and annoyed versus content, relaxed, and complacent did you feel during the task?",
+                    Q: "How much time pressure did you feel during the task?",
                     Qtype: "nasatlx"
                 },
                 {
-                    Q: "How much time pressure did you feel during the task?",
+                    Q: "How hard did you have to work to accomplish your level of performance?",
+                    Qtype: "nasatlx"
+                },
+                {
+                    Q: "How insecure, discouraged, irritated, stressed and annoyed were you?",
                     Qtype: "nasatlx"
                 }
             ];
@@ -67,11 +91,11 @@
             for (let i in questions) {
                 let q = questions[i];
                 let ans = ansTypes[q.Qtype];
-                $('#Qcontent').append(createQAdiv (q.Q,ans,i))
+                $('#Qcontent').append(createQAdiv(q.Q,ans,i))
             }
 
             function createQAdiv (q,ans,i) {
-                return '<div class=" row">'+createQdiv(q)+createAnsDiv(ans,i)+'</div>'
+                return '<div class=" row">'+createQdiv(q)+createAnsDiv(ans,i)+'</div><hr>'
             }
 
             function createQdiv (q) {
@@ -109,7 +133,9 @@
                             data: JSON.stringify(data)
                         }, function (data, status) {
                             if (status == "success") {
-                                window.alert("Thank you");
+                                var subbtn = document.getElementById("submitBtn");
+                                subbtn.disabled = true;
+                                window.alert("Thanks for participating");
                             } else {
                                 alert("Something went wrong!");
                             }

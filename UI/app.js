@@ -3,7 +3,7 @@ const pathXML = './demos/xml/';
 const pathPy = './demos/src/';
 const fs = require('fs');
 const { exec } = require('child_process');
-const PORT = process.env.port || 3000;
+const PORT = process.env.port || 8080;
 // const PORT = Number(process.argv.slice(2));
 
 var xml2js = require('xml2js')
@@ -16,6 +16,8 @@ var param = String(process.argv.slice(2));
 var isDev = param == 'dev';
 var participants = 15;
 var tmpcnt = 0;
+var blocklyEnabled = false;
+var quesEnabled = false;
 
 function loadIndex(req, res) {
 	res.sendFile('./index.html', { root: __dirname });
@@ -401,7 +403,27 @@ function checkSubmissionPerType(subtype) {
 
 }
 
+function evaluationMgmt(req, res) {
+	if (!blocklyEnabled && !quesEnabled) {
+		loadEditor(req,res)
+	} else if (blocklyEnabled && !quesEnabled) {
+		loadBlockly(req,res)
+	} else {
+		loadQuestionnaire(req,res)
+	}
+}
+
 app.use(express.static(__dirname + '/'));
+app.use(function(req,res,next){
+	console.log(req.path)
+	if(req.query.step == 'blockly' && !blocklyEnabled) {
+		res.status(401).send("Not now!")
+	} else if(req.query.step == 'questions' && !quesEnabled) {
+		res.status(401).send("Not now!")
+	} else {
+		next();
+	}
+});
 
 app.get('/', loadIndex);
 app.get('/editor', loadEditor);
@@ -423,6 +445,19 @@ app.post('/submit/:userId', saveSubmission);
 app.get('/study', startStudy);
 app.get('/checksub', checkSubmissions)
 app.get('/checksub/:subtype', checkSubmissions)
+app.get('/evaluation',evaluationMgmt)
+
+app.get('/startblockly', function(req,res) {
+	blocklyEnabled = true;
+	console.log("Blockly is enabled: "+blocklyEnabled)
+	res.status(200).send("Editor is enabled")
+});
+
+app.get('/startqs', function(req,res) {
+	quesEnabled = true;
+	console.log("Questions are open: "+quesEnabled)
+	res.status(200).send("Questions are open")
+});
 
 app.listen(PORT, '0.0.0.0', function () {
 	console.log('Hobbit blockly is now listening to port ' + PORT + '!');

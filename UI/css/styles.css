@@ -412,3 +412,10 @@ select {
 	margin: 5px;
 	border: solid #8fbee5 0.1px;
 }
+
+hr {
+	color: #8fbee5 !important;
+	background-color: #8fbee5 !important;
+	height: 1px !important;
+	border: 0;
+}

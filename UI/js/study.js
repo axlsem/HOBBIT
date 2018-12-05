@@ -30,14 +30,22 @@ $('#nav-stop').click(function () {
 })
 
 $('#nav-next').click(function () {
-    if (window.location.href.indexOf('study') >= 0) {
-        var comp = 'editor';
-    } else {
-        var comp = 'questionnaire';
-    }
-    var url = window.location.origin + "/" + comp;
-    window.location.href = url;
+    nextStep("questions");
+    
 })
+
+function nextStep(step) {
+    $.get("/evaluation/?step="+step,
+    {
+    }, function (data, status) {
+        if (status == "success") {
+            var url = window.location.origin + "/evaluation";
+            window.location.href = url;
+        } else {
+            alert("Next step haven't been enabled yet!");
+        }
+    });
+}
 
 $('#nav-submit').click(function () {
     var xml = Blockly.Xml.workspaceToDom(workspace);
@@ -55,7 +63,7 @@ $('#nav-submit').click(function () {
                 data: JSON.stringify(data)
             }, function (data, status) {
                 if (status == "success") {
-                    window.alert("Thank you");
+                    // window.alert("Thank you");
                 } else {
                     alert("Something went wrong!");
                 }

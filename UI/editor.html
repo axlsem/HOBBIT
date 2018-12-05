@@ -42,6 +42,7 @@
                         <button id="startBtn" class="btn waves-effect waves-light" type="submit" name="action" onclick="toggleStart()">Start</button>
                         <button id="submitBtn" class="btn waves-effect waves-light" type="submit" name="action" onclick="submit()"
                             disabled>Submit</button>
+                            <button id="nextBtn" style="display: none" class="btn waves-effect waves-light" type="submit" name="action" onclick="nextStep('blockly')">Next</button>
                     </div>
                 </div>
             </div>
@@ -136,6 +137,18 @@
                 lastaction = t;
             }
 
+            function nextStep(step) {
+                $.get("/evaluation/?step="+step,
+                {
+                }, function (data, status) {
+                    if (status == "success") {
+                        window.location.reload();
+                    } else {
+                        alert("Next step haven't been enabled yet!");
+                    }
+                });
+            }
+
             function submit() {
                 var fullcode = editor.getSession().getValue();
                 localStorage.setItem('study_code', fullcode);
@@ -151,7 +164,9 @@
                             if (status == "success") {
                                 var subbtn = document.getElementById("submitBtn");
                                 subbtn.disabled = true;
-                                window.alert("Thank you");
+                                $("#submitBtn").hide();
+                                $("#startBtn").hide();
+                                $("#nextBtn").show();
                             } else {
                                 alert("Something went wrong!");
                             }
