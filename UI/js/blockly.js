@@ -198,7 +198,7 @@ function load_demo_robot() {
 		if (filename == null || filename == "") {
 			console.log('Cancelled')
 		} else {
-			$.get("/demo/load/+filename",
+			$.get("/demo/load/"+filename,
 				{
 				}, function (data, status) {
 					if (status == "success") {
