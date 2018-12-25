@@ -1,0 +1,73 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage{listings}
+\lstset{
+    frame=single,
+    columns=fullflexible,
+    breaklines=true,
+    showstringspaces=false
+}
+
+\begin{document}
+\section*{ROS reference for HOBBIT}
+\subsection*{Topics}
+\subsubsection*{/head/move}
+This topic is used to move HOBBIT's head.\\
+Message Type: std\_msgs/String
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|l|l|}
+        \hline
+        Message & Description \\ \hline
+        center\_center & look straight \\ \hline
+        up\_center & look up \\ \hline
+        down\_center & look down \\ \hline
+        center\_right & look right \\ \hline
+        center\_left & look left \\ \hline
+        up\_right & look to upper right corner \\ \hline
+        up\_left & look to upper left corner \\ \hline
+        down\_right & look to lower right corner \\ \hline
+        down\_left & look to lower left corner \\ \hline
+        littledown\_center & look little down \\ \hline
+        to\_grasp & look to grasp \\ \hline
+        to\_turntable & look to turntable \\ \hline
+        search\_table & look to table \\
+        \hline
+    \end{tabular}
+\end{table}
+
+\subsubsection*{/head/emo}
+This topic is used to control HOBBIT's eyes \\
+Message type: std\_msgs/String
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|l|l|}
+        \hline
+        Message & Description \\ \hline
+        HAPPY & look happy \\ \hline
+        VHAPPY & look very happy \\ \hline
+        LTIRED & look little tired \\ \hline
+        VTIRED & look very tired \\ \hline
+        CONCERNED & look concerned \\ \hline
+        SAD & look sad \\ \hline
+        WONDERING & wonder \\ \hline
+        NEUTRAL & look neutral \\ \hline
+        SLEEPING & sleep \\ \hline
+    \end{tabular}
+\end{table}
+
+\subsubsection*{/cmd\_vel}
+This topic is used to move HOBBIT a certain distance\\
+Message type: geometry\_msgs/Twist
+
+\section*{roscpp}
+roscpp is a C++ implementation of ROS. It provides a client library that enables C++ programmers to quickly interface with ROS Topics, Services, and Parameters.
+
+\subsection*{Writing a Simple Publisher}
+This example covers how to write a publisher node in C++.
+\lstinputlisting[language=C++]{publisher.cpp}
+
+\subsection*{Writing a Simple Subscriber}
+This example covers how to write a subscriber node in C++.
+\lstinputlisting[language=C++]{subscriber.cpp}
+
+\end{document}

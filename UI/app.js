@@ -3,7 +3,7 @@ const pathXML = './demos/xml/';
 const pathPy = './demos/src/';
 const fs = require('fs');
 const { exec } = require('child_process');
-const PORT = process.env.port || 8080;
+const PORT = process.env.port || 8000;
 // const PORT = Number(process.argv.slice(2));
 
 var xml2js = require('xml2js')

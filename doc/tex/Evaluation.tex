@@ -2,9 +2,9 @@
 The following chapter describes how the implemented tool was evaluated. An experiment was used for that purpose which will be described in the following sections. Furthermore, the data acquisition is presented as well as how this data was analysed.
 
 \section{Experiment Setup} \label{sec:ExperimentSetup}
-The implemented tool was evaluated with X professional robotics software developers. Two different use cases were designed. Each participant had to work with \toolname{} on the first use case and then was asekd to write a code for the second use case. When working on the code the group was supported by material covering explanation of the necessary \gls{ros} concepts including examples. Furthermore a list of the necessary \gls{ros} specifications (topics, services, actions, messages etc.) were provided. The participants were asked to use a customized code editor, which were able to perform basic measurements. They were free to choose whether implementing in Python or \Cpp{}. This instrumentation ensures that the results and measurements of both tasks are compareable in terms of explore the impact of programming knowledge. All materials, also including the task description of the use cases, were reviewed by a colleague not participating in the experiment in advance to guarantee its understandability and soundness. At the beginning of the experiment the tool was introduced using a short live demo showing all concepts and how it should be worked with the tool and the code editor, respectivley. The participants worked on each task for a total of XX minutes. \\
+The implemented tool was evaluated with X professional robotics software developers. Two different use cases were designed. Each participant had to work with \toolname{} on the first use case and then was asekd to write a code for the second use case. When working on the code the group was supported by material covering explanation of the necessary \gls{ros} concepts including examples. Furthermore a list of the necessary \gls{ros} specifications (topics, services, actions, messages etc.) were provided. The participants were asked to use a customized code editor, which were able to perform basic measurements. They were free to choose whether implementing in Python or \Cpp{}. This instrumentation ensures that the results and measurements of both tasks are compareable in terms of exploring the impact of programming knowledge. All materials, also including the task description of the use cases, were reviewed by a colleague not participating in the experiment in advance to guarantee its understandability and soundness. At the beginning of the experiment the tool was introduced using a short live demo showing all concepts and how it should be worked with the tool and the code editor, respectivley. The participants worked on each task for a total of XX minutes. \\
 
-While working on the use cases two measurements are performed for each participant: total time (the time to accomplish tasks) and pauses (number of occurrences, where the programm has not changed within XX seconds during development). The measurements are done for both task, working with \toolname{} and coding. For this purpose a routine using the Blockly API was implemented, which listened to changes in the tool's workspace - i.e. creating, updating or deleting blocks. The provided editor was also customized with a feature, which recorded the timestamps of changes. At the start of each task the participants had to click on a \textit{Start} buttom, which started the timer. It was stopped, when the participant clicked the \textit{Stop} button. The implemented function then submitted the following information:
+While working on the use cases two measurements are performed for each participant: total time (the time to accomplish tasks) and pauses (number of occurrences, where the programm has not changed within XX seconds during development). The measurements are done for both task, working with \toolname{} and coding. For this purpose a routine using the Blockly API was implemented, which listens to changes in the tool's workspace - i.e. creating, updating or deleting blocks. The provided editor was also customized with a feature, which recorded the timestamps of changes. At the start of each task the participants had to click on a \textit{Start} button, which started the timer. It was stopped, when the participant clicked the \textit{Stop} button. The implemented function then submitted the following information:
 
 \begin{itemize}
     \item User ID: a randomly generated alphanumeric ID to assign submissions
@@ -20,19 +20,19 @@ The following questions should be answerd by the experiment:
     \item \textit{GQ1}: Is the tool seen as an improvement compared to the traditional coding approach?
     \item \textit{GQ2}: Is the workflow using the tool straighter compared to coding?
     \item \textit{GQ3}: Do participants find solutions faster using the tool?
-    \item \textit{GQ4}: Do participants with more experience perfom better in terms of straightness and total time?
+    \item \textit{GQ4}: Do participants with more experience perform better in terms of straightness and total time?
 \end{itemize}
 All of the presented goal have in common that they can be answered positively, negatively and none of both. The third option means that furher research must be done, e.g. conducting further experiments to get an answer for this question. \\
 
-The primary goal of this evaluation is to find out if the developed tool is seen as an improvement compared to the traditional coding approach. This question is described by \textit{GQ1} and should be answerd by analysing the feedback of participants, who have experience in programming robotics - especially using ROS. Also, the answers to workload questions can be taken in account. \\
+The primary goal of this evaluation is to find out if the developed tool is seen as an improvement compared to the traditional coding approach. This question is described by \textit{GQ1} and should be answerd by analysing the feedback of participants, who have experience in programming robotics - especially using ROS. Also, the answers to workload questions can be taken in account. (\prettyref{sec:Questionnaire}) \\
 
-\textit{GQ2} should give an answer to the question whether using the tool affect the workflow of the participants. Do they make less pauses when using the tool? Do they change the code more often when using the traditional approach? When do they struggle? To quantify this the measurements presented in \prettyref{sec:ExperimentSetup} are analysed as well as the answers to questions regarding the workload. \\
+\textit{GQ2} should give an answer to the question whether using the tool affects the workflow of the participants. Do they make less pauses when using the tool? Do they change the code more often when using the traditional approach? When do they struggle? To quantify this the measurements presented above are analysed as well as the answers to questions regarding the workload. \\
 
-\textit{GQ3} simply should examine if using the tool saves time compared to the coding approach. Saving time when creating programms means more time for other work, which especially for users of the primary target group (see \prettyref{sec:Purpose}) is important, because it is not the major contet of their work or research. \\
+\textit{GQ3} simply should examine if using the tool saves time compared to the coding approach. Saving time when creating programms means more time for other work, which especially for users of the primary target group (see \prettyref{sec:Purpose}) is important, because it may not is the major content of their work or research. \\
 
 Finally, \textit{GQ4} should incorporate the experience of the participants by comparing it with their qualitive results - i.e. do they work straighter and faster. This question can also be seen as an extension to \textit{GQ1}, meaning find out if the gap between using the tool and pure coding is smaller when having more experience.
 
-\subsection{Questionnaire}
+\subsection{Questionnaire} \label{sec:Questionnaire}
 Additionally to the mentioned time based measurements a questionnaire was also included into the evaluation process. The questions can be classified into four categories: demographic factors, experience questions, feedback questions and workload questions. Each of them are discussed in the following.
 
 \subsubsection*{Demographic Factors}
@@ -52,10 +52,10 @@ Demographic questions are designed to help survey researchers determine what fac
     \item \textit{DF3}: What is your current employment status?
     \item \textit{DF4}: What is your current field of work/study?
 \end{itemize}
-\textit{DF1} was ask to roughly determine the participant's knowledge and experience. The possible answers ranged from \textit{under 18} to \textit{above 44}. A more detailed information regarding the knowledge of the participant is delivered by question \textit{DF2}. The possible answers were: less than high school, high school diploma or equivalent degree, bachelor's degree, master's degree, higher than master's degree, no degree. Questions \textit{DF3} and \textit{DF4} were asked to determine whether a participant has experience in any related field and, if so, how much.
+\textit{DF1} was ask to roughly determine the participant's knowledge and experience. The possible answers ranged from \textit{under 18} to \textit{above 44}. A more detailed information regarding the general knowledge of the participant is delivered by question \textit{DF2}. The possible answers were: less than high school, high school diploma or equivalent degree, bachelor's degree, master's degree, higher than master's degree, no degree. Questions \textit{DF3} and \textit{DF4} were asked to determine whether a participant has experience in any related field and, if so, how much.
 
 \subsubsection*{Experience Questions}
-The main motivation for having experience questions is that the enable the correlation between results of the experiment and the experience for each participant. The following questions were asked to collect this information:
+The main motivation for having experience questions is that they enable the correlation between results of the experiment and the experience for each participant. The following questions were asked to collect this information:
 
 \begin{itemize}
     \item \textit{EQ1}: How much experience do you have with \gls{ros}?
@@ -77,28 +77,105 @@ The motivation for the asking feedback questions is to get subjective feedback f
 \end{itemize}
 The scale used for the questions included the following possbile answers: \textit{Strongly disagree}, \textit{Disagree}, \textit{Neutral}, \textit{Agree}, \textit{Strongly agree}. Again, the motivation for choosing this set of answers was to minimize the variability of answers. Especially when looking on \textit{GQ1}, the feedback questions play a crucial part in this experiment. \\
 
-\textit{FQ1} should find out if such a tool is seen as assistance for topics the participants are facing during their work. As mentioned, programming a robot is not necessarily the main topic in research projects. Having a tool, which speeds up subtasks, allows to spend more time on crucial tasks. The subjective answers to this question can also be compared to the result of the measurements. \\
+\textit{FQ1} should find out if such a tool is seen as assistance for topics the participants are facing during their work. As mentioned, programming a robot is not necessarily the main topic in research projects. Having a tool, which speeds up subtasks, allows to spend more time on more crucial tasks. The subjective answers to this question can also be compared to the result of the measurements. \\
 
-\textit{FQ2} targets the flexibility of the tool, e.g. when thinking of creating different demos. It basically gives insights on how much complex demos can be implemented with the tool. \\
+\textit{FQ2} targets the flexibility of the tool, e.g. when thinking of creating different demos. It basically gives insights on how much complexitivity can be put into demos when implementing them with the tool. \\
 
 Similar to that question, \textit{FQ3} would also affect the judgement if the tool is seen as an improvement or not. If solutions can not be implemented flexible and scalable enough, more research is required to further improve the presented tool. \\
 
-Finally, \textit{FQ4} should find ou how intuitive the usage of the tool is regarding a participant's subjective feeling. Having an intuitive tool and workflow helps a visual programming tool to be accepted by potential users. Experienced users probably would tend to use it over self-implemented code because it saves time and unexperienced users may faster understand programming concepts.
+Finally, \textit{FQ4} should find out how intuitive the usage of the tool is regarding a participant's subjective feeling. Having an intuitive tool and workflow helps a visual programming tool to be accepted by potential users. Experienced users probably would tend to use it over self-implemented code because it saves time and unexperienced users may faster understand programming concepts.
 
 \subsubsection*{Workload Questions}
-Besides getting direct feedback from participants another approach judging how useful and intuitive a tool is can be measuring the workload a participant felt during working with it. Because of that another set of questions was included in the evaluation process. It is based on the \gls{nasatlx}\cite{HART1988139}, which consists of six subscales that represent somewhat independent clusters of variables: Mental Demand, Physical Demand, Temporal Demand, Frustration, Effort, and Performance. The assumption is that some combination of these dimensions are likely to represent the workload experienced by most people performing most tasks. The following workload questions were asked:
+Besides getting direct feedback from participants another approach, judging how useful and intuitive a tool is, can be measuring the workload a participant felt during working with it. Because of that another set of questions was included in the evaluation process. It is based on the \gls{nasatlx}\cite{HART1988139}, which consists of six subscales that represent somewhat independent clusters of variables: mental demand, physical demand, temporal demand, frustration, effort and performance. The assumption is that some combination of these dimensions are likely to represent the workload experienced by most people performing most tasks. The following four workload questions were asked:
 \begin{itemize}
     \item \textit{WQ1}: How mentally demanding was the task?
     \item \textit{WQ2}: How much time pressure did you feel during the task?
     \item \textit{WQ3}: How hard did you have to work to accomplish your level of performance?
     \item \textit{WQ4}: How insecure, discouraged, irritated, stressed and annoyed were you?
 \end{itemize}
-In the official NASA-TLX paper and pencil version\footnote{https://humansystems.arc.nasa.gov/groups/TLX/downloads/TLXScale.pdf} increments of high, medium and low estimates for each point result in 21 gradations on the scales. To minimize the variability of answers only a scale with five gradations (\textit{Very low}, \textit{Low}, \textit{Medium}, \textit{High}, \textit{Very high}) was used.
+The number of questions was limited to four, because two clusterd variables are not seen to be required in the scope of the chosen experiment setup. First, it can be expected that working with a software tool is not considered to be physical demanding. Second, the participants may cannot rate their performance properly because debugging and testing is not supported by the experiment setup. Further adaption was done in respect of the number of possible answers. In the official \gls{nasatlx} paper and pencil version\footnote{https://humansystems.arc.nasa.gov/groups/TLX/downloads/TLXScale.pdf} increments of high, medium and low estimates for each point result in 21 gradations on the scales. To minimize the variability of answers only a scale with five gradations (\textit{Very low}, \textit{Low}, \textit{Medium}, \textit{High}, \textit{Very high}) was used.
 
 \subsection{Use Cases}
-This section presents the use cases the participants were asked to work on. It starts with the description of each use case, then the goals are explained and finally a referene solution used for validating the results is presented.
+This section presents the use cases the participants were asked to work on. It starts with the description of each use case, then the required \gls{ros} specifications are explained and finally flowcharts for better understanding are presented. The use cases were designed to be compareable in terms of complexitivity, which in this context is quantifed by the amount, type and distribution of different \gls{ros} communication patterns as well as the total amount of \gls{ros} message calls.
 
+\subsubsection*{Learning a new object}
+The first task the participants were asked to work on was a behaviour, which is already implemented on \hobbit{}: learning a new object. The participants should find a solution with the traditional way, meaning writing the full code by themselves. They were provided with a additional materials, which should give them support to start not purely from the scratch. \\
 
+\begin{figure}[htbp]
+	\centering
+	\begin{overpic}[width=\linewidth]{./graphics/Flowchart1}
+	\end{overpic}
+    \caption{Flowchart of first use case}%
+	\label{fig:FirstUserCaseFlow}%
+\end{figure}
+
+The use case can be described as follows: First \hobbit{} should grab the turntable from its storing position. Then a message on its tablet should be shown to ask the user to put an object on the table. After the user confirmed the placement, \hobbit{} should look at the object on the turntable and tell the user "I'm learning a new object" via its tablet interface. The table should turn clockwise first, before the user should be asked to place the the object upside down on the table. Again, the robot should wait for confirmation, then telling "I'm learning a new object" wihle rotating the table counterclockwise. After that, the user should be asked to remove the object and confirm this. Then \hobbit{} should look straight, store the table and ask for the name of the object. Finally \hobbit{} should show a happy emotion and tell "Thank you, now I know what \textit{X} is", where \textit{X} is the name of the object. The whole desired workflow is visualed in \prettyref{fig:FirstUserCaseFlow}. Furhter, \prettyref{tab:FirstUseCaseSpecs} breaks down the complexitivity of the first use case. It is necessary to publish to two different topics, implementing one action client and calling one service.
+
+\begin{table}
+	\centering
+	\begin{tabular}{l l l c}
+		\toprule
+        Action & Type & Specification & Calls \\
+        \midrule
+        Move head & Topic & /head/move  & 2 \\
+        Show emotion & Topic & /head/emo  & 1 \\
+        Move arm & Action & hobbit\_arm & 4 \\
+        User interaction & Service & /MMUI & 7 \\
+		\bottomrule
+	\end{tabular}
+	\caption{ROS patterns used for implementing first use case}
+	\label{tab:FirstUseCaseSpecs}
+\end{table}
+
+\subsubsection*{Bringing objects from another person}
+The second use case was perform by using the \toolname{} environment. There were no additional supporting materials. Instead a short introduction on how to use the tool was given. The time cap was the same as in the first use case. \\
+
+The task was to implement a programm to ask the user repetitively if \hobbit{} should bring an object from another person, which is located at another place. First the user should be asked which objects should be picked up (e.g. "Which object do you want?"). The user then should use the robot's tablet to enter the name of the requested object. After that, \hobbit{} should navigate to the second person. The exact location, specified by the coordinates and pose, was provided in advance to the participants. The second user then should be asked to handover the desired object. If it is answerd positively, the object should be placed on \hobbit{} tray and the robot navigates back to its previous location telling the user "Here you are" and placing the object on the table. If the object has not been handed over, an appropriate message should be displayed on the tablet (e.g. "I'm sorry, your partner couldn't handover the object") after navigating back. Afterwards the user should be asked, if \hobbit{} should bring another item. The whole procedure should be performed as long as the user does not request another object. After the final decline \hobbit{} should show a happy emotion again. For a better understanding \prettyref{fig:SecondUserCaseFlow} provides the flowchart of this use case. \\
+
+\begin{figure}[!htbp]
+	\centering
+	\begin{overpic}[width=0.9\linewidth]{./graphics/Flowchart2}
+	\end{overpic}
+    \caption{Flowchart of second use case}%
+	\label{fig:SecondUserCaseFlow}%
+\end{figure}
+
+\prettyref{tab:SecondUseCaseSpecs} breaks down the complexitivity of this use case. It is necessary to publish to one topic, make calls from two different action clients and use one service. So the number of different \gls{ros} communication types is equal to the first use case. The total number of necessary calls differ slightly (14 in the first use case, 13 in the second). This should be compensated by asking for implementing just one action server for the first use case and publishing to two topics (compared to two actions and one topic for the second use case), since this actions are seen as the most difficult \gls{ros} pattern and topics the most simple ones.
+
+\begin{table}
+	\centering
+	\begin{tabular}{l l l c}
+		\toprule
+        Action & Type & Specification & Calls \\
+        \midrule
+        Show emotion & Topic & /head/emo  & 1 \\
+        Move arm & Action & hobbit\_arm & 4 \\
+        Navigation & Action & move\_base\_simple & 2 \\
+        User interaction & Service & /MMUI & 6 \\
+		\bottomrule
+	\end{tabular}
+	\caption{ROS patterns used for implementing first second case}
+	\label{tab:SecondUseCaseSpecs}
+\end{table}
+
+% \subsubsection*{Flowcharts}
+% For a better understanding of the use cases \prettyref{fig:FirstUserCaseFlow} and \prettyref{fig:SecondUserCaseFlow} show flowcharts of the first and second use case. Purple blocks represent processes, green blocks represent displays, red blocks represent user inputs and yellow blocks represent decisions.
+
+% \begin{figure}[h]
+% 	\centering
+% 	\begin{overpic}[width=0.9\linewidth]{./graphics/Flowchart1}
+% 	\end{overpic}
+%     \caption{Flowchart of first use case}%
+% 	\label{fig:FirstUserCaseFlow}%
+% \end{figure}
+
+% \begin{figure}
+% 	\centering
+% 	\begin{overpic}[width=0.9\linewidth]{./graphics/Flowchart2}
+% 	\end{overpic}
+%     \caption{Flowchart of second use case}%
+% 	\label{fig:SecondUserCaseFlow}%
+% \end{figure}
 
 \section{Results}
 
