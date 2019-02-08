@@ -198,7 +198,7 @@ function load_demo_robot() {
 		if (filename == null || filename == "") {
 			console.log('Cancelled')
 		} else {
-			$.get("/demo/load/"+filename,
+			$.get("/demo/load/" + filename,
 				{
 				}, function (data, status) {
 					if (status == "success") {
@@ -332,21 +332,33 @@ var workspace = Blockly.inject(blocklyDiv,
 		trashcan: true
 	});
 
-$.get('/demo/toolbox', function (data, status) {
-	if (status == "success") {
-
-		for (var custBlock of data.blocks) {
+function createCustomBlocks(blocks) {
+	return new Promise(function (resolve, reject) {
+		for (var custBlock of blocks) {
 			var block = custBlock.block;
 			var name = custBlock.name;
 			var code = custBlock.code;
-	
-			eval("Blockly.Blocks."+name+" = {init:function(){this.jsonInit("+block+")}}");
-			eval("Blockly.Python."+name+"=function(block){"+code+"}");			
+			try {
+				eval("Blockly.Blocks." + name + " = {init:function(){this.jsonInit(" + block + ")}}");
+				eval("Blockly.Python." + name + "=function(block){" + code + "}");
+			} catch (err) {
+				reject(err)
+				throw err
+			}
 		}
-		
-		var parser = new DOMParser();
-		var xmlToolbox = parser.parseFromString(data.toolbox,"text/xml");
-		workspace.updateToolbox(xmlToolbox.getElementById("toolbox"));
+		resolve();
+	})
+}
+
+$.get('/demo/toolbox', function (data, status) {
+	if (status == "success") {
+		createCustomBlocks(data.blocks).then(function(){
+			var parser = new DOMParser();
+			var xmlToolbox = parser.parseFromString(data.toolbox, "text/xml");
+			workspace.updateToolbox(xmlToolbox.getElementById("toolbox"));
+		}).catch(function(err) {
+			console.error(err)
+		})
 	} else {
 		alert("Something went wrong!");
 	}
