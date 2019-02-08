@@ -32,6 +32,7 @@ var allHelps = {
     "hobbit_yes_no": {
         title: "Ask user a yes-no-question",
         description: "This blocks is used to ask the user a yes-no-question and delivers a boolean value in respect of the given option.",
+        example: "The following example sets HOBBIT's emotion to 'happy' if the user clicks the 'yes' button on the tablet interface when asked the question 'Are you happy?'.",
         args: [
             {
                 type: "input",
@@ -43,7 +44,7 @@ var allHelps = {
                 options: [
                     {
                         name: "yes",
-                        description: "Output of the block is set to TRUE if user's answer ist 'Yes'"
+                        description: "Output of the block is set to TRUE if user's answer is 'Yes'"
                     },
                     {
                         name: "no",
@@ -56,6 +57,7 @@ var allHelps = {
     "hobbit_user_input": {
         title: "Ask user a question",
         description: "This blocks provides the answer of the user to the given question.",
+        example: "In the following example the user is prompted to provide his or her name via the tablet interface. The input is stored into the variable 'username' and then concatenated to the salutation which then will be displayed on HOBBIT's tablet.",
         args: [
             {
                 type: "input",
@@ -75,7 +77,8 @@ var allHelps = {
     },
     "hobbit_show_info_confirm": {
         title: "Show info and wait for confirmation",
-        description: "This blocks displays a given text on HOBBIT's tablet and waits for confirmation of the user.",
+        description: "This blocks displays a given text on HOBBIT's tablet and waits for confirmation of the user. The the program continues only when the user confirms the shown message.",
+        example: "In the following example first the user is asked to put an object on HOBBIT's turntable. The user has to confirm the action before the program continues and HOBBIT turns the turntable. After that the user is asked to remove the object and, again, confirm it. Only after the confirmation HOBBIT puts the turntable back to its storing position.",
         args: [
             {
                 type: "input",
@@ -339,10 +342,10 @@ var allHelps = {
     }
 }
 var sortedNames = Object.keys(allHelps).sort(function (a, b) {
-    if(allHelps[a].title > allHelps[b].title) {
+    if (allHelps[a].title > allHelps[b].title) {
         return 1;
     }
-    if(allHelps[a].title < allHelps[b].title) {
+    if (allHelps[a].title < allHelps[b].title) {
         return -1;
     }
     return 0
@@ -364,6 +367,8 @@ if (blockProps) {
     $('#title').text(blockProps.title)
     $('#desc').text(blockProps.description)
 
+    addImage('#block-image',"/img/blocks/" + blockId + ".png")
+
     if (blockProps.args) {
         for (let arg of blockProps.args) {
             $('#params').append('<li class="params-li"><span class="help-inp-type">' + arg.type.toUpperCase() + '</span>' + arg.description + '</li>')
@@ -378,12 +383,28 @@ if (blockProps) {
     } else {
         $('#params').append('<li class="params-li">Block has no parameters</li>')
     }
+
+    if (blockProps.example) {
+        $('#exampledesc').text(blockProps.example)
+        addImage('#help-example',"/img/blocks/ex-" + blockId + ".png")
+    } else {
+        $('#exampleheader').hide()
+    }
 } else {
     $('#paramsheader').hide()
+    $('#exampleheader').hide()
     if (blockId) {
         $('#title').text('There is no help page for this block!')
     } else {
         $('#title').text('Overview')
         $('#desc').text('This page can be used to get further help for each block of the HOBBITS block set. Please select the desired block from the list on the left.')
     }
+}
+
+function addImage(cont, source) {
+    var x = document.createElement("IMG");
+    x.setAttribute("src", source);
+    x.setAttribute("class", "responsive-img");
+    x.setAttribute("onerror", "this.src='/img/blocks/default-thumb.png'");
+    $(cont).append(x)
 }
