@@ -7,16 +7,6 @@ document.getElementById('typeSelector').addEventListener('change', typeListener)
 var editMode = false;
 var currentBlock = {};
 
-// document.getElementById("title").value = "Move arm";
-// document.getElementById("in1").value = "Position";
-// document.getElementById("action").value = "hobbit_arm";
-// document.getElementById("actiontype").value = "hobbit_msgs/ArmServerAction";
-// document.getElementById("goal").value = "goal = ArmServerGoal()\ngoal.command.data = $1$\ngoal.velocity = 0.0\ngoal.joints = []";
-// document.getElementById("pckImports").value = "from hobbit_msgs.msg import ArmServerGoal\nfrom hobbit_msgs.msg import ArmServerAction";
-// document.getElementById("typeSelector").selectedIndex = 2;
-// document.getElementById("donecb").value = "if status==1:\n\tprint status\nelse:\n\tprint result";
-// typeListener();
-
 var uniqueId = function () {
     return Math.random().toString(36).substr(2, 16);
 };
@@ -266,7 +256,7 @@ function getBlockDefintion() {
 function getCodeTopic(block) {
     var topic = document.getElementById("topic").value;
     var msgtypeRaw = document.getElementById("msgtype").value;
-    var message = document.getElementById("message").value;
+    var message = document.getElementById("message").value.replace(/\'/g, "\\'").replace(/\"/g, "\\'");
 
     var msgPackage = msgtypeRaw.split("/")[0];
     var msgtype = msgtypeRaw.split("/")[1];
@@ -491,7 +481,7 @@ function getCallbacks(blockId) {
     }
 
     for (var shape of ["donecb", "activecb", "feedbackcb"]) {
-        var cb = document.getElementById(shape).value;
+        var cb = document.getElementById(shape).value.replace(/\'/g, "\\'").replace(/\"/g, "\\'");
         var cbId = shape + "_" + blockId;
         if (cb && cb != "") {
             cb = cb.replace(/\n/g, "\\n").replace(/\t/g, "\\t");
@@ -508,7 +498,7 @@ function getCallbacks(blockId) {
 function getCodeAction(block, blockId) {
     var serverName = document.getElementById("action").value;
     var msgtypeRaw = document.getElementById("actiontype").value;
-    var message = document.getElementById("goal").value;
+    var message = document.getElementById("goal").value.replace(/\'/g, "\\'").replace(/\"/g, "\\'");
     var timeout = parseFloat(document.getElementById("actiontimeout").value);
     timeout = (timeout % 1 == 0 ? timeout + ".0" : timeout).toString();
 
@@ -562,7 +552,7 @@ function create(mode) {
     } else if (selectedType == "Action") {
         var code = getCodeAction(block, blockId);
         var metaInfo = getMetaInfoAction();
-    } else return
+    } else return    
     
     if (code && code != "") {
 
