@@ -1,3 +1,4 @@
+import importlib
 import tf
 import math
 import rospy
@@ -45,7 +46,7 @@ def cbCurrentPose(data):
 	POSE = poseTmp
 
 def importMsg(msgPckg,msgType):
-    exec('module=importlib.import_module("'+msgPckg+'.msg")')
+    exec('module=importlib.import_module("'+msgPckg+'")')
     exec(msgType+'=module.'+msgType)
     exec('globals()[msgType] ='+msgType)
 
