@@ -457,7 +457,7 @@ function getCodeService(block, blockId) {
 
     var message = blocklyCode.map(v => addto + "+='" + indent + v + "'").join(";");
 
-    var MsgImport = "Blockly.Python.definitions_['rospy_init_node']+='\\nHobbbitLib.importMsg(\\'" + msgPackage + ".srv\\',\\'" + msgtype + "\\')\\n'";
+    var MsgImport = "Blockly.Python.definitions_['rospy_init_node']+='\\nHobbitLib.importMsg(\\'" + msgPackage + ".srv\\',\\'" + msgtype + "\\')\\n'";
 
     var pubCode = addto + "+=" + resp + "Blockly.Python.NodeName+'.callService(\\'" + service + "\\', \\'" + msgtype + "\\', reqparams)\\n';"
 
