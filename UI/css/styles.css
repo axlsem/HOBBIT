@@ -15,6 +15,10 @@ h6,h5,h4 {
 	width: 75% !important;
 }
 
+.help-cont .responsive-img {
+	margin-top: 15px;
+}
+
 .help-inp-type {
 	background: #8fbee5;
 	color: #ffffff;
