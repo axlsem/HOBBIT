@@ -281,7 +281,7 @@ function getCodeTopic(block) {
     }
 
     message = "var code='\\n';" + message.split("\n").map(e => "code+=\'" + e + "\\n\'").join(";");
-    var MsgImport = "code+='Hobbitlib.importMsg(\\'" + msgPackage + ".msg\\',\\'" + msgtype + "\\')\\n'";
+    var MsgImport = "code+='HobbitLib.importMsg(\\'" + msgPackage + ".msg\\',\\'" + msgtype + "\\')\\n'";
     var pubCode = "code+=Blockly.Python.NodeName+'.publishTopic(\\'" + topic + "\\', \\'" + msgtype + "\\', message)\\n';"
 
     var pyCode = [message, MsgImport, pubCode].join(";");
@@ -528,7 +528,7 @@ function getCodeAction(block, blockId) {
     }
 
     message = "var code='\\n';" + message.split("\n").map(e => "code+=\'" + e + "\\n\'").join(";");
-    var MsgImport = "code+='Hobbitlib.importMsg(\\'" + msgPackage + ".msg\\',\\'" + msgtype + "\\')\\n'";
+    var MsgImport = "code+='HobbitLib.importMsg(\\'" + msgPackage + ".msg\\',\\'" + msgtype + "\\')\\n'";
 
     var clientCode = ["client = actionlib.SimpleActionClient(\\'" + serverName + "\\', " + msgtype + ")", "client.wait_for_server()", "client.send_goal(goal" + cbAssignment + ")", "client.wait_for_result(rospy.Duration.from_sec(" + timeout + "))"];
 
