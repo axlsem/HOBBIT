@@ -658,7 +658,7 @@ Blockly.Blocks['hobbit_arm_turntable'] = {
 Blockly.Blocks['hobbit_arm_gripper'] = {
 	init: function () {
 		this.jsonInit({
-			"type": "hobbit_arm_move",
+			"type": "hobbit_arm_gripper",
 			"message0": "%1 Gripper",
 			"args0": [
 				{

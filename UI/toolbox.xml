@@ -343,6 +343,11 @@
 			</block>
 			<block type="lists_sort"></block>
 		</category>
+		<category id="catDictionaries" name="Dictionaries" colour="140">
+		<block type="dict_keys"></block>
+			<block type="dict_get_literal"></block>
+			<block type="dict_get"></block>
+		</category>
 		
 		<category id="catVariables" custom="VARIABLE" name="Variables" colour="330"></category>
 		<category id="catFunctions" custom="PROCEDURE" name="Functions" colour="290"></category>
