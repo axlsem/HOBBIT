@@ -1,0 +1,6 @@
+Erklären wie man mit Elemente arbeiten kann
+- blaues rädchen
+- variablen anlegen und nutzen
+- platzhalter raus
+- text/string block
+

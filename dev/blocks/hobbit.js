@@ -88,7 +88,7 @@ Blockly.Blocks['hobbit_navigation_test'] = {
 			"nextStatement": null,
 			"colour": Blockly.Constants.hobbit.HUE,
 			"tooltip": "Test navigation.",
-			"helpUrl": "",
+			"helpUrl": "/help?hobbit_navigation_test",
 			// "mutator": "hobbit_navigation_dialog"
 		});
 	}
@@ -141,7 +141,7 @@ Blockly.Blocks['hobbit_show_info_confirm'] = {
 			"nextStatement": null,
 			"colour": Blockly.Constants.hobbit.HUE,
 			"tooltip": "Show text on tablet and wait for confirmation.",
-			"helpUrl": ""
+			"helpUrl": "/help?hobbit_show_info_confirm"
 		});
 	}
 };
@@ -163,7 +163,7 @@ Blockly.Blocks['hobbit_show_info'] = {
 			"nextStatement": null,
 			"colour": Blockly.Constants.hobbit.HUE,
 			"tooltip": "Show text on tablet.",
-			"helpUrl": ""
+			"helpUrl": "/help?hobbit_show_info"
 		});
 	}
 };
@@ -184,7 +184,7 @@ Blockly.Blocks['hobbit_user_input'] = {
 			"output": "String",
 			"colour": Blockly.Constants.hobbit.HUE,
 			"tooltip": "Get user's input.",
-			"helpUrl": ""
+			"helpUrl": "/help?hobbit_user_input"
 		});
 	}
 };
@@ -219,7 +219,7 @@ Blockly.Blocks['hobbit_yes_no'] = {
 			"output": "Boolean",
 			"colour": Blockly.Constants.hobbit.HUE,
 			"tooltip": "Ask a question and wait for user response (yes/no).",
-			"helpUrl": ""
+			"helpUrl": "/help?hobbit_yes_no"
 		});
 	}
 };
@@ -259,7 +259,7 @@ Blockly.Blocks['hobbit_call_service'] = {
 			"output": null,
 			"colour": Blockly.Constants.hobbit.HUE,
 			"tooltip": "Get response from service.",
-			"helpUrl": "",
+			"helpUrl": "/help?",
 			"mutator": "hobbit_service_has_parameters"
 		});
 	}
@@ -346,7 +346,7 @@ Blockly.Blocks['hobbit_turn'] = {
 			"nextStatement": null,
 			"colour": Blockly.Constants.hobbit.HUE,
 			"tooltip": "Turn HOBBIT",
-			"helpUrl": ""
+			"helpUrl": "/help?hobbit_turn"
 		});
 	}
 };
@@ -381,7 +381,7 @@ Blockly.Blocks['hobbit_move'] = {
 			"nextStatement": null,
 			"colour": Blockly.Constants.hobbit.HUE,
 			"tooltip": "Move HOBBIT",
-			"helpUrl": ""
+			"helpUrl": "/help?hobbit_move"
 		});
 	}
 };
@@ -455,7 +455,7 @@ Blockly.Blocks['hobbit_head'] = {
 			"nextStatement": null,
 			"colour": Blockly.Constants.hobbit.HUE,
 			"tooltip": "Move HOBBIT's head",
-			"helpUrl": ""
+			"helpUrl": "/help?hobbit_head"
 		});
 	}
 };
@@ -513,7 +513,7 @@ Blockly.Blocks['hobbit_emo'] = {
 			"nextStatement": null,
 			"colour": Blockly.Constants.hobbit.HUE,
 			"tooltip": "Show emotion",
-			"helpUrl": ""
+			"helpUrl": "/help?hobbit_emo"
 		});
 	}
 };
@@ -570,7 +570,7 @@ Blockly.Blocks['ROS_publisher'] = {
 			"nextStatement": null,
 			"colour": Blockly.Constants.hobbit.HUE,
 			"tooltip": "Create publisher for ROS topics",
-			"helpUrl": ""
+			"helpUrl": "/help?"
 		});
 	}
 };
@@ -612,7 +612,7 @@ Blockly.Blocks['hobbit_arm_move'] = {
 			"nextStatement": null,
 			"colour": Blockly.Constants.hobbit.HUE,
 			"tooltip": "Move HOBBIT's arm",
-			"helpUrl": ""
+			"helpUrl": "/help?hobbit_arm_move"
 		});
 	}
 };
@@ -650,7 +650,7 @@ Blockly.Blocks['hobbit_arm_turntable'] = {
 			"nextStatement": null,
 			"colour": Blockly.Constants.hobbit.HUE,
 			"tooltip": "Move turntable",
-			"helpUrl": ""
+			"helpUrl": "/help?hobbit_arm_turntable"
 		});
 	}
 };
@@ -680,7 +680,7 @@ Blockly.Blocks['hobbit_arm_gripper'] = {
 			"nextStatement": null,
 			"colour": Blockly.Constants.hobbit.HUE,
 			"tooltip": "Control HOBBIT's gripper",
-			"helpUrl": ""
+			"helpUrl": "/help?hobbit_arm_gripper"
 		});
 	}
 };
@@ -694,7 +694,7 @@ Blockly.Blocks['hobbit_undock'] = {
 			"nextStatement": null,
 			"colour": Blockly.Constants.hobbit.HUE,
 			"tooltip": "Undock from charger to get a clearer signal from laser",
-			"helpUrl": ""
+			"helpUrl": "/help?hobbit_undock"
 		});
 	}
 };

@@ -1,0 +1,282 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimal-ui">
+    <title>Tutorial roscpp</title>
+    <link type="text/css" rel="stylesheet" href="css/assets/css/github-markdown.css">
+    <link type="text/css" rel="stylesheet" href="css/assets/css/pilcrow.css">
+    <link type="text/css" rel="stylesheet" href="css/assets/css/hljs-github.min.css"/>
+  </head>
+  <body>
+    <article class="markdown-body"><p> Introduction
+roscpp is a C++ implementation of ROS. It provides a client library that enables C++ programmers to quickly interface with ROS Topics, Services, and Parameters. roscpp is the most widely used ROS client library and is designed to be the high-performance library for ROS.</p>
+<h1 id="writing-a-publisher-node"><a class="header-link" href="#writing-a-publisher-node"></a>Writing a Publisher Node</h1>
+<pre class="hljs"><code><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">"ros/ros.h"</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">"std_msgs/String.h"</span></span>
+
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;sstream&gt;</span></span>
+
+<span class="hljs-comment">/**
+ * This tutorial demonstrates simple sending of messages over the ROS system.
+ */</span>
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">(<span class="hljs-keyword">int</span> argc, <span class="hljs-keyword">char</span> **argv)</span>
+</span>{
+  <span class="hljs-comment">/**
+   * The ros::init() function needs to see argc and argv so that it can perform
+   * any ROS arguments and name remapping that were provided at the command line.
+   * For programmatic remappings you can use a different version of init() which takes
+   * remappings directly, but for most command-line programs, passing argc and argv is
+   * the easiest way to do it.  The third argument to init() is the name of the node.
+   *
+   * You must call one of the versions of ros::init() before using any other
+   * part of the ROS system.
+   */</span>
+  ros::init(argc, argv, <span class="hljs-string">"talker"</span>);
+
+  <span class="hljs-comment">/**
+   * NodeHandle is the main access point to communications with the ROS system.
+   * The first NodeHandle constructed will fully initialize this node, and the last
+   * NodeHandle destructed will close down the node.
+   */</span>
+  ros::NodeHandle n;
+
+  <span class="hljs-comment">/**
+   * The advertise() function is how you tell ROS that you want to
+   * publish on a given topic name. This invokes a call to the ROS
+   * master node, which keeps a registry of who is publishing and who
+   * is subscribing. After this advertise() call is made, the master
+   * node will notify anyone who is trying to subscribe to this topic name,
+   * and they will in turn negotiate a peer-to-peer connection with this
+   * node.  advertise() returns a Publisher object which allows you to
+   * publish messages on that topic through a call to publish().  Once
+   * all copies of the returned Publisher object are destroyed, the topic
+   * will be automatically unadvertised.
+   *
+   * The second parameter to advertise() is the size of the message queue
+   * used for publishing messages.  If messages are published more quickly
+   * than we can send them, the number here specifies how many messages to
+   * buffer up before throwing some away.
+   */</span>
+  ros::Publisher chatter_pub = n.advertise&lt;std_msgs::String&gt;(<span class="hljs-string">"chatter"</span>, <span class="hljs-number">1000</span>);
+
+  ros::<span class="hljs-function">Rate <span class="hljs-title">loop_rate</span><span class="hljs-params">(<span class="hljs-number">10</span>)</span></span>;
+
+  <span class="hljs-comment">/**
+   * A count of how many messages we have sent. This is used to create
+   * a unique string for each message.
+   */</span>
+  <span class="hljs-keyword">int</span> count = <span class="hljs-number">0</span>;
+  <span class="hljs-keyword">while</span> (ros::ok())
+  {
+    <span class="hljs-comment">/**
+     * This is a message object. You stuff it with data, and then publish it.
+     */</span>
+    std_msgs::String msg;
+
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">stringstream</span> ss;
+    ss &lt;&lt; <span class="hljs-string">"hello world "</span> &lt;&lt; count;
+    msg.data = ss.str();
+
+    ROS_INFO(<span class="hljs-string">"%s"</span>, msg.data.c_str());
+
+    <span class="hljs-comment">/**
+     * The publish() function is how you send messages. The parameter
+     * is the message object. The type of this object must agree with the type
+     * given as a template parameter to the advertise&lt;&gt;() call, as was done
+     * in the constructor above.
+     */</span>
+    chatter_pub.publish(msg);
+
+    ros::spinOnce();
+
+    loop_rate.sleep();
+    ++count;
+  }
+
+
+  <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+</code></pre><h2 id="the-code-explained"><a class="header-link" href="#the-code-explained"></a>The Code Explained</h2>
+<p>Now, let&#39;s break the code down.</p>
+<pre class="hljs"><code><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">"ros/ros.h"</span></span></code></pre><p>ros/ros.h is a convenience include that includes all the headers necessary to use the most common public pieces of the ROS system.</p>
+<pre class="hljs"><code><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">"std_msgs/String.h"</span></span></code></pre><p>This includes the std_msgs/String message, which resides in the std_msgs package. This is a header generated automatically from the String.msg file in that package. For more information on message definitions, see the msg page.</p>
+<pre class="hljs"><code>  ros::init(argc, argv, <span class="hljs-string">"talker"</span>);</code></pre><p>Initialize ROS. This allows ROS to do name remapping through the command line -- not important for now. This is also where we specify the name of our node. Node names must be unique in a running system.</p>
+<p>The name used here must be a base name, ie. it cannot have a / in it.</p>
+<pre class="hljs"><code>  ros::NodeHandle n;</code></pre><p>Create a handle to this process&#39; node. The first NodeHandle created will actually do the initialization of the node, and the last one destructed will cleanup any resources the node was using.</p>
+<pre class="hljs"><code>  ros::Publisher chatter_pub = n.advertise&lt;std_msgs::String&gt;(<span class="hljs-string">"chatter"</span>, <span class="hljs-number">1000</span>);</code></pre><p>Tell the master that we are going to be publishing a message of type std_msgs/String on the topic chatter. This lets the master tell any nodes listening on chatter that we are going to publish data on that topic. The second argument is the size of our publishing queue. In this case if we are publishing too quickly it will buffer up a maximum of 1000 messages before beginning to throw away old ones.</p>
+<p>NodeHandle::advertise() returns a ros::Publisher object, which serves two purposes: 1) it contains a publish() method that lets you publish messages onto the topic it was created with, and 2) when it goes out of scope, it will automatically unadvertise.</p>
+<pre class="hljs"><code>  ros::<span class="hljs-function">Rate <span class="hljs-title">loop_rate</span><span class="hljs-params">(<span class="hljs-number">10</span>)</span></span>;</code></pre><p>A ros::Rate object allows you to specify a frequency that you would like to loop at. It will keep track of how long it has been since the last call to Rate::sleep(), and sleep for the correct amount of time.</p>
+<p>In this case we tell it we want to run at 10Hz.</p>
+<pre class="hljs"><code>  <span class="hljs-keyword">int</span> count = <span class="hljs-number">0</span>;
+  <span class="hljs-keyword">while</span> (ros::ok())
+  {</code></pre><p>By default roscpp will install a SIGINT handler which provides Ctrl-C handling which will cause ros::ok() to return false if that happens.</p>
+<p>ros::ok() will return false if:</p>
+<ul class="list">
+<li>a SIGINT is received (Ctrl-C)</li>
+<li>we have been kicked off the network by another node with the same name</li>
+<li>ros::shutdown() has been called by another part of the application.</li>
+<li>all ros::NodeHandles have been destroyed</li>
+</ul>
+<p>Once ros::ok() returns false, all ROS calls will fail.</p>
+<pre class="hljs"><code>    std_msgs::String msg;
+
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">stringstream</span> ss;
+    ss &lt;&lt; <span class="hljs-string">"hello world "</span> &lt;&lt; count;
+    msg.data = ss.str();</code></pre><p>We broadcast a message on ROS using a message-adapted class, generally generated from a msg file. More complicated datatypes are possible, but for now we&#39;re going to use the standard String message, which has one member: &quot;data&quot;.</p>
+<pre class="hljs"><code>    chatter_pub.publish(msg);</code></pre><p>Now we actually broadcast the message to anyone who is connected.</p>
+<pre class="hljs"><code>    ROS_INFO(<span class="hljs-string">"%s"</span>, msg.data.c_str());</code></pre><p>ROS_INFO and friends are our replacement for printf/cout. See the rosconsole documentation for more information.</p>
+<pre class="hljs"><code>    ros::spinOnce();</code></pre><p>Calling ros::spinOnce() here is not necessary for this simple program, because we are not receiving any callbacks. However, if you were to add a subscription into this application, and did not have ros::spinOnce() here, your callbacks would never get called. So, add it for good measure.</p>
+<pre class="hljs"><code>    loop_rate.sleep();</code></pre><p>Now we use the ros::Rate object to sleep for the time remaining to let us hit our 10Hz publish rate.</p>
+<h1 id="writing-a-simple-service"><a class="header-link" href="#writing-a-simple-service"></a>Writing a Simple Service</h1>
+<p>This tutorial covers how to write a service node in C++.</p>
+<pre class="hljs"><code><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">"ros/ros.h"</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">"beginner_tutorials/AddTwoInts.h"</span></span>
+
+<span class="hljs-function"><span class="hljs-keyword">bool</span> <span class="hljs-title">add</span><span class="hljs-params">(beginner_tutorials::AddTwoInts::Request  &amp;req,
+         beginner_tutorials::AddTwoInts::Response &amp;res)</span>
+</span>{
+  res.sum = req.a + req.b;
+  ROS_INFO(<span class="hljs-string">"request: x=%ld, y=%ld"</span>, (<span class="hljs-keyword">long</span> <span class="hljs-keyword">int</span>)req.a, (<span class="hljs-keyword">long</span> <span class="hljs-keyword">int</span>)req.b);
+  ROS_INFO(<span class="hljs-string">"sending back response: [%ld]"</span>, (<span class="hljs-keyword">long</span> <span class="hljs-keyword">int</span>)res.sum);
+  <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+}
+
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">(<span class="hljs-keyword">int</span> argc, <span class="hljs-keyword">char</span> **argv)</span>
+</span>{
+  ros::init(argc, argv, <span class="hljs-string">"add_two_ints_server"</span>);
+  ros::NodeHandle n;
+
+  ros::ServiceServer service = n.advertiseService(<span class="hljs-string">"add_two_ints"</span>, add);
+  ROS_INFO(<span class="hljs-string">"Ready to add two ints."</span>);
+  ros::spin();
+
+  <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre><p>Now, let&#39;s break the code down.</p>
+<pre class="hljs"><code><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">"ros/ros.h"</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">"beginner_tutorials/AddTwoInts.h"</span></span></code></pre><p>beginner_tutorials/AddTwoInts.h is the header file generated from the srv file that we created earlier.</p>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">bool</span> <span class="hljs-title">add</span><span class="hljs-params">(beginner_tutorials::AddTwoInts::Request  &amp;req,
+         beginner_tutorials::AddTwoInts::Response &amp;res)</span></span></code></pre><p>This function provides the service for adding two ints, it takes in the request and response type defined in the srv file and returns a boolean.</p>
+<pre class="hljs"><code>{
+  res.<span class="hljs-keyword">sum</span> = req.a + req.b;
+  ROS_INFO(<span class="hljs-string">"request: x=%ld, y=%ld"</span>, (<span class="hljs-keyword">long</span> <span class="hljs-keyword">int</span>)req.a, (<span class="hljs-keyword">long</span> <span class="hljs-keyword">int</span>)req.b);
+  ROS_INFO(<span class="hljs-string">"sending back response: [%ld]"</span>, (<span class="hljs-keyword">long</span> <span class="hljs-keyword">int</span>)res.<span class="hljs-keyword">sum</span>);
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>;
+}</code></pre><p>Here the two ints are added and stored in the response. Then some information about the request and response are logged. Finally the service returns true when it is complete.</p>
+<pre class="hljs"><code>  ros::ServiceServer service = n.advertiseService(<span class="hljs-string">"add_two_ints"</span>, add);</code></pre><p>Here the service is created and advertised over ROS.</p>
+<h1 id="writing-a-simple-service-client"><a class="header-link" href="#writing-a-simple-service-client"></a>Writing a Simple Service Client</h1>
+<p>This tutorial covers how to write a service client node in C++.</p>
+<pre class="hljs"><code><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">"ros/ros.h"</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">"beginner_tutorials/AddTwoInts.h"</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;cstdlib&gt;</span></span>
+
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">(<span class="hljs-keyword">int</span> argc, <span class="hljs-keyword">char</span> **argv)</span>
+</span>{
+  ros::init(argc, argv, <span class="hljs-string">"add_two_ints_client"</span>);
+  <span class="hljs-keyword">if</span> (argc != <span class="hljs-number">3</span>)
+  {
+    ROS_INFO(<span class="hljs-string">"usage: add_two_ints_client X Y"</span>);
+    <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;
+  }
+
+  ros::NodeHandle n;
+  ros::ServiceClient client = n.serviceClient&lt;beginner_tutorials::AddTwoInts&gt;(<span class="hljs-string">"add_two_ints"</span>);
+  beginner_tutorials::AddTwoInts srv;
+  srv.request.a = atoll(argv[<span class="hljs-number">1</span>]);
+  srv.request.b = atoll(argv[<span class="hljs-number">2</span>]);
+  <span class="hljs-keyword">if</span> (client.call(srv))
+  {
+    ROS_INFO(<span class="hljs-string">"Sum: %ld"</span>, (<span class="hljs-keyword">long</span> <span class="hljs-keyword">int</span>)srv.response.sum);
+  }
+  <span class="hljs-keyword">else</span>
+  {
+    ROS_ERROR(<span class="hljs-string">"Failed to call service add_two_ints"</span>);
+    <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;
+  }
+
+  <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre><h2 id="the-code-explained-1"><a class="header-link" href="#the-code-explained-1"></a>The Code Explained</h2>
+<p>Now, let&#39;s break the code down.</p>
+<pre class="hljs"><code>  ros::ServiceClient client = n.serviceClient&lt;beginner_tutorials::AddTwoInts&gt;(<span class="hljs-string">"add_two_ints"</span>);</code></pre><p>This creates a client for the add_two_ints service. The ros::ServiceClient object is used to call the service later on.</p>
+<pre class="hljs"><code>beginner_tutorials::AddTwoInts srv;
+  srv.request.a = atoll(argv[<span class="hljs-number">1</span>]);
+  srv.request.b = atoll(argv[<span class="hljs-number">2</span>]);</code></pre><p>Here we instantiate an autogenerated service class, and assign values into its request member. A service class contains two members, request and response. It also contains two class definitions, Request and Response.</p>
+<pre class="hljs"><code>  <span class="hljs-keyword">if</span> (client.call(srv))</code></pre><p>This actually calls the service. Since service calls are blocking, it will return once the call is done. If the service call succeeded, call() will return true and the value in srv.response will be valid. If the call did not succeed, call() will return false and the value in srv.response will be invalid.</p>
+<h1 id="writing-a-simple-action-client"><a class="header-link" href="#writing-a-simple-action-client"></a>Writing a Simple Action Client</h1>
+<p>This tutorial covers using the simple_action_client library to create a Fibonacci action client. This example program creates an action client and sends a goal to the action server.</p>
+<pre class="hljs"><code><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;ros/ros.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;actionlib/client/simple_action_client.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;actionlib/client/terminal_state.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;actionlib_tutorials/FibonacciAction.h&gt;</span></span>
+
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span> <span class="hljs-params">(<span class="hljs-keyword">int</span> argc, <span class="hljs-keyword">char</span> **argv)</span>
+</span>{
+  ros::init(argc, argv, <span class="hljs-string">"test_fibonacci"</span>);
+
+  <span class="hljs-comment">// create the action client</span>
+  <span class="hljs-comment">// true causes the client to spin its own thread</span>
+  actionlib::SimpleActionClient&lt;actionlib_tutorials::FibonacciAction&gt; ac(<span class="hljs-string">"fibonacci"</span>, <span class="hljs-literal">true</span>);
+
+  ROS_INFO(<span class="hljs-string">"Waiting for action server to start."</span>);
+  <span class="hljs-comment">// wait for the action server to start</span>
+  ac.waitForServer(); <span class="hljs-comment">//will wait for infinite time</span>
+
+  ROS_INFO(<span class="hljs-string">"Action server started, sending goal."</span>);
+  <span class="hljs-comment">// send a goal to the action</span>
+  actionlib_tutorials::FibonacciGoal goal;
+  goal.order = <span class="hljs-number">20</span>;
+  ac.sendGoal(goal);
+
+  <span class="hljs-comment">//wait for the action to return</span>
+  <span class="hljs-keyword">bool</span> finished_before_timeout = ac.waitForResult(ros::Duration(<span class="hljs-number">30.0</span>));
+
+  <span class="hljs-keyword">if</span> (finished_before_timeout)
+  {
+    actionlib::SimpleClientGoalState state = ac.getState();
+    ROS_INFO(<span class="hljs-string">"Action finished: %s"</span>,state.toString().c_str());
+  }
+  <span class="hljs-keyword">else</span>
+    ROS_INFO(<span class="hljs-string">"Action did not finish before the time out."</span>);
+
+  <span class="hljs-comment">//exit</span>
+  <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre><h2 id="the-code-explained-2"><a class="header-link" href="#the-code-explained-2"></a>The Code Explained</h2>
+<p>Now, let&#39;s break down the code piece by piece.</p>
+<pre class="hljs"><code><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;ros/ros.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;actionlib/client/simple_action_client.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;actionlib/client/terminal_state.h&gt;</span></span></code></pre><ul class="list">
+<li>actionlib/client/simple_action_client.h is the action library used from implementing simple action clients.</li>
+<li>actionlib/client/terminal_state.h defines the possible goal states.</li>
+</ul>
+<pre class="hljs"><code><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;actionlib_tutorials/FibonacciAction.h&gt;</span></span></code></pre><p>This includes action message generated from the Fibonacci.action file shown above. This is a header generated automatically from the FibonacciAction.msg file. For more information on message definitions, see the msg page.</p>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span> <span class="hljs-params">(<span class="hljs-keyword">int</span> argc, <span class="hljs-keyword">char</span> **argv)</span>
+</span>{
+  ros::init(argc, argv, <span class="hljs-string">"test_fibonacci"</span>);
+
+  <span class="hljs-comment">// create the action client</span>
+  <span class="hljs-comment">// true causes the client to spin its own thread</span>
+  actionlib::SimpleActionClient&lt;actionlib_tutorials::FibonacciAction&gt; ac(<span class="hljs-string">"fibonacci"</span>, <span class="hljs-literal">true</span>);</code></pre><p>The action client is templated on the action definition, specifying what message types to communicate to the action server with. The action client constructor also takes two arguments, the server name to connect to and a boolean option to automatically spin a thread. If you prefer not to use threads (and you want actionlib to do the &#39;thread magic&#39; behind the scenes), this is a good option for you. Here the action client is constructed with the server name and the auto spin option set to true.</p>
+<pre class="hljs"><code>  ROS_INFO(<span class="hljs-string">"Waiting for action server to start."</span>);
+  <span class="hljs-comment">// wait for the action server to start</span>
+  ac.waitForServer(); <span class="hljs-comment">//will wait for infinite time</span></code></pre><p>Since the action server may not be up and running, the action client will wait for the action server to start before continuing.</p>
+<pre class="hljs"><code>  ROS_INFO(<span class="hljs-string">"Action server started, sending goal."</span>);
+  <span class="hljs-comment">// send a goal to the action</span>
+  actionlib_tutorials::FibonacciGoal goal;
+  goal.order = <span class="hljs-number">20</span>;
+  ac.sendGoal(goal);</code></pre><p>Here a goal message is created, the goal value is set and sent to the action server.</p>
+<pre class="hljs"><code>  <span class="hljs-comment">//wait for the action to return</span>
+  <span class="hljs-keyword">bool</span> finished_before_timeout = ac.waitForResult(ros::Duration(<span class="hljs-number">30.0</span>));</code></pre><p>The action client now waits for the goal to finish before continuing. The timeout on the wait is set to 30 seconds, this means after 30 seconds the function will return with false if the goal has not finished.</p>
+<pre class="hljs"><code>  <span class="hljs-keyword">if</span> (finished_before_timeout)
+  {
+    actionlib::SimpleClientGoalState state = ac.getState();
+    ROS_INFO(<span class="hljs-string">"Action finished: %s"</span>,state.toString().c_str());
+  }
+  <span class="hljs-keyword">else</span>
+    ROS_INFO(<span class="hljs-string">"Action did not finish before the time out."</span>);
+
+  <span class="hljs-comment">//exit</span>
+  <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre><p>If the goal finished before the time out the goal status is reported, else the user is notified that the goal did not finish in the allotted time.</p>
+    </article>
+  </body>
+</html>

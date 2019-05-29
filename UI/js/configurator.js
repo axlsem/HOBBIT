@@ -508,7 +508,9 @@ function getCodeAction(block, blockId) {
     var msgPackage = msgtypeRaw.split("/")[0];
     var msgtype = msgtypeRaw.split("/")[1];
 
-    var importCode = [importSyntax(msgPackage + ".msg", msgtype)];
+    var importActionLib = "Blockly.Python.definitions_['import_actionlib']=import actionlib"
+
+    var importCode = [importActionLib,importSyntax(msgPackage + ".msg", msgtype)];
     importCode = importCode.concat(importExtraPackages()).join("");
 
     var varInits = [];

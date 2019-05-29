@@ -11,6 +11,16 @@ h6,h5,h4 {
 	color: #006699;
 }
 
+.help-pages {
+	font-size: 0.8em;
+	margin-bottom: 10px;
+}
+
+.help-pages a {
+	margin-left: 5px !important;
+	margin-right: 5px !important;
+}
+
 .container {
 	width: 75% !important;
 }

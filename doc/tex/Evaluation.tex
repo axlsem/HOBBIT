@@ -2,7 +2,35 @@
 The following chapter describes how the implemented tool was evaluated. An experiment was used for that purpose which will be described in the following sections. Furthermore, the data acquisition is presented as well as how this data was analysed.
 
 \section{Experiment Setup} \label{sec:ExperimentSetup}
-The implemented tool was evaluated with X professional robotics software developers. Two different use cases were designed. Each participant had to work with \toolname{} on the first use case and then was asekd to write a code for the second use case. When working on the code the group was supported by material covering explanation of the necessary \gls{ros} concepts including examples. Furthermore a list of the necessary \gls{ros} specifications (topics, services, actions, messages etc.) were provided. The participants were asked to use a customized code editor, which were able to perform basic measurements. They were free to choose whether implementing in Python or \Cpp{}. This instrumentation ensures that the results and measurements of both tasks are compareable in terms of exploring the impact of programming knowledge. All materials, also including the task description of the use cases, were reviewed by a colleague not participating in the experiment in advance to guarantee its understandability and soundness. At the beginning of the experiment the tool was introduced using a short live demo showing all concepts and how it should be worked with the tool and the code editor, respectivley. The participants worked on each task for a total of XX minutes. \\
+The implemented tool was evaluated with X professional robotics software developers from the V4R group of the automation and control insitute at the TU Wien. This section describes the goals and design of the experiment as well as the questions the participants were asked.
+
+\subsection{Goals of the Experiment} \label{sub:ExperimentGoals}
+The following goal questions (GQ) should be answerd by the experiment:
+\begin{itemize}
+    \item \textit{GQ1}: Is the tool seen as an improvement compared to the traditional coding approach?
+    \item \textit{GQ2}: Do participants make less pauses when they use the tool compared to coding?
+    \item \textit{GQ3}: Does it take less time to find solutions when using the tool?
+    \item \textit{GQ4}: Is the usage of the tool is intuitive?
+    % \item \textit{GQ4}: Do participants with more programming experience perform better in terms of straightness and total time?
+\end{itemize}
+All of the presented goal have in common that they can be answered positively, negatively and none of both. The third option means that furher research must be done, e.g. conducting further experiments to get an answer for this question. \\
+
+The primary goal of this evaluation is to find out if the developed tool is seen as an improvement compared to the traditional coding approach. This question is described by \textit{GQ1} and should be answerd by analysing the feedback of participants, who have experience in programming robotics - especially using ROS. Also, the answers to workload questions can be taken in account. (\prettyref{sec:Questionnaire}) \\
+
+\textit{GQ2} should give an answer to the question whether using the tool affects the workflow of the participants. Do they make less pauses when using the tool? Do they change the code more often when using the traditional approach? When do they struggle? To quantify this the measurements presented above are analysed as well as the answers to questions regarding the workload. \\
+
+\textit{GQ3} simply should examine if using the tool saves time compared to the coding approach. Saving time when creating programms means more time for other work, which especially for users of the primary target group (see \prettyref{sec:Purpose}) is important, because it may not is the major content of their work or research. \\
+
+Finally, \textit{GQ4} should ...
+
+% Finally, \textit{GQ4} should incorporate the experience of the participants by comparing it with their qualitive results - i.e. do they work straighter and faster. This question can also be seen as an extension to \textit{GQ1}, meaning find out if the gap between using the tool and pure coding is smaller when having more experience.
+
+\subsection{Design} \label{sub:ExprimentDesign}
+A cross over design was used for the experiment splitting the the participants into two groups. Therefore, two different use cases were designed, which are described in \prettyref{sub:UseCases}. For the first use case on group worked with the tool and the other group was asked to implement a code for the same use case. For the second use case roles where switched and participants which was working with the tool had to write a code and vice versa.
+
+When working on the code the group was supported by material covering explanation of the necessary \gls{ros} concepts including examples. Furthermore a list of the necessary \gls{ros} specifications (topics, services, actions, messages etc.) were provided. The participants were asked to use a customized code editor, which were able to perform basic measurements. They were free to choose whether implementing in Python or \Cpp{}. This instrumentation ensures that the results and measurements of both tasks are compareable in terms of exploring the impact of programming knowledge.
+
+All materials, also including the task description of the use cases, were reviewed by a colleague not participating in the experiment in advance to guarantee its understandability and soundness. At the beginning of the experiment the tool was introduced using a short live demo showing all concepts and how it should be worked with the tool and the code editor, respectivley. The participants worked on each task for a total of XX minutes. \\
 
 While working on the use cases two measurements are performed for each participant: total time (the time to accomplish tasks) and pauses (number of occurrences, where the programm has not changed within XX seconds during development). The measurements are done for both task, working with \toolname{} and coding. For this purpose a routine using the Blockly API was implemented, which listens to changes in the tool's workspace - i.e. creating, updating or deleting blocks. The provided editor was also customized with a feature, which recorded the timestamps of changes. At the start of each task the participants had to click on a \textit{Start} button, which started the timer. It was stopped, when the participant clicked the \textit{Stop} button. The implemented function then submitted the following information:
 
@@ -14,29 +42,11 @@ While working on the use cases two measurements are performed for each participa
     \item Content of submission (e.g. full code)
 \end{itemize}
 
-\subsection{Goals of the Experiment} \label{sub:ExperimentGoals}
-The following questions should be answerd by the experiment:
-\begin{itemize}
-    \item \textit{GQ1}: Is the tool seen as an improvement compared to the traditional coding approach?
-    \item \textit{GQ2}: Is the workflow using the tool straighter compared to coding?
-    \item \textit{GQ3}: Do participants find solutions faster using the tool?
-    \item \textit{GQ4}: Do participants with more experience perform better in terms of straightness and total time?
-\end{itemize}
-All of the presented goal have in common that they can be answered positively, negatively and none of both. The third option means that furher research must be done, e.g. conducting further experiments to get an answer for this question. \\
-
-The primary goal of this evaluation is to find out if the developed tool is seen as an improvement compared to the traditional coding approach. This question is described by \textit{GQ1} and should be answerd by analysing the feedback of participants, who have experience in programming robotics - especially using ROS. Also, the answers to workload questions can be taken in account. (\prettyref{sec:Questionnaire}) \\
-
-\textit{GQ2} should give an answer to the question whether using the tool affects the workflow of the participants. Do they make less pauses when using the tool? Do they change the code more often when using the traditional approach? When do they struggle? To quantify this the measurements presented above are analysed as well as the answers to questions regarding the workload. \\
-
-\textit{GQ3} simply should examine if using the tool saves time compared to the coding approach. Saving time when creating programms means more time for other work, which especially for users of the primary target group (see \prettyref{sec:Purpose}) is important, because it may not is the major content of their work or research. \\
-
-Finally, \textit{GQ4} should incorporate the experience of the participants by comparing it with their qualitive results - i.e. do they work straighter and faster. This question can also be seen as an extension to \textit{GQ1}, meaning find out if the gap between using the tool and pure coding is smaller when having more experience.
-
 \subsection{Questionnaire} \label{sec:Questionnaire}
-Additionally to the mentioned time based measurements a questionnaire was also included into the evaluation process. The questions can be classified into four categories: demographic factors, experience questions, feedback questions and workload questions. Each of them are discussed in the following.
+Additionally to the mentioned time based measurements a questionnaire was also included into the evaluation process. The participants were asked to answer them after they completed both tasks. The questions can be classified into four categories: demographic factors (DF), experience questions (EQ), feedback questions (FQ) and workload questions (WQ). Each of them are discussed in the following.
 
 \subsubsection*{Demographic Factors}
-Demographic questions are designed to help survey researchers determine what factors may influence a respondent's answers, interests, and opinions. Participants of this experience were asked the following questions:
+Demographic questions are designed to help survey researchers determine what factors may influence a respondent's answers, interests, and opinions. Participants of this experiment were asked the following questions:
 
 \begin{itemize}
     \item \textit{DF1}: What is your age?
@@ -52,7 +62,7 @@ Demographic questions are designed to help survey researchers determine what fac
     \item \textit{DF3}: What is your current employment status?
     \item \textit{DF4}: What is your current field of work/study?
 \end{itemize}
-\textit{DF1} was ask to roughly determine the participant's knowledge and experience. The possible answers ranged from \textit{under 18} to \textit{above 44}. A more detailed information regarding the general knowledge of the participant is delivered by question \textit{DF2}. The possible answers were: less than high school, high school diploma or equivalent degree, bachelor's degree, master's degree, higher than master's degree, no degree. Questions \textit{DF3} and \textit{DF4} were asked to determine whether a participant has experience in any related field and, if so, how much.
+\textit{DF1} was asked to roughly determine the participant's knowledge and experience. The possible answers ranged from \textit{under 18} to \textit{above 44}. A more detailed information regarding the general knowledge of the participant is delivered by question \textit{DF2}. The possible answers were: less than high school, high school diploma or equivalent degree, bachelor's degree, master's degree, higher than master's degree, no degree. Questions \textit{DF3} and \textit{DF4} were asked to determine whether a participant has experience in any related field and, if so, how much.
 
 \subsubsection*{Experience Questions}
 The main motivation for having experience questions is that they enable the correlation between results of the experiment and the experience for each participant. The following questions were asked to collect this information:
@@ -86,7 +96,7 @@ Similar to that question, \textit{FQ3} would also affect the judgement if the to
 Finally, \textit{FQ4} should find out how intuitive the usage of the tool is regarding a participant's subjective feeling. Having an intuitive tool and workflow helps a visual programming tool to be accepted by potential users. Experienced users probably would tend to use it over self-implemented code because it saves time and unexperienced users may faster understand programming concepts.
 
 \subsubsection*{Workload Questions}
-Besides getting direct feedback from participants another approach, judging how useful and intuitive a tool is, can be measuring the workload a participant felt during working with it. Because of that another set of questions was included in the evaluation process. It is based on the \gls{nasatlx}\cite{HART1988139}, which consists of six subscales that represent somewhat independent clusters of variables: mental demand, physical demand, temporal demand, frustration, effort and performance. The assumption is that some combination of these dimensions are likely to represent the workload experienced by most people performing most tasks. The following four workload questions were asked:
+Besides getting direct feedback from participants another approach, judging how useful and intuitive a tool is, can be measuring the workload a participant felt during working with it. Because of that, another set of questions was included in the evaluation process. It is based on the \gls{nasatlx}\cite{HART1988139}, which consists of six subscales that represent somewhat independent clusters of variables: mental demand, physical demand, temporal demand, frustration, effort and performance. The assumption is that some combination of these dimensions are likely to represent the workload experienced by most people performing most tasks. The following four workload questions were asked for both tasks, working with the tool and writing a code:
 \begin{itemize}
     \item \textit{WQ1}: How mentally demanding was the task?
     \item \textit{WQ2}: How much time pressure did you feel during the task?
@@ -95,7 +105,7 @@ Besides getting direct feedback from participants another approach, judging how 
 \end{itemize}
 The number of questions was limited to four, because two clusterd variables are not seen to be required in the scope of the chosen experiment setup. First, it can be expected that working with a software tool is not considered to be physical demanding. Second, the participants may cannot rate their performance properly because debugging and testing is not supported by the experiment setup. Further adaption was done in respect of the number of possible answers. In the official \gls{nasatlx} paper and pencil version\footnote{https://humansystems.arc.nasa.gov/groups/TLX/downloads/TLXScale.pdf} increments of high, medium and low estimates for each point result in 21 gradations on the scales. To minimize the variability of answers only a scale with five gradations (\textit{Very low}, \textit{Low}, \textit{Medium}, \textit{High}, \textit{Very high}) was used.
 
-\subsection{Use Cases}
+\subsection{Use Cases} \label{sub:UseCases}
 This section presents the use cases the participants were asked to work on. It starts with the description of each use case, then the required \gls{ros} specifications are explained and finally flowcharts for better understanding are presented. The use cases were designed to be compareable in terms of complexitivity, which in this context is quantifed by the amount, type and distribution of different \gls{ros} communication patterns as well as the total amount of \gls{ros} message calls.
 
 \subsubsection*{Learning a new object}

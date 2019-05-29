@@ -3,7 +3,7 @@ const pathXML = './demos/xml/';
 const pathPy = './demos/src/';
 const fs = require('fs');
 const { exec } = require('child_process');
-const PORT = process.env.port || 8000;
+const PORT = process.env.PORT || 8000;
 // const PORT = Number(process.argv.slice(2));
 
 var xml2js = require('xml2js')
@@ -14,14 +14,23 @@ var locked = false;
 var param = String(process.argv.slice(2));
 
 var isDev = param == 'dev';
-var participants = 15;
+var participants = 6;
+var studyStep = 1;
 var tmpcnt = 0;
-var blocklyEnabled = false;
-var quesEnabled = false;
+var stepmapping = {};
 
 function loadIndex(req, res) {
 	res.sendFile('./index.html', { root: __dirname });
 };
+
+function loadHTML(req,res,htmlfile) {
+	if (htmlfile){
+		res.sendFile(htmlfile, { root: __dirname });
+	} else {
+		res.status(400).send("Bad request")
+	}
+}
+
 
 function loadQuestionnaire(req, res) {
 	res.sendFile('./questionnaire.html', { root: __dirname });
@@ -60,7 +69,7 @@ function runCode(req, res) {
 			locked = true;
 			feedback = "Demo is now running!";
 			var post = qs.parse(body);
-			var destpath = '../../src/';
+			var destpath = process.env.SRCDIR || '../../src/';
 
 			var isMain = post.main;
 
@@ -256,10 +265,6 @@ function loadToolbox(req, res) {
 	});
 }
 
-function loadConfigurator(req, res) {
-	res.sendFile('./configurator.html', { root: __dirname });
-}
-
 function createBlock(req, res) {
 	var body = '';
 	var reqpath = req.path;
@@ -404,10 +409,31 @@ function checkSubmissionPerType(subtype) {
 }
 
 function evaluationMgmt(req, res) {
-	if (!blocklyEnabled && !quesEnabled) {
-		loadEditor(req,res)
-	} else if (blocklyEnabled && !quesEnabled) {
-		loadBlockly(req,res)
+	if (req.query.explicit) {
+		if (req.query.explicit=='blockly') {
+			loadBlockly(req, res);
+		} else if (req.query.explicit='editor') {
+			loadEditor(req, res);
+		}
+	} else if (studyStep == 1) {
+		var cut = parseInt(participants / 2);
+
+		if (tmpcnt < cut) {
+			stepmapping[req.ip] = 'editor';
+			loadBlockly(req, res);
+			tmpcnt += 1;
+		} else {
+			stepmapping[req.ip] = 'blockly';
+			loadEditor(req, res);
+		}
+	} else if (studyStep == 2) {
+		if (stepmapping[req.ip] == 'blockly'){
+			loadBlockly(req, res);
+		} else {
+		// } else if (stepmapping[req.ip] == 'editor') {
+			loadEditor(req, res);
+		}
+		stepmapping[req.ip] = 'questions';
 	} else {
 		loadQuestionnaire(req,res)
 	}
@@ -415,28 +441,41 @@ function evaluationMgmt(req, res) {
 
 app.use(express.static(__dirname + '/'));
 app.use(function(req,res,next){
-	console.log(req.path)
-	if(req.query.step == 'blockly' && !blocklyEnabled) {
-		res.status(401).send("Not now!")
-	} else if(req.query.step == 'questions' && !quesEnabled) {
-		res.status(401).send("Not now!")
-	} else {
+	console.log(req.ip,req.originalUrl)
+	var bPass = true;
+	if (req.query.step) {
+		if (stepmapping[req.ip] == 'questions') {
+			bPass = studyStep == 3;
+		} else if (stepmapping[req.ip] != req.query.step) {
+			bPass = studyStep == 2;
+		} else {
+			bPass = true;
+		}
+		console.log(req.ip,req.query.step,stepmapping[req.ip],studyStep,bPass)
+	}
+	if (bPass) {
 		next();
+	} else {
+		res.status(401).send("Not now!")
 	}
 });
 
-app.get('/', loadIndex);
-app.get('/editor', loadEditor);
-app.get('/blockly', loadBlockly);
-app.get('/questionnaire', loadQuestionnaire);
-app.get('/help', loadHelp);
+app.get('/', (req,res)=>loadHTML(req,res,'./index.html'));
+app.get('/editor', (req,res)=>loadHTML(req,res,'./editor.html'));
+app.get('/blockly', (req,res)=>loadHTML(req,res,'./blockly.html'));
+app.get('/questionnaire', (req,res)=>loadHTML(req,res,'./questionnaire.html'));
+app.get('/help', (req,res)=>loadHTML(req,res,'./help.html'));
+app.get('/examples', (req,res)=>loadHTML(req,res,'./SrvExamples.html'));
+app.get('/HobbitReference', (req,res)=>loadHTML(req,res,'./HobbitReference.html'));
+app.get('/rospy', (req,res)=>loadHTML(req,res,'./rospy.html'));
+app.get('/roscpp', (req,res)=>loadHTML(req,res,'./roscpp.html'));
+app.get('/configurator', (req,res)=>loadHTML(req,res,'./configurator.html'));
 app.post('/demo/run', runCode);
 app.post('/demo/save', saveWorkspace);
 app.get('/demo/load/:demoname', loadDemo);
 app.get('/demo/list', showDemolist);
 app.post('/demo/delete', deleteDemo);
 app.get('/demo/toolbox', loadToolbox);
-app.get('/configurator', loadConfigurator);
 app.post('/block/create', createBlock);
 app.put('/block/update', createBlock);
 app.delete('/block/delete/:blockId', deleteBlock);
@@ -446,6 +485,15 @@ app.get('/study', startStudy);
 app.get('/checksub', checkSubmissions)
 app.get('/checksub/:subtype', checkSubmissions)
 app.get('/evaluation',evaluationMgmt)
+app.get('/evalcode',loadEditor)
+app.get('/evalblockly',loadBlockly)
+
+app.get('/evaluation/enable/:step', function(req,res) {
+	studyStep = req.params.step;
+	let txt = "Current evaluation step "+studyStep;
+	console.log(txt)
+	res.status(200).send(txt)
+});
 
 app.get('/start/:step', function(req,res) {
 	var step = req.params.step;

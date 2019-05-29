@@ -17,7 +17,7 @@ function listDemos() {
                         '<div class="row center-align">',
                         '<a><div class="col s4 m4 truncate" onclick={deleteDemo(\'' + title + '\')}>delete</div></a>',
                         '<a><div class="col s4 m4" onclick={runDemo(\'' + title + '\')}>run</div></a>',
-                        '<a><div class="col s4 m4" onclick={showDemo(\'' + demofile + '\')}>show</div></a>',
+                        '<a><div class="col s4 m4" onclick={showDemo(\'' + demofile + '\')}>edit</div></a>',
                         '</div>', '</div>', '</div>', '</div>', '</div>'
                     ].join("\n");
 

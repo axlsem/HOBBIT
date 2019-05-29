@@ -1,4 +1,4 @@
-var isStudy= location.search.indexOf("eval")>=0 || location.pathname.indexOf("eval")>=0;
+var isStudy= location.search.indexOf("eval")>=0 || location.pathname.indexOf("eval")>=0 || location.search.indexOf("study")>=0 || location.pathname.indexOf("study")>=0;
 
 if (isStudy) {
 
@@ -34,12 +34,11 @@ if (isStudy) {
     })
 
     $('#nav-next').click(function () {
-        nextStep("questions");
-        
+        nextStep("blockly");
     })
 
     function nextStep(step) {
-        $.get("/evaluation/?step="+step,
+        $.get("/evaluation?step="+step,
         {
         }, function (data, status) {
             if (status == "success") {
@@ -56,7 +55,7 @@ if (isStudy) {
         var xml_text = Blockly.Xml.domToText(xml);
         localStorage.setItem('study_blockly',xml_text);
         $('#nav-submit').hide();
-        $('#nav-next').show();
+        // $('#nav-next').show();
 
         if (typeof userId == "string") {
 
@@ -80,7 +79,7 @@ if (isStudy) {
         var changeTypes = [Blockly.Events.BLOCK_DELETE, Blockly.Events.BLOCK_CREATE, Blockly.Events.BLOCK_CHANGE, Blockly.Events.VAR_CREATE, Blockly.Events.VAR_DELETE, Blockly.Events.VAR_RENAME];
 
         if (changeTypes.indexOf(event.type) >= 0) {
-            var tresh = 10 * 1000;
+            var tresh = 2 * 1000;
             var t = Date.now();
             if (t - lastaction > tresh) {
                 ts.push(t);

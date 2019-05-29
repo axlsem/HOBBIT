@@ -1,0 +1,177 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimal-ui">
+    <title>Tutorial rospy</title>
+    <link type="text/css" rel="stylesheet" href="css/assets/css/github-markdown.css">
+    <link type="text/css" rel="stylesheet" href="css/assets/css/pilcrow.css">
+    <link type="text/css" rel="stylesheet" href="css/assets/css/hljs-github.min.css"/>
+  </head>
+  <body>
+    <article class="markdown-body"><h1 id="introduction"><a class="header-link" href="#introduction"></a>Introduction</h1>
+<p>rospy is a pure Python client library for ROS. The rospy client API enables Python programmers to quickly interface with ROS Topics, Services, and Parameters. </p>
+<h1 id="writing-a-publisher-node"><a class="header-link" href="#writing-a-publisher-node"></a>Writing a Publisher Node</h1>
+<p>This demo will walk you through creating a simple ROS node (<em>&quot;talker&quot;</em>), which will broadcast a message on topic <em>&quot;chatter&quot;</em>.</p>
+<pre class="hljs"><code><span class="hljs-comment">#!/usr/bin/env python</span>
+<span class="hljs-comment"># license removed for brevity</span>
+<span class="hljs-keyword">import</span> rospy
+<span class="hljs-keyword">from</span> std_msgs.msg <span class="hljs-keyword">import</span> String
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">talker</span><span class="hljs-params">()</span>:</span>
+    pub = rospy.Publisher(<span class="hljs-string">'chatter'</span>, String, queue_size=<span class="hljs-number">10</span>)
+    rospy.init_node(<span class="hljs-string">'talker'</span>, anonymous=<span class="hljs-keyword">True</span>)
+    rate = rospy.Rate(<span class="hljs-number">10</span>) <span class="hljs-comment"># 10hz</span>
+    <span class="hljs-keyword">while</span> <span class="hljs-keyword">not</span> rospy.is_shutdown():
+        hello_str = <span class="hljs-string">"hello world %s"</span> % rospy.get_time()
+        rospy.loginfo(hello_str)
+        pub.publish(hello_str)
+        rate.sleep()
+
+<span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">'__main__'</span>:
+    <span class="hljs-keyword">try</span>:
+        talker()
+    <span class="hljs-keyword">except</span> rospy.ROSInterruptException:
+        <span class="hljs-keyword">pass</span></code></pre><h2 id="the-code-explained"><a class="header-link" href="#the-code-explained"></a>The Code Explained</h2>
+<p>Now, let&#39;s break the code down.</p>
+<pre class="hljs"><code><span class="hljs-comment">#!/usr/bin/env python</span></code></pre><p>Every Python ROS Node will have this declaration at the top. The first line makes sure your script is executed as a Python script.</p>
+<pre class="hljs"><code><span class="hljs-keyword">import</span> rospy
+<span class="hljs-keyword">from</span> std_msgs.msg <span class="hljs-keyword">import</span> String</code></pre><p>You need to import rospy if you are writing a ROS Node. The std_msgs.msg import is so that we can reuse the std_msgs/String message type (a simple string container) for publishing.</p>
+<pre class="hljs"><code>    pub = rospy.Publisher(<span class="hljs-string">'chatter'</span>, String, queue_size=<span class="hljs-number">10</span>)
+    rospy.init_node(<span class="hljs-string">'talker'</span>, anonymous=<span class="hljs-keyword">True</span>)</code></pre><p>This section of code defines the talker&#39;s interface to the rest of ROS. <code>pub = rospy.Publisher(&quot;chatter&quot;, String, queue_size=10)</code> declares that your node is publishing to the chatter topic using the message type String. String here is actually the class <code>std_msgs.msg.String</code>. The queue_size argument is New in ROS hydro and limits the amount of queued messages if any subscriber is not receiving them fast enough. In older ROS distributions just omit the argument.</p>
+<p>The next line, <code>rospy.init_node(NAME, ...)</code>, is very important as it tells rospy the name of your node -- until rospy has this information, it cannot start communicating with the ROS Master. In this case, your node will take on the name talker. NOTE: the name must be a base name, i.e. it cannot contain any slashes &quot;/&quot;.</p>
+<p><code>anonymous = True</code> ensures that your node has a unique name by adding random numbers to the end of NAME. Refer to Initialization and Shutdown - Initializing your ROS Node in the rospy documentation for more information about node initialization options.</p>
+<pre class="hljs"><code>    rate = rospy.Rate(<span class="hljs-number">10</span>) <span class="hljs-comment"># 10hz</span></code></pre><p>This line creates a Rate object rate. With the help of its method sleep(), it offers a convenient way for looping at the desired rate. With its argument of 10, we should expect to go through the loop 10 times per second (as long as our processing time does not exceed 1/10th of a second!)</p>
+<pre class="hljs"><code>    <span class="hljs-keyword">while</span> <span class="hljs-keyword">not</span> rospy.is_shutdown():
+        hello_str = <span class="hljs-string">"hello world %s"</span> % rospy.get_time()
+        rospy.loginfo(hello_str)
+        pub.publish(hello_str)
+        rate.sleep()</code></pre><p>This loop is a fairly standard rospy construct: checking the rospy.is_shutdown() flag and then doing work. You have to check is_shutdown() to check if your program should exit (e.g. if there is a Ctrl-C or otherwise). In this case, the &quot;work&quot; is a call to pub.publish(hello_str) that publishes a string to our chatter topic. The loop calls rate.sleep(), which sleeps just long enough to maintain the desired rate through the loop.</p>
+<p>(You may also run across rospy.sleep() which is similar to time.sleep() except that it works with simulated time as well (see Clock).)</p>
+<p>This loop also calls rospy.loginfo(str), which performs triple-duty: the messages get printed to screen, it gets written to the Node&#39;s log file, and it gets written to rosout. rosout is a handy for debugging: you can pull up messages using rqt_console instead of having to find the console window with your Node&#39;s output.</p>
+<p>std_msgs.msg.String is a very simple message type, so you may be wondering what it looks like to publish more complicated types. The general rule of thumb is that constructor args are in the same order as in the .msg file. You can also pass in no arguments and initialize the fields directly, e.g.</p>
+<pre class="hljs"><code>msg = String()
+msg.data = str</code></pre><p>or you can initialize some of the fields and leave the rest with default values:</p>
+<pre class="hljs"><code>String(data=str)</code></pre><p>You may be wondering about the last little bit:</p>
+<pre class="hljs"><code>    <span class="hljs-keyword">try</span>:
+        talker()
+    <span class="hljs-keyword">except</span> rospy.ROSInterruptException:
+        <span class="hljs-keyword">pass</span></code></pre><p>In addition to the standard Python <code>__main__</code> check, this catches a rospy.ROSInterruptException exception, which can be thrown by rospy.sleep() and rospy.Rate.sleep() methods when Ctrl-C is pressed or your Node is otherwise shutdown. The reason this exception is raised is so that you don&#39;t accidentally continue executing code after the sleep().</p>
+<h1 id="writing-a-service-node"><a class="header-link" href="#writing-a-service-node"></a>Writing a Service Node</h1>
+<p>Here we&#39;ll create the service (&quot;add_two_ints_server&quot;) node which will receive two ints and return the sum.</p>
+<pre class="hljs"><code><span class="hljs-comment">#!/usr/bin/env python</span>
+
+<span class="hljs-keyword">from</span> beginner_tutorials.srv <span class="hljs-keyword">import</span> *
+<span class="hljs-keyword">import</span> rospy
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">handle_add_two_ints</span><span class="hljs-params">(req)</span>:</span>
+    <span class="hljs-keyword">print</span> <span class="hljs-string">"Returning [%s + %s = %s]"</span>%(req.a, req.b, (req.a + req.b))
+    <span class="hljs-keyword">return</span> AddTwoIntsResponse(req.a + req.b)
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">add_two_ints_server</span><span class="hljs-params">()</span>:</span>
+    rospy.init_node(<span class="hljs-string">'add_two_ints_server'</span>)
+    s = rospy.Service(<span class="hljs-string">'add_two_ints'</span>, AddTwoInts, handle_add_two_ints)
+    <span class="hljs-keyword">print</span> <span class="hljs-string">"Ready to add two ints."</span>
+    rospy.spin()
+
+<span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">"__main__"</span>:
+    add_two_ints_server()</code></pre><h2 id="the-code-explained-1"><a class="header-link" href="#the-code-explained-1"></a>The Code Explained</h2>
+<p>Now, let&#39;s break the code down.</p>
+<p>There&#39;s very little to writing a service using rospy. We declare our node using init_node() and then declare our service:</p>
+<pre class="hljs"><code>    s = rospy.Service(<span class="hljs-string">'add_two_ints'</span>, AddTwoInts, handle_add_two_ints)</code></pre><p>This declares a new service named add_two_ints with the AddTwoInts service type. All requests are passed to handle_add_two_ints function. handle_add_two_ints is called with instances of AddTwoIntsRequest and returns instances of AddTwoIntsResponse.</p>
+<p>Just like with the subscriber example, rospy.spin() keeps your code from exiting until the service is shutdown.</p>
+<h1 id="writing-a-service-client-node"><a class="header-link" href="#writing-a-service-client-node"></a>Writing a Service Client Node</h1>
+<p>The following code calls the above created service.</p>
+<pre class="hljs"><code><span class="hljs-comment">#!/usr/bin/env python</span>
+
+<span class="hljs-keyword">import</span> sys
+<span class="hljs-keyword">import</span> rospy
+<span class="hljs-keyword">from</span> beginner_tutorials.srv <span class="hljs-keyword">import</span> *
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">add_two_ints_client</span><span class="hljs-params">(x, y)</span>:</span>
+    rospy.wait_for_service(<span class="hljs-string">'add_two_ints'</span>)
+    <span class="hljs-keyword">try</span>:
+        add_two_ints = rospy.ServiceProxy(<span class="hljs-string">'add_two_ints'</span>, AddTwoInts)
+        resp1 = add_two_ints(x, y)
+        <span class="hljs-keyword">return</span> resp1.sum
+    <span class="hljs-keyword">except</span> rospy.ServiceException, e:
+        <span class="hljs-keyword">print</span> <span class="hljs-string">"Service call failed: %s"</span>%e
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">usage</span><span class="hljs-params">()</span>:</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-string">"%s [x y]"</span>%sys.argv[<span class="hljs-number">0</span>]
+
+<span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">"__main__"</span>:
+    <span class="hljs-keyword">if</span> len(sys.argv) == <span class="hljs-number">3</span>:
+        x = int(sys.argv[<span class="hljs-number">1</span>])
+        y = int(sys.argv[<span class="hljs-number">2</span>])
+    <span class="hljs-keyword">else</span>:
+        <span class="hljs-keyword">print</span> usage()
+        sys.exit(<span class="hljs-number">1</span>)
+    <span class="hljs-keyword">print</span> <span class="hljs-string">"Requesting %s+%s"</span>%(x, y)
+    <span class="hljs-keyword">print</span> <span class="hljs-string">"%s + %s = %s"</span>%(x, y, add_two_ints_client(x, y))</code></pre><h2 id="the-code-explained-2"><a class="header-link" href="#the-code-explained-2"></a>The Code Explained</h2>
+<p>Now, let&#39;s break the code down.</p>
+<p>The client code for calling services is also simple. For clients you don&#39;t have to call init_node(). We first call:</p>
+<pre class="hljs"><code>    rospy.wait_for_service(<span class="hljs-string">'add_two_ints'</span>)</code></pre><p>This is a convenience method that blocks until the service named add_two_ints is available. Next we create a handle for calling the service:</p>
+<pre class="hljs"><code>        add_two_ints = rospy.ServiceProxy(<span class="hljs-string">'add_two_ints'</span>, AddTwoInts)</code></pre><p>We can use this handle just like a normal function and call it:</p>
+<pre class="hljs"><code>        resp1 = add_two_ints(x, y)
+        <span class="hljs-keyword">return</span> resp1.sum</code></pre><p>Because we&#39;ve declared the type of the service to be AddTwoInts, it does the work of generating the AddTwoIntsRequest object for you (you&#39;re free to pass in your own instead). The return value is an AddTwoIntsResponse object. If the call fails, a rospy.ServiceException may be thrown, so you should setup the appropriate try/except block.</p>
+<h1 id="writing-a-simple-action-client"><a class="header-link" href="#writing-a-simple-action-client"></a>Writing a Simple Action Client</h1>
+<p>This tutorial covers using the action_client library to create a Fibonacci simple action client in Python.</p>
+<pre class="hljs"><code><span class="hljs-comment">#! /usr/bin/env python</span>
+
+<span class="hljs-keyword">import</span> rospy
+<span class="hljs-keyword">from</span> __future__ <span class="hljs-keyword">import</span> print_function
+
+<span class="hljs-comment"># Brings in the SimpleActionClient</span>
+<span class="hljs-keyword">import</span> actionlib
+
+<span class="hljs-comment"># Brings in the messages used by the fibonacci action, including the</span>
+<span class="hljs-comment"># goal message and the result message.</span>
+<span class="hljs-keyword">import</span> actionlib_tutorials.msg
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">fibonacci_client</span><span class="hljs-params">()</span>:</span>
+    <span class="hljs-comment"># Creates the SimpleActionClient, passing the type of the action</span>
+    <span class="hljs-comment"># (FibonacciAction) to the constructor.</span>
+    client = actionlib.SimpleActionClient(<span class="hljs-string">'fibonacci'</span>, actionlib_tutorials.msg.FibonacciAction)
+
+    <span class="hljs-comment"># Waits until the action server has started up and started</span>
+    <span class="hljs-comment"># listening for goals.</span>
+    client.wait_for_server()
+
+    <span class="hljs-comment"># Creates a goal to send to the action server.</span>
+    goal = actionlib_tutorials.msg.FibonacciGoal(order=<span class="hljs-number">20</span>)
+
+    <span class="hljs-comment"># Sends the goal to the action server.</span>
+    client.send_goal(goal)
+
+    <span class="hljs-comment"># Waits for the server to finish performing the action.</span>
+    client.wait_for_result()
+
+    <span class="hljs-comment"># Prints out the result of executing the action</span>
+    <span class="hljs-keyword">return</span> client.get_result()  <span class="hljs-comment"># A FibonacciResult</span>
+
+<span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">'__main__'</span>:
+    <span class="hljs-keyword">try</span>:
+        <span class="hljs-comment"># Initializes a rospy node so that the SimpleActionClient can</span>
+        <span class="hljs-comment"># publish and subscribe over ROS.</span>
+        rospy.init_node(<span class="hljs-string">'fibonacci_client_py'</span>)
+        result = fibonacci_client()
+        print(<span class="hljs-string">"Result:"</span>, <span class="hljs-string">', '</span>.join([str(n) <span class="hljs-keyword">for</span> n <span class="hljs-keyword">in</span> result.sequence]))
+    <span class="hljs-keyword">except</span> rospy.ROSInterruptException:
+        print(<span class="hljs-string">"program interrupted before completion"</span>, file=sys.stderr)</code></pre><h2 id="the-code-explained-3"><a class="header-link" href="#the-code-explained-3"></a>The Code Explained</h2>
+<pre class="hljs"><code><span class="hljs-keyword">import</span> actionlib_tutorials.msg</code></pre><p>The action specification generates several messages for sending goals, receiving feedback, etc... This line imports the generated messages.</p>
+<pre class="hljs"><code>    client = actionlib.SimpleActionClient(<span class="hljs-string">'fibonacci'</span>, actionlib_tutorials.msg.FibonacciAction)</code></pre><p>The action client and server communicate over a set of topics, described in the actionlib protocol. The action name describes the namespace containing these topics, and the action specification message describes what messages should be passed along these topics.</p>
+<pre class="hljs"><code>    client.wait_for_server()</code></pre><p>Sending goals before the action server comes up would be useless. This line waits until we are connected to the action server.</p>
+<pre class="hljs"><code>    <span class="hljs-comment"># Creates a goal to send to the action server.</span>
+    goal = actionlib_tutorials.msg.FibonacciGoal(order=<span class="hljs-number">20</span>)
+
+    <span class="hljs-comment"># Sends the goal to the action server.</span>
+    client.send_goal(goal)</code></pre><p>Creates a goal and sends it to the action server.</p>
+<pre class="hljs"><code>    <span class="hljs-comment"># Waits for the server to finish performing the action.</span>
+    client.wait_for_result()
+
+    <span class="hljs-comment"># Prints out the result of executing the action</span>
+    <span class="hljs-keyword">return</span> client.get_result()  <span class="hljs-comment"># A FibonacciResult</span></code></pre><p>The action server will process the goal and eventually terminate. We want the result from the termination, but we wait until the server has finished with the goal.</p>
+    </article>
+  </body>
+</html>

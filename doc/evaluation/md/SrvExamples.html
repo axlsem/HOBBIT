@@ -1,0 +1,277 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimal-ui">
+    <title></title>
+    <link type="text/css" rel="stylesheet" href="assets/css/github-markdown.css">
+    <link type="text/css" rel="stylesheet" href="assets/css/pilcrow.css">
+    <link type="text/css" rel="stylesheet" href="assets/css/hljs-github.min.css"/>
+  </head>
+  <body>
+    <article class="markdown-body"><pre class="hljs"><code><span class="hljs-comment">#!/usr/bin/python</span>
+
+<span class="hljs-comment"># David Fischinger</span>
+<span class="hljs-comment"># TU Wien</span>
+<span class="hljs-comment"># 11.10.2013</span>
+<span class="hljs-comment">#</span>
+<span class="hljs-comment"># Class defines general MMUI interface methods for text and speech output and input</span>
+<span class="hljs-comment">#</span>
+
+
+PKG = <span class="hljs-string">'hobbit_msgs'</span>
+<span class="hljs-comment">#import roslib</span>
+<span class="hljs-keyword">import</span> sys
+<span class="hljs-comment">#roslib.load_manifest(PKG)</span>
+<span class="hljs-keyword">import</span> rospy
+<span class="hljs-keyword">from</span> hobbit_msgs.msg <span class="hljs-keyword">import</span> Command, Status
+<span class="hljs-keyword">from</span> std_msgs.msg <span class="hljs-keyword">import</span> String, Header
+<span class="hljs-comment">#from hobbit_msgs.msg import Command, Status, Event, Parameter</span>
+<span class="hljs-keyword">from</span> hobbit_msgs.srv <span class="hljs-keyword">import</span> Request, RequestRequest
+<span class="hljs-keyword">from</span> hobbit_msgs.msg <span class="hljs-keyword">import</span> Parameter
+
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MMUIInterface</span>:</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span><span class="hljs-params">(self)</span>:</span>
+        self.cSub = rospy.Subscriber(<span class="hljs-string">"/ActionSequence"</span>, Command, self.processCommand, queue_size=<span class="hljs-number">1</span>)
+        <span class="hljs-comment">#self.PubStatus = rospy.Publisher("/Status", Status)</span>
+        <span class="hljs-comment">#self.stopSub = rospy.Subscriber("/Hobbit/Cancel", String, self.processStop, queue_size=1)</span>
+        self.dostop = <span class="hljs-keyword">False</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">processStop</span><span class="hljs-params">(self, msg)</span>:</span>
+        self.dostop = <span class="hljs-keyword">True</span>  <span class="hljs-comment"># has to be implemented =&gt; ISTU directly on MMUI</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">processCommand</span><span class="hljs-params">(self, msg)</span>:</span>
+    <span class="hljs-comment">#print "david"</span>
+        <span class="hljs-keyword">if</span> msg.command == <span class="hljs-string">"C_SPEAK"</span>:
+            <span class="hljs-keyword">print</span> <span class="hljs-string">"C_SPEAK"</span>
+            self.showMMUI_Info(msg.params[<span class="hljs-number">0</span>].value)
+        <span class="hljs-keyword">print</span> <span class="hljs-string">"msg.params[0].value: "</span>
+        <span class="hljs-keyword">print</span> msg.params[<span class="hljs-number">0</span>].value
+        <span class="hljs-keyword">print</span> <span class="hljs-string">"##"</span>,msg.command,<span class="hljs-string">"##"</span>
+
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">showMMUI_Info</span><span class="hljs-params">(self, text, wait=<span class="hljs-string">"1"</span>, prm=<span class="hljs-string">""</span>, prm2=<span class="hljs-string">""</span>, prm3=<span class="hljs-string">""</span>, audio=<span class="hljs-string">""</span>)</span>:</span>
+        <span class="hljs-comment">#print(prm)</span>
+        parr = []
+        p = Parameter(<span class="hljs-string">'type'</span>, <span class="hljs-string">'D_PLAIN'</span>)
+        parr.append(p)
+        p = Parameter(<span class="hljs-string">'text'</span>, text)
+        parr.append(p)
+        p = Parameter(<span class="hljs-string">'speak'</span>, text)
+        parr.append(p)
+        p = Parameter(<span class="hljs-string">'Timeout'</span>, <span class="hljs-string">'15'</span>)
+        parr.append(p)
+        p = Parameter(<span class="hljs-string">'Repetitions'</span>, <span class="hljs-string">'1'</span>)
+        parr.append(p)
+        p = Parameter(<span class="hljs-string">'wait'</span>, wait)
+        parr.append(p)
+        <span class="hljs-keyword">if</span> prm != <span class="hljs-string">""</span>:
+            p = Parameter(<span class="hljs-string">'parameter'</span>, prm)
+            parr.append(p)
+        <span class="hljs-keyword">if</span> prm2 != <span class="hljs-string">""</span>:
+            p = Parameter(<span class="hljs-string">'parameter'</span>, prm2)
+            parr.append(p)
+        <span class="hljs-keyword">if</span> prm3 != <span class="hljs-string">""</span>:
+            p = Parameter(<span class="hljs-string">'parameter'</span>, prm3)
+            parr.append(p)
+        <span class="hljs-keyword">if</span> audio != <span class="hljs-string">""</span>:
+            p = Parameter(<span class="hljs-string">'play'</span>, audio)
+            parr.append(p)
+        <span class="hljs-comment">#print(parr) </span>
+        <span class="hljs-keyword">return</span> self.callMMUIService(<span class="hljs-string">'0'</span>, <span class="hljs-string">'create'</span>, parr)
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">showMMUI_OK</span><span class="hljs-params">(self, text, prm=<span class="hljs-string">""</span>)</span>:</span>
+        parr = []
+        p = Parameter(<span class="hljs-string">'type'</span>, <span class="hljs-string">'D_OK'</span>)
+        parr.append(p)
+        p = Parameter(<span class="hljs-string">'text'</span>, text)
+        parr.append(p)
+        p = Parameter(<span class="hljs-string">'speak'</span>, text)
+        parr.append(p)
+        p = Parameter(<span class="hljs-string">'Repetitions'</span>, <span class="hljs-string">'3'</span>)
+        parr.append(p)
+        p = Parameter(<span class="hljs-string">'Timeout'</span>, <span class="hljs-string">"30"</span>)
+        parr.append(p)
+        <span class="hljs-keyword">if</span> prm != <span class="hljs-string">""</span>:
+            p = Parameter(<span class="hljs-string">'parameter'</span>, prm)
+            parr.append(p)
+        <span class="hljs-keyword">return</span> self.callMMUIService(<span class="hljs-string">'0'</span>, <span class="hljs-string">'create'</span>, parr)
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">showMMUI_YESNO</span><span class="hljs-params">(self, text, prm=<span class="hljs-string">""</span>)</span>:</span>
+        parr = []
+        p = Parameter(<span class="hljs-string">'type'</span>, <span class="hljs-string">'D_YES_NO'</span>)
+        parr.append(p)
+        p = Parameter(<span class="hljs-string">'text'</span>, text)
+        parr.append(p)
+        p = Parameter(<span class="hljs-string">'speak'</span>, text)
+        parr.append(p)
+        p = Parameter(<span class="hljs-string">'Repetitions'</span>, <span class="hljs-string">"3"</span>)
+        parr.append(p)
+        p = Parameter(<span class="hljs-string">'Timeout'</span>, <span class="hljs-string">"15"</span>)
+        parr.append(p)
+        <span class="hljs-keyword">if</span> prm != <span class="hljs-string">""</span>:
+            p = Parameter(<span class="hljs-string">'parameter'</span>, prm)
+            parr.append(p)
+        <span class="hljs-keyword">return</span> self.callMMUIService(<span class="hljs-string">'0'</span>, <span class="hljs-string">'create'</span>, parr)
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">showMMUI_Calendar</span><span class="hljs-params">(
+        self,
+        text=<span class="hljs-string">'T_BR_RemindersToday'</span>,
+        timespan=<span class="hljs-string">'03:00'</span>,
+        # cat=[<span class="hljs-string">'drinking'</span>, <span class="hljs-string">'drug'</span>, <span class="hljs-string">'meeting'</span>, <span class="hljs-string">'checklist'</span>]
+        cat = <span class="hljs-string">'meeting'</span>
+    )</span>:</span>
+        parr = []
+        p = Parameter(<span class="hljs-string">'type'</span>, <span class="hljs-string">'D_REMINDER'</span>)
+        parr.append(p)
+        p = Parameter(<span class="hljs-string">'text'</span>, text)
+        parr.append(p)
+        <span class="hljs-comment">#cat = ['drinking', 'drug', 'meeting', 'checklist']</span>
+        p = Parameter(<span class="hljs-string">'category'</span>, cat)
+        parr.append(p)
+        p = Parameter(<span class="hljs-string">'timespan'</span>, timespan)
+        parr.append(p)
+        <span class="hljs-keyword">return</span> self.callMMUIService(<span class="hljs-string">'0'</span>, <span class="hljs-string">'create'</span>, parr)
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">DefineSOSFile</span><span class="hljs-params">(self, filename=<span class="hljs-string">'default'</span>)</span>:</span>
+        parr = []
+        p = Parameter(<span class="hljs-string">'type'</span>, <span class="hljs-string">'F_SOSFILE'</span>)
+        parr.append(p)
+        p = Parameter(<span class="hljs-string">'Audio'</span>, filename)
+        parr.append(p)
+        <span class="hljs-keyword">return</span> self.callMMUIService(<span class="hljs-string">'0'</span>, <span class="hljs-string">'create'</span>, parr)
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">StartSOSCall</span><span class="hljs-params">(self)</span>:</span>
+        parr=[]
+        p = Parameter(<span class="hljs-string">'type'</span>, <span class="hljs-string">'F_CALLSOS'</span>)
+        parr.append(p)
+        <span class="hljs-keyword">return</span> self.callMMUIService(<span class="hljs-string">'0'</span>, <span class="hljs-string">'create'</span>, parr)
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">enable_asr</span><span class="hljs-params">(self)</span>:</span>
+        parr=[]
+        p = Parameter(<span class="hljs-string">'type'</span>, <span class="hljs-string">'F_ASRON'</span>)
+        parr.append(p)
+        <span class="hljs-keyword">return</span> self.callMMUIService(<span class="hljs-string">'0'</span>, <span class="hljs-string">'create'</span>, parr)
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">disable_asr</span><span class="hljs-params">(self)</span>:</span>
+        parr=[]
+        p = Parameter(<span class="hljs-string">'type'</span>, <span class="hljs-string">'F_ASROFF'</span>)
+        parr.append(p)
+        <span class="hljs-keyword">return</span> self.callMMUIService(<span class="hljs-string">'0'</span>, <span class="hljs-string">'create'</span>, parr)
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">enable_gesture</span><span class="hljs-params">(self)</span>:</span>
+        parr=[]
+        p = Parameter(<span class="hljs-string">'type'</span>, <span class="hljs-string">'F_GestureON'</span>)
+        parr.append(p)
+        <span class="hljs-keyword">return</span> self.callMMUIService(<span class="hljs-string">'0'</span>, <span class="hljs-string">'create'</span>, parr)
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">disable_gesture</span><span class="hljs-params">(self)</span>:</span>
+        parr=[]
+        p = Parameter(<span class="hljs-string">'type'</span>, <span class="hljs-string">'F_GestureOFF'</span>)
+        parr.append(p)
+        <span class="hljs-keyword">return</span> self.callMMUIService(<span class="hljs-string">'0'</span>, <span class="hljs-string">'create'</span>, parr)
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">remove_last_prompt</span><span class="hljs-params">(self)</span>:</span>
+        parr=[]
+        p = Parameter(<span class="hljs-string">'type'</span>, <span class="hljs-string">'D_REMOVE'</span>)
+        parr.append(p)
+        <span class="hljs-keyword">return</span> self.callMMUIService(<span class="hljs-string">'-1'</span>, <span class="hljs-string">'create'</span>, parr)
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">request_mmui_update</span><span class="hljs-params">(self)</span>:</span>
+        <span class="hljs-string">"""
+        send an update request to the mmui.
+        only known use case is the update for the object list. maybe something else as well
+        """</span>
+        parr=[]
+        p = Parameter(<span class="hljs-string">'type'</span>, <span class="hljs-string">'F_UPDATE'</span>)
+        parr.append(p)
+        <span class="hljs-keyword">return</span> self.callMMUIService(<span class="hljs-string">'0'</span>, <span class="hljs-string">'create'</span>, parr)
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">GoToMenu</span><span class="hljs-params">(self, menu=<span class="hljs-string">'F_MAIN'</span>)</span>:</span>
+        parr = []
+        p = Parameter(<span class="hljs-string">'type'</span>, <span class="hljs-string">'F_GOTOMENU'</span>)
+        parr.append(p)
+        p = Parameter(<span class="hljs-string">'Value'</span>, menu)
+        parr.append(p)
+        <span class="hljs-keyword">return</span> self.callMMUIService(<span class="hljs-string">'0'</span>, txt=<span class="hljs-string">'Go to menu'</span> + menu[<span class="hljs-number">2</span>:], params=parr)
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_abs_volume</span><span class="hljs-params">(self, volume=<span class="hljs-string">'30'</span>)</span>:</span>
+        parr = []
+        p = Parameter(<span class="hljs-string">'type'</span>, <span class="hljs-string">'F_ABSVOLUME'</span>)
+        parr.append(p)
+        p = Parameter(<span class="hljs-string">'Value'</span>, volume)
+        parr.append(p)
+        <span class="hljs-keyword">return</span> self.callMMUIService(<span class="hljs-string">'0'</span>, txt=<span class="hljs-string">'Set volume to'</span> + volume, params=parr)
+
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_volume_louder</span><span class="hljs-params">(self)</span>:</span>
+        parr = []
+        p = Parameter(<span class="hljs-string">'type'</span>, <span class="hljs-string">'F_LOUDER'</span>)
+        parr.append(p)
+        <span class="hljs-keyword">return</span> self.callMMUIService(<span class="hljs-string">'0'</span>, txt=<span class="hljs-string">'Set volume 10% higher'</span>, params=parr)
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_volume_quieter</span><span class="hljs-params">(self)</span>:</span>
+        parr = []
+        p = Parameter(<span class="hljs-string">'type'</span>, <span class="hljs-string">'F_QUIETER'</span>)
+        parr.append(p)
+        <span class="hljs-keyword">return</span> self.callMMUIService(<span class="hljs-string">'0'</span>, txt=<span class="hljs-string">'Set volume 10% lower'</span>, params=parr)
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">sendMMUI_Function</span><span class="hljs-params">(self, f)</span>:</span>
+        parr = []
+        p = Parameter(<span class="hljs-string">'type'</span>, f)
+        parr.append(p)
+        <span class="hljs-keyword">return</span> self.callMMUIService(<span class="hljs-string">'0'</span>, <span class="hljs-string">'create'</span>, parr)
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">callMMUIService</span><span class="hljs-params">(self, sessionid, txt, params)</span>:</span>
+        <span class="hljs-keyword">try</span>:
+            rospy.wait_for_service(<span class="hljs-string">'/MMUI'</span>, <span class="hljs-number">5</span>)
+            servicecall = rospy.ServiceProxy(<span class="hljs-string">'/MMUI'</span>, Request)
+        <span class="hljs-keyword">except</span> rospy.ROSException, e:
+            print(<span class="hljs-string">'timeout exceeded while waiting for service %s'</span> % e)
+            rospy.loginfo(<span class="hljs-string">'MMUI is not responding.'</span>)
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">None</span>
+            <span class="hljs-comment">#raise rospy.ServiceException</span>
+        <span class="hljs-comment">#print('Trying to call MMUIService')</span>
+        <span class="hljs-keyword">try</span>:
+            h = Header()
+            h.stamp = rospy.Time.now()
+            req = RequestRequest(h, sessionid, txt, params)
+            resp = servicecall(req)
+            <span class="hljs-keyword">return</span> resp
+        <span class="hljs-keyword">except</span> rospy.ServiceException, e:
+            <span class="hljs-keyword">print</span> <span class="hljs-string">"Service did not process request: %s"</span> % str(e)
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">None</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">askForName</span><span class="hljs-params">(self, text=<span class="hljs-string">'What is the name of this object?'</span>, timeout=<span class="hljs-string">'30'</span>)</span>:</span>
+        parr = []
+        p = Parameter(<span class="hljs-string">'type'</span>, <span class="hljs-string">'D_NAME'</span>)
+        parr.append(p)
+        p = Parameter(<span class="hljs-string">'text'</span>, text)
+        parr.append(p)
+        p = Parameter(<span class="hljs-string">'Timeout'</span>, timeout)
+        parr.append(p)
+        <span class="hljs-keyword">return</span> self.callMMUIService(<span class="hljs-string">'0'</span>, <span class="hljs-string">'create'</span>, parr)
+
+
+
+            <span class="hljs-comment">#self.showMMUI_Info('T_CF_FIRST_GRASP_FAILED_WILL_TRY_AGAIN', "1")</span>
+            <span class="hljs-comment">#returns to default menu</span>
+            <span class="hljs-comment">#self.sendMMUI_Function('F_MAIN')</span>
+            <span class="hljs-comment">#r = self.showMMUI_OK('T_CF_TAKE_OUT_OBJECT_AND_CONFIRM')</span>
+
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">main</span><span class="hljs-params">(args)</span>:</span>
+    <span class="hljs-comment">#MMUIIF = MMUIInterface()</span>
+    <span class="hljs-comment">#MMUIIF.showMMUI_Info('test test test')</span>
+    <span class="hljs-comment">#print "MMUIInterface"</span>
+    rospy.init_node(<span class="hljs-string">'ActionSequencerLearnObject'</span>, anonymous=<span class="hljs-keyword">False</span>)
+    mmui = MMUIInterface()
+    rospy.spin()
+
+<span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">"__main__"</span>:
+    main(sys.argv)
+</code></pre>    </article>
+  </body>
+</html>

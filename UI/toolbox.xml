@@ -2,11 +2,11 @@
 		<category id="catHobbitMove" name="Move" colour="360">
 			<block type="hobbit_undock"></block>
 			<block type="hobbit_move">
-				<value name="speed">
+				<!-- <value name="speed">
 					<shadow type="math_number">
 						<field name="NUM">0</field>
 					</shadow>
-				</value>
+				</value> -->
 			</block>
 			<block type="hobbit_navigation_test">
 				<value name="pos_x">
@@ -46,11 +46,11 @@
 				</value>
 			</block>
 			<block type="hobbit_turn">
-				<value name="angle">
+				<!-- <value name="angle">
 					<shadow type="math_number">
 						<field name="NUM">0</field>
 					</shadow>
-				</value>
+				</value> -->
 			</block>
 		</category>
 		<category id="catHobbitArm" name="Arm Control" colour="360">
@@ -60,32 +60,32 @@
 		</category>
 		<category id="catInteraction" name="Interaction" colour="360">
 			<block type="hobbit_show_info">
-				<value name="text">
+				<!-- <value name="text">
 					<shadow type="text">
 						<field name="TEXT"></field>
 					</shadow>
-				</value>
+				</value> -->
 			</block>
 			<block type="hobbit_show_info_confirm">
-				<value name="text">
+				<!-- <value name="text">
 					<shadow type="text">
 						<field name="TEXT"></field>
 					</shadow>
-				</value>
+				</value> -->
 			</block>
 			<block type="hobbit_yes_no">
-				<value name="text">
+				<!-- <value name="text">
 					<shadow type="text">
 						<field name="TEXT"></field>
 					</shadow>
-				</value>
+				</value> -->
 			</block>
 			<block type="hobbit_user_input">
-				<value name="text">
+				<!-- <value name="text">
 					<shadow type="text">
 						<field name="TEXT"></field>
 					</shadow>
-				</value>
+				</value> -->
 			</block>
 			<block type="hobbit_head"></block>
 			<block type="hobbit_emo"></block>

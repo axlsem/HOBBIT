@@ -29,14 +29,9 @@ The field of application of block-based \glspl{vpl} covers a wide range: Ardublo
 \end{figure}
 
 \subsection{Flowcharts}
-These \glspl{vpl} are able to translate an algorithm's logic given as flowchart into executable machine instructions. According to \cite{ISO2382} a flowchart is the graphical representation of a process or the step-by-step solution of a problem, using suitably annotated geometric figures connected by flowlines for the purpose of designing or documenting a process or program. Flowcharts are typically used in the fields of automation. Grafcet (\cite{Grafcet}) is a tool, drawing its inspiration from Petri nets (a general purpose mathematical tool allowing various discrete-event systems to be described), whose aim is the specification of \glspl{plc}. It is the basis of the \gls{sfc}, an International Standard in 1987. An implementation of the Grafcet norm can be found in S7-GRAPH, developed by Siemens AG and part of their STEP 7 software for programming \glspl{plc} (see \prettyref{fig:S7Graph}).
+These \glspl{vpl} are able to translate an algorithm's logic given as flowchart into executable machine instructions. According to \cite{ISO2382} a flowchart is the graphical representation of a process or the step-by-step solution of a problem, using suitably annotated geometric figures connected by flowlines for the purpose of designing or documenting a process or program. Flowcharts are typically used in the fields of automation. Grafcet (\cite{Grafcet}) is a tool, drawing its inspiration from Petri nets (a general purpose mathematical tool allowing various discrete-event systems to be described), whose aim is the specification of \glspl{plc}. It is the basis of the \gls{sfc}, an International Standard in 1987. An implementation of the Grafcet norm can be found in S7-GRAPH, developed by Siemens AG and part of their STEP 7 software for programming \glspl{plc} (see \prettyref{fig:S7Graph}). \\
 
-Another application using a flowchart \gls{vpl} is KTechLab\footnote{https://sourceforge.net/projects/ktechlab/}, which is an \gls{ide} for microcontrollers and electronics. It supports circuit simulation, program development for microcontrollers and simulating the programmed microcontroller together with its application circuit.
-
-\subsection{Dataflow programming languages}
-Similar to flowcharts dataflow programming is used for professional applications primarily, aimed at designers rather than end users or coding newbies. Dataflow programming is a programming paradigm whose execution model can be represented by a directed graph, representing the flow of data between nodes, similarly to a dataflow diagram. Considering this comparison, each node is an executable block that has data inputs, performs transformations over it
-
-\begin{figure}[!h]
+\begin{figure}[!htpb]
 % \begin{figure}[ht]
 	\centering
 	\begin{overpic}[width=0.65\linewidth]{./graphics/S7Graph}
@@ -48,7 +43,14 @@ Similar to flowcharts dataflow programming is used for professional applications
 \end{figure}
 \footnotetext{https://w3.siemens.com/mcms/simatic-controller-software/en/step7/simatic-s7-graph/pages/default.aspx}
 
-\begin{figure}[!h]
+Another application using a flowchart \gls{vpl} is KTechLab\footnote{https://sourceforge.net/projects/ktechlab/}, which is an \gls{ide} for microcontrollers and electronics. It supports circuit simulation, program development for microcontrollers and simulating the programmed microcontroller together with its application circuit. \\
+
+\textit{RoboFlow} is a flow-based \gls{vpl} which allows programming of generalizable mobile manipulation tasks \cite{RoboFlow7139973}. The authors applied a technique called texit{Programming by Demonstration} from the field of End-User Programming (EUP) to robot programming. They also presented an implementation on the PR2\footnote{http://www.willowgarage.com/pages/pr2/overview} robot platform using \gls{ros} communication. \\
+
+\subsection{Dataflow programming languages}
+Similar to flowcharts dataflow programming is used for professional applications primarily, aimed at designers rather than end users or coding newbies. Dataflow programming is a programming paradigm whose execution model can be represented by a directed graph, representing the flow of data between nodes, similarly to a dataflow diagram. Considering this comparison, each node is an executable block that has data inputs, performs transformations over it and then forwards it to the next block. A dataflow application is then a composition of processing blocks, with one or more initial source blocks and one or more ending blocks, linked by a directed edge.\cite{Sousa2012DataflowPC} National Instruments LabVIEW \cite{LabView} and Simulink (\prettyref{fig:Simulink}) can be mentioned as the representatives of this big group.
+
+\begin{figure}[!htpb]
 % \begin{figure}[!hb]
 	\centering
 	\begin{overpic}[width=0.65\linewidth]{./graphics/Simulink}
@@ -59,8 +61,6 @@ Similar to flowcharts dataflow programming is used for professional applications
 	\label{fig:Simulink}%
 \end{figure}
 \footnotetext{https://www.mathworks.com/products/simulink.html}
-
-and then forwards it to the next block. A dataflow application is then a composition of processing blocks, with one or more initial source blocks and one or more ending blocks, linked by a directed edge.\cite{Sousa2012DataflowPC} National Instruments LabVIEW \cite{LabView} and Simulink (\prettyref{fig:Simulink}) can be mentioned as the representatives of this big group.
 
 \section{Graphical Robot Programming Environments} \label{sec:GraphicalEnvs}
 The driving force of \glspl{vpl} in terms of graphical programming of robots is education. Teachers rely on simple educational robots and intuitive programming environments. Therefore, graphical programming environments have become a frequent starting point for young students. The used environments mostly depends on the robot the corresponding class is programming and therefore there are many offerings. \\

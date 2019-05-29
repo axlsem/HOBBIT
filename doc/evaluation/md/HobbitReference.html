@@ -1,0 +1,349 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimal-ui">
+    <title>Topics</title>
+    <link type="text/css" rel="stylesheet" href="assets/css/github-markdown.css">
+    <link type="text/css" rel="stylesheet" href="assets/css/pilcrow.css">
+    <link type="text/css" rel="stylesheet" href="assets/css/hljs-github.min.css"/>
+  </head>
+  <body>
+    <article class="markdown-body"><h1 id="topics"><a class="header-link" href="#topics"></a>Topics</h1>
+<p>This sections lists some topics which can be used to control HOBBIT.</p>
+<h2 id="/head/move"><a class="header-link" href="#/head/move"></a>/head/move</h2>
+<p>Message Type: <code>std_msgs/String</code></p>
+<p>This topic is used to move HOBBIT&#39;s head.</p>
+<table>
+<thead>
+<tr>
+<th>Message</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>&quot;center_center&quot;</td>
+<td>look straight</td>
+</tr>
+<tr>
+<td>&quot;up_center&quot;</td>
+<td>look up</td>
+</tr>
+<tr>
+<td>&quot;down_center&quot;</td>
+<td>look down</td>
+</tr>
+<tr>
+<td>&quot;center_right&quot;</td>
+<td>look right</td>
+</tr>
+<tr>
+<td>&quot;center_left&quot;</td>
+<td>look left</td>
+</tr>
+<tr>
+<td>&quot;up_right&quot;</td>
+<td>look to upper right corner</td>
+</tr>
+<tr>
+<td>&quot;up_left&quot;</td>
+<td>look to upper left corner</td>
+</tr>
+<tr>
+<td>&quot;down_right&quot;</td>
+<td>look to lower right corner</td>
+</tr>
+<tr>
+<td>&quot;down_left&quot;</td>
+<td>look to lower left corner</td>
+</tr>
+<tr>
+<td>&quot;littledown_center&quot;</td>
+<td>look little down</td>
+</tr>
+<tr>
+<td>&quot;to_grasp&quot;</td>
+<td>look to grasp</td>
+</tr>
+<tr>
+<td>&quot;to_turntable&quot;</td>
+<td>look to turntable</td>
+</tr>
+<tr>
+<td>&quot;search_table&quot;</td>
+<td>look to table</td>
+</tr>
+</tbody>
+</table>
+<h2 id="/head/emo"><a class="header-link" href="#/head/emo"></a>/head/emo</h2>
+<p>Message Type: <code>std_msgs/String</code></p>
+<p>This topic is used to control HOBBIT&#39;s eyes/emotion</p>
+<table>
+<thead>
+<tr>
+<th>Message</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>&quot;HAPPY&quot;</td>
+<td>look happy</td>
+</tr>
+<tr>
+<td>&quot;VHAPPY&quot;</td>
+<td>look very happy</td>
+</tr>
+<tr>
+<td>&quot;LTIRED&quot;</td>
+<td>look little tired</td>
+</tr>
+<tr>
+<td>&quot;VTIRED&quot;</td>
+<td>look very tired</td>
+</tr>
+<tr>
+<td>&quot;CONCERNED&quot;</td>
+<td>look concerned</td>
+</tr>
+<tr>
+<td>&quot;SAD&quot;</td>
+<td>look sad</td>
+</tr>
+<tr>
+<td>&quot;WONDERING&quot;</td>
+<td>wonder</td>
+</tr>
+<tr>
+<td>&quot;NEUTRAL&quot;</td>
+<td>look neutral</td>
+</tr>
+<tr>
+<td>&quot;SLEEPING&quot;</td>
+<td>sleep</td>
+</tr>
+</tbody>
+</table>
+<h2 id="/cmd_vel"><a class="header-link" href="#/cmd_vel"></a>/cmd_vel</h2>
+<p>Message type: <code>geometry_msgs/Twist</code>
+This topic is used to move HOBBIT a certain distance in linear direction, i.e. it only uses the x coordinate of the linear part of the geometry_msgs/Twist Message. For example, the following message moves HOBBIT 2 metres forward:</p>
+<pre class="hljs"><code><span class="xml">'</span><span class="hljs-template-variable">{linear:  {x: 2.0, y: 0.0, z: 0.0}</span><span class="xml">, angular: </span><span class="hljs-template-variable">{x: 0.0, y: 0.0, z: 0.0}</span><span class="xml">}'</span></code></pre><h1 id="actions"><a class="header-link" href="#actions"></a>Actions</h1>
+<p>This sections lists some action server namespaces which can be accessed to control HOBBIT.</p>
+<h2 id="hobbit_arm"><a class="header-link" href="#hobbit_arm"></a>hobbit_arm</h2>
+<p>Action goal message type: <code>hobbit_msgs/ArmServerGoal</code></p>
+<p>Action message type: <code>hobbit_msgs/ArmServerAction</code></p>
+<p>HOBBIT&#39;s arm can be controlled in three different ways.</p>
+<h3 id="move-arm-along-trajectory"><a class="header-link" href="#move-arm-along-trajectory"></a>Move arm along trajectory</h3>
+<p>To move the arm along a trajectory the joint values has to be passed to the goal, e.g.</p>
+<pre class="hljs"><code><span class="hljs-attribute">command</span>: 
+  <span class="hljs-attribute">data</span>: <span class="hljs-string">'MoveAlongTrajectory'</span>
+<span class="hljs-attribute">velocity</span>: <span class="hljs-number">0.0</span>
+<span class="hljs-attribute">joints</span>: [
+  <span class="hljs-attribute">joint_values</span>: [<span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>], 
+  <span class="hljs-attribute">joint_values</span>: [<span class="hljs-number">0.1</span>, <span class="hljs-number">0.1</span>, <span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>], 
+  <span class="hljs-attribute">joint_values</span>: [<span class="hljs-number">0.2</span>, <span class="hljs-number">0.2</span>, <span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>], 
+  <span class="hljs-attribute">joint_values</span>: [<span class="hljs-number">0.3</span>, <span class="hljs-number">0.3</span>, <span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>], 
+  <span class="hljs-attribute">joint_values</span>: [<span class="hljs-number">0.4</span>, <span class="hljs-number">0.4</span>, <span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>], 
+  <span class="hljs-attribute">joint_values</span>: [<span class="hljs-number">0.5</span>, <span class="hljs-number">0.4</span>, <span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>], 
+  <span class="hljs-attribute">joint_values</span>: [<span class="hljs-number">0.6</span>, <span class="hljs-number">0.4</span>, <span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>], 
+  <span class="hljs-attribute">joint_values</span>: [<span class="hljs-number">0.7</span>, <span class="hljs-number">0.4</span>, <span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>], 
+  <span class="hljs-attribute">joint_values</span>: [<span class="hljs-number">0.8</span>, <span class="hljs-number">0.4</span>, <span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>], 
+  <span class="hljs-attribute">joint_values</span>: [<span class="hljs-number">0.9</span>, <span class="hljs-number">0.4</span>, <span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>], 
+  <span class="hljs-attribute">joint_values</span>: [<span class="hljs-number">1.0</span>, <span class="hljs-number">0.4</span>, <span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>]
+]</code></pre><h3 id="move-to-joint-values"><a class="header-link" href="#move-to-joint-values"></a>Move to joint values</h3>
+<p>To move the arm to a specific position it is necessary to provide it via the values of the joints and set the command.data property accordingly, e.g.</p>
+<pre class="hljs"><code><span class="hljs-attribute">command</span>: 
+  <span class="hljs-attribute">data</span>: <span class="hljs-string">'MoveToJointValues'</span>
+<span class="hljs-attribute">velocity</span>: <span class="hljs-number">0.0</span>
+<span class="hljs-attribute">joints</span>: [
+  <span class="hljs-attribute">joint_values</span>: [<span class="hljs-number">1.0</span>, <span class="hljs-number">0.4</span>, <span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>]
+]</code></pre><h3 id="move-to-predefined-position"><a class="header-link" href="#move-to-predefined-position"></a>Move to predefined position</h3>
+<p>It is also possible to move HOBBIT&#39;s arm to a couple of predefined position. The following message, for example, lets the arm move to its home position:</p>
+<pre class="hljs"><code><span class="hljs-attribute">command</span>: 
+  <span class="hljs-attribute">data</span>: <span class="hljs-string">'MoveToHome'</span>
+<span class="hljs-attribute">velocity</span>: <span class="hljs-number">0.0</span>
+<span class="hljs-attribute">joints</span>: []</code></pre><p>For all predefined position please refer to the following table.</p>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>&quot;MoveToCandle&quot;</td>
+<td>Move to candle position</td>
+</tr>
+<tr>
+<td>&quot;MoveToHome&quot;</td>
+<td>Move to home position</td>
+</tr>
+<tr>
+<td>&quot;MoveToPreGraspFloor&quot;</td>
+<td>Prepare to grasp from floor</td>
+</tr>
+<tr>
+<td>&quot;MoveToPreGraspTable&quot;</td>
+<td>Move to table position</td>
+</tr>
+<tr>
+<td>&quot;MoveToTray&quot;</td>
+<td>Move arm to tray</td>
+</tr>
+<tr>
+<td>&quot;MoveToLearning&quot;</td>
+<td>Grab turntable</td>
+</tr>
+<tr>
+<td>&quot;StoreTurntable&quot;</td>
+<td>Store turntable</td>
+</tr>
+<tr>
+<td>&quot;TurnTurntableCW&quot;</td>
+<td>Turn turntable clockwise</td>
+</tr>
+<tr>
+<td>&quot;TurnTurntableCCW&quot;</td>
+<td>Turn turntable counterclockwise</td>
+</tr>
+<tr>
+<td>&quot;OpenGripper&quot;</td>
+<td>Open gripper</td>
+</tr>
+<tr>
+<td>&quot;CloseGripper&quot;</td>
+<td>Close gripper</td>
+</tr>
+</tbody>
+</table>
+<h2 id="move_base"><a class="header-link" href="#move_base"></a>move_base</h2>
+<p>Action goal message type: <code>geometry_msgs/PoseStamped</code></p>
+<p>Action message type: <code>move_base_msgs/MoveBase</code></p>
+<p>This namespace can be used to navigate HOBBIT to a specific point determinated by its geometric pose, for example</p>
+<pre class="hljs"><code><span class="hljs-symbol">header:</span> 
+<span class="hljs-symbol">  seq:</span> <span class="hljs-number">0</span>
+<span class="hljs-symbol">  stamp:</span> now 
+<span class="hljs-symbol">  frame_id:</span> <span class="hljs-string">"map"</span>
+<span class="hljs-symbol">pose:</span>
+<span class="hljs-symbol">  position:</span>
+<span class="hljs-symbol">    x:</span> <span class="hljs-number">1.0</span>
+<span class="hljs-symbol">    y:</span> <span class="hljs-number">2.0</span>
+<span class="hljs-symbol">    z:</span> <span class="hljs-number">0.0</span>
+<span class="hljs-symbol">  orientation:</span>
+<span class="hljs-symbol">    x:</span> <span class="hljs-number">0.0</span>
+<span class="hljs-symbol">    y:</span> <span class="hljs-number">0.0</span>
+<span class="hljs-symbol">    z:</span> <span class="hljs-number">0.0</span>
+<span class="hljs-symbol">    w:</span> <span class="hljs-number">1.0</span></code></pre><blockquote>
+<p>Note: Navigation is also possible by publishing a <code>geometry_msgs/PoseStamped</code> message to topic <code>/move_base_simple/goal</code>.</p>
+</blockquote>
+<h1 id="services"><a class="header-link" href="#services"></a>Services</h1>
+<p>This sections lists some services which can be used to control HOBBIT.</p>
+<h2 id="/mmui"><a class="header-link" href="#/mmui"></a>/MMUI</h2>
+<p>Service class: <code>hobbit_msgs/Request</code></p>
+<p>This service can be used to interact with the user via HOBBIT&#39;s tablet. The information is passed within the <code>params</code> Parameter array (type <code>hobbit_msgs/Parameter</code>) along some meta information. The following example shows how to prompt input from the user.</p>
+<pre class="hljs"><code><span class="hljs-attribute">header</span>:
+  <span class="hljs-attribute">seq</span>: <span class="hljs-number">0</span>
+  <span class="hljs-attribute">stamp</span>: now 
+  <span class="hljs-attribute">frame_id</span>: <span class="hljs-string">""</span>
+<span class="hljs-attribute">sessionID</span>: <span class="hljs-string">"0"</span>
+<span class="hljs-attribute">requestText</span>: <span class="hljs-string">""</span>
+<span class="hljs-attribute">params</span>: [
+  {<span class="hljs-attribute">name</span>: <span class="hljs-string">"type"</span>, <span class="hljs-attribute">value</span>: <span class="hljs-string">"D_NAME"</span>},
+  {<span class="hljs-attribute">name</span>: <span class="hljs-string">"text"</span>, <span class="hljs-attribute">value</span>: <span class="hljs-string">"How are you?"</span>},
+  {<span class="hljs-attribute">name</span>: <span class="hljs-string">"Timeout"</span>, <span class="hljs-attribute">value</span>: <span class="hljs-string">"30"</span>}
+]</code></pre><p>Basically, the desired action is defined by the &quot;type&quot; parameter of the <code>params</code> array. Please refer to the following table for some common functionality of the tablet UI.</p>
+<table>
+<thead>
+<tr>
+<th>params.type</th>
+<th>Description </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>D_NAME</td>
+<td>get user input from tablet keyboard*</td>
+</tr>
+<tr>
+<td>D_PLAIN</td>
+<td>show info</td>
+</tr>
+<tr>
+<td>D_OK</td>
+<td>show info and wait for confirmation</td>
+</tr>
+<tr>
+<td>D_YES_NO</td>
+<td>ask a yes-no-question*</td>
+</tr>
+<tr>
+<td>F_CALLSOS</td>
+<td>start SOS call</td>
+</tr>
+<tr>
+<td>F_LOUDER</td>
+<td>Set volume 10% higher</td>
+</tr>
+<tr>
+<td>F_QUIETER</td>
+<td>Set volume 10% lower</td>
+</tr>
+</tbody>
+</table>
+<p>* Please consider the following structure for the response:</p>
+<pre class="hljs"><code>{
+  params:[
+    {
+      ...
+      value: &lt;UserInput&gt;
+      ...
+    },
+    {
+      ...
+    }
+    ...
+  ],
+  ...
+}</code></pre><p>For <code>params.type=&#39;D_YES_NO&#39;</code> <em>\<UserInput></em> is a string containing <code>&#39;yes&#39;</code> or <code>&#39;no&#39;</code> depending on which button the user has clicked. For <code>params.type=&#39;D_YES_NO&#39;</code> <em>\<UserInput></em> is a string containing the string the user enterd via the tablet interface.</p>
+<p>For more detailed examples using <code>rospy</code> please refer to the <a href="./examples">this example</a>.</p>
+<h1 id="message-definitions"><a class="header-link" href="#message-definitions"></a>Message Definitions</h1>
+<h2 id="std_msgs/string"><a class="header-link" href="#std_msgs/string"></a>std_msgs/String</h2>
+<pre class="hljs"><code><span class="hljs-keyword">string </span><span class="hljs-meta">data</span></code></pre><h2 id="geometry_msgs/twist"><a class="header-link" href="#geometry_msgs/twist"></a>geometry_msgs/Twist</h2>
+<pre class="hljs"><code>geometry_msgs/Vector3 <span class="hljs-built_in">linear</span>
+geometry_msgs/Vector3 angular</code></pre><h2 id="geometry_msgs/vector3"><a class="header-link" href="#geometry_msgs/vector3"></a>geometry_msgs/Vector3</h2>
+<pre class="hljs"><code><span class="hljs-built_in">float</span>64 x
+<span class="hljs-built_in">float</span>64 y
+<span class="hljs-built_in">float</span>64 z</code></pre><h2 id="geometry_msgs/posestamped"><a class="header-link" href="#geometry_msgs/posestamped"></a>geometry_msgs/PoseStamped</h2>
+<pre class="hljs"><code>std_msgs/<span class="hljs-built_in">Header</span> <span class="hljs-built_in">header</span>
+geometry_msgs/Pose pose</code></pre><h2 id="std_msgs/header"><a class="header-link" href="#std_msgs/header"></a>std_msgs/Header</h2>
+<pre class="hljs"><code><span class="hljs-built_in">uint32</span> <span class="hljs-built_in">seq</span>
+time stamp
+<span class="hljs-built_in">string</span> frame_id</code></pre><h2 id="geometry_msgs/pose"><a class="header-link" href="#geometry_msgs/pose"></a>geometry_msgs/Pose</h2>
+<pre class="hljs"><code>geometry_msgs/Point <span class="hljs-built_in">position</span>
+geometry_msgs/Quaternion <span class="hljs-built_in">orientation</span></code></pre><h2 id="geometry_msgs/point"><a class="header-link" href="#geometry_msgs/point"></a>geometry_msgs/Point</h2>
+<pre class="hljs"><code><span class="hljs-built_in">float</span>64 x
+<span class="hljs-built_in">float</span>64 y
+<span class="hljs-built_in">float</span>64 z</code></pre><h2 id="geometry_msgs/quaternion"><a class="header-link" href="#geometry_msgs/quaternion"></a>geometry_msgs/Quaternion</h2>
+<pre class="hljs"><code><span class="hljs-built_in">float</span>64 x
+<span class="hljs-built_in">float</span>64 y
+<span class="hljs-built_in">float</span>64 z
+<span class="hljs-built_in">float</span>64 w</code></pre><h2 id="hobbit_msgs/armservergoal"><a class="header-link" href="#hobbit_msgs/armservergoal"></a>hobbit_msgs/ArmServerGoal</h2>
+<pre class="hljs"><code>std_msgs/String <span class="hljs-built_in">command</span>
+<span class="hljs-built_in">float</span>64 velocity
+hobbit_msgs/arm_joints joints</code></pre><h2 id="hobbit_msgs/arm_joints"><a class="header-link" href="#hobbit_msgs/arm_joints"></a>hobbit_msgs/arm_joints</h2>
+<pre class="hljs"><code>float32<span class="hljs-string">[6]</span> joint_values</code></pre><h2 id="hobbit_msgs/parameter"><a class="header-link" href="#hobbit_msgs/parameter"></a>hobbit_msgs/Parameter</h2>
+<pre class="hljs"><code><span class="hljs-built_in">string</span> <span class="hljs-built_in">name</span>
+<span class="hljs-built_in">string</span> value</code></pre><h1 id="service-classes"><a class="header-link" href="#service-classes"></a>Service Classes</h1>
+<h2 id="hobbit_msgs/request"><a class="header-link" href="#hobbit_msgs/request"></a>hobbit_msgs/Request</h2>
+<pre class="hljs"><code><span class="hljs-comment">#Request Service. used for requesting input from user/mmui by modules or vice-versa</span>
+Header header
+string sessionID
+string requestText <span class="hljs-comment"># please enter a name for this place, etc.</span>
+
+Parameter[] params  <span class="hljs-comment"># Requestparams</span>
+<span class="hljs-meta">---</span>
+Parameter[] params  <span class="hljs-comment"># Responseparams</span></code></pre>    </article>
+  </body>
+</html>
