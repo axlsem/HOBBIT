@@ -1,5 +1,5 @@
 \chapter{Evaluation}
-The following chapter describes how the implemented tool was evaluated. An experiment was used for that purpose which will be described in the following sections. Furthermore, the data acquisition is presented as well as how this data was analysed.
+The following chapter describes how the implemented tool was evaluated. An experiment was used for that purpose which will be described in the following sections. Furthermore, the data acquisition is presented as well as how this data was analyzed.
 
 \section{Experiment Setup} \label{sec:ExperimentSetup}
 The implemented tool was evaluated with X professional robotics software developers from the V4R group of the automation and control insitute at the TU Wien. This section describes the goals and design of the experiment as well as the questions the participants were asked.
@@ -10,18 +10,18 @@ The following goal questions (GQ) should be answerd by the experiment:
     \item \textit{GQ1}: Is the tool seen as an improvement compared to the traditional coding approach?
     \item \textit{GQ2}: Do participants make less pauses when they use the tool compared to coding?
     \item \textit{GQ3}: Does it take less time to find solutions when using the tool?
-    \item \textit{GQ4}: Is the usage of the tool is intuitive?
-    % \item \textit{GQ4}: Do participants with more programming experience perform better in terms of straightness and total time?
+    \item \textit{GQ4}: Is the usage of the tool intuitive?
+          % \item \textit{GQ4}: Do participants with more programming experience perform better in terms of straightness and total time?
 \end{itemize}
 All of the presented goal have in common that they can be answered positively, negatively and none of both. The third option means that furher research must be done, e.g. conducting further experiments to get an answer for this question. \\
 
 The primary goal of this evaluation is to find out if the developed tool is seen as an improvement compared to the traditional coding approach. This question is described by \textit{GQ1} and should be answerd by analysing the feedback of participants, who have experience in programming robotics - especially using ROS. Also, the answers to workload questions can be taken in account. (\prettyref{sec:Questionnaire}) \\
 
-\textit{GQ2} should give an answer to the question whether using the tool affects the workflow of the participants. Do they make less pauses when using the tool? Do they change the code more often when using the traditional approach? When do they struggle? To quantify this the measurements presented above are analysed as well as the answers to questions regarding the workload. \\
+\textit{GQ2} should give an answer to the question whether using the tool affects the workflow of the participants. Do they make less pauses when using the tool? Do they change the code more often when using the traditional approach? When do they struggle? To quantify this the measurements presented \prettyref{sub:ExprimentDesign} are analyzed as well as the answers to questions regarding the workload. \\
 
 \textit{GQ3} simply should examine if using the tool saves time compared to the coding approach. Saving time when creating programms means more time for other work, which especially for users of the primary target group (see \prettyref{sec:Purpose}) is important, because it may not is the major content of their work or research. \\
 
-Finally, \textit{GQ4} should ...
+Finally, \textit{GQ4} should provide insights into the usability of the tool. This can be derived by asking feedback questions to the participants as well as by analysing the workflow during the experiment (see \prettyref{sub:ExprimentDesign}).
 
 % Finally, \textit{GQ4} should incorporate the experience of the participants by comparing it with their qualitive results - i.e. do they work straighter and faster. This question can also be seen as an extension to \textit{GQ1}, meaning find out if the gap between using the tool and pure coding is smaller when having more experience.
 
@@ -30,16 +30,17 @@ A cross over design was used for the experiment splitting the the participants i
 
 When working on the code the group was supported by material covering explanation of the necessary \gls{ros} concepts including examples. Furthermore a list of the necessary \gls{ros} specifications (topics, services, actions, messages etc.) were provided. The participants were asked to use a customized code editor, which were able to perform basic measurements. They were free to choose whether implementing in Python or \Cpp{}. This instrumentation ensures that the results and measurements of both tasks are compareable in terms of exploring the impact of programming knowledge.
 
-All materials, also including the task description of the use cases, were reviewed by a colleague not participating in the experiment in advance to guarantee its understandability and soundness. At the beginning of the experiment the tool was introduced using a short live demo showing all concepts and how it should be worked with the tool and the code editor, respectivley. The participants worked on each task for a total of XX minutes. \\
+All materials, also including the task description of the use cases, were reviewed by a colleague not participating in the experiment in advance to guarantee its understandability and soundness. At the beginning of the experiment the tool was introduced using a short live demo showing all concepts and how it should be worked with the tool and the code editor, respectivley. The participants worked on each task for a total of 30 minutes. \\
 
-While working on the use cases two measurements are performed for each participant: total time (the time to accomplish tasks) and pauses (number of occurrences, where the programm has not changed within XX seconds during development). The measurements are done for both task, working with \toolname{} and coding. For this purpose a routine using the Blockly API was implemented, which listens to changes in the tool's workspace - i.e. creating, updating or deleting blocks. The provided editor was also customized with a feature, which recorded the timestamps of changes. At the start of each task the participants had to click on a \textit{Start} button, which started the timer. It was stopped, when the participant clicked the \textit{Stop} button. The implemented function then submitted the following information:
+While working on the use cases two measurements are performed for each participant: total time (the time to accomplish tasks) and pauses. A duration is considered as \textit{pause} if the programm does not change within two seconds. The measurements are performed for both task, working with \toolname{} and coding. For this purpose a routine using the Blockly API was implemented, which listens to changes in the tool's workspace - i.e. creating, updating or deleting blocks. The provided editor was also customized with a feature, which recorded the timestamps of changes. At the start of each task the participants had to click on a \textit{Start} button, which started the timer. It was stopped, when the participant clicked the \textit{Stop} button. The implemented function then submitted the following information:
 
 \begin{itemize}
-    \item User ID: a randomly generated alphanumeric ID to assign submissions
+    \item Participant ID: a randomly generated alphanumeric ID to assign submissions
     \item Total time taken to accomplish task
     \item Timestamps of pauses
     \item Type of submission (tool or code)
     \item Content of submission (e.g. full code)
+    \item Use case the participant has worked on
 \end{itemize}
 
 \subsection{Questionnaire} \label{sec:Questionnaire}
@@ -50,14 +51,14 @@ Demographic questions are designed to help survey researchers determine what fac
 
 \begin{itemize}
     \item \textit{DF1}: What is your age?
-    % \begin{itemize}
-    %     \item Under 18
-    %     \item 18-24
-    %     \item 25-34
-    %     \item 35-44
-    %     \item 45-54
-    %     \item Above 54
-    % \end{itemize}
+          % \begin{itemize}
+          %     \item Under 18
+          %     \item 18-24
+          %     \item 25-34
+          %     \item 35-44
+          %     \item 45-54
+          %     \item Above 54
+          % \end{itemize}
     \item \textit{DF2}: What is your highest qualification?
     \item \textit{DF3}: What is your current employment status?
     \item \textit{DF4}: What is your current field of work/study?
@@ -72,7 +73,7 @@ The main motivation for having experience questions is that they enable the corr
     \item \textit{EQ2}: How much experience do you have with programming in \Cpp{}/Python?
     \item \textit{EQ3}: How much experience do you have with programming in general?
     \item \textit{EQ4}: How much experience do you have with block-based \glspl{vpl} (e.g. Blockly)?
-    % \item \textit{EQ5}: How much experience do you have with other visual programming languages (e.g. LabView, MATLAB/Simulink)?
+          % \item \textit{EQ5}: How much experience do you have with other visual programming languages (e.g. LabView, MATLAB/Simulink)?
 \end{itemize}
 A scale including the answers \textit{none}, \textit{moderate} and \textit{expert} was used. The answers can easily be mapped onto a numeric scale. The set of answers was also chosen to be that limited to minimize the variability of the answers. The questions are structured according to the level of abstraction. In particular \textit{EQ1} was chosen since the implemented tool provides an environment which should support people without detailed knowledge of \gls{ros}. Experience with \gls{ros} therefore could influence the outcome of the experiment. Another influence could be the programming experience in \Cpp{} and Python, which are the main languages for programming \gls{ros} nodes (see \textit{EQ2}). Especially when comparing the results of the coding task, this could explain differences. General programming experience may not influence the coding task, but could decrease the effort when working with the tool - e.g. when looking at the participants' pauses (see \textit{EQ3}). Participants with experience in block-based languages are expected to find their way through the \toolname{} workspace more easily than novices (see \textit{EQ4}).
 
@@ -111,30 +112,76 @@ This section presents the use cases the participants were asked to work on. It s
 \subsubsection*{Learning a new object}
 The first task the participants were asked to work on was a behaviour, which is already implemented on \hobbit{}: learning a new object. The participants should find a solution with the traditional way, meaning writing the full code by themselves. They were provided with a additional materials, which should give them support to start not purely from the scratch. \\
 
-\begin{figure}[htbp]
-	\centering
-	\begin{overpic}[width=\linewidth]{./graphics/Flowchart1}
-	\end{overpic}
-    \caption{Flowchart of first use case}%
-	\label{fig:FirstUserCaseFlow}%
+% \begin{figure}[htbp]
+% 	\centering
+% 	\begin{overpic}[width=\linewidth]{./graphics/Flowchart1}
+% 	\end{overpic}
+%     \caption{Flowchart of first use case}%
+% 	\label{fig:FirstUserCaseFlow}%
+% \end{figure}
+
+\begin{figure}[!htbp]
+    \centering
+    \begin{tikzpicture}[node distance=2cm]
+        \node (start) [startstop] {Start};
+        \node (pro1) [process, below of=start] {Grab turntable};
+        \node (in1) [io, below of=pro1,] {"Please put an object on the table"};
+        \node (pro2) [process, below of=in1] {Wait for user confirmation};
+        \node (pro3) [process, below of=pro2] {Look to table};
+        \node (out1) [io, below of=pro3] {"I am learning a new object"};
+        \node (pro4) [process, below of=out1] {Turn table clockwise};
+        \node (in3) [io, below of=pro4, yshift=-0.5cm] {"Place the object upside down on the table"};
+        \node (pro5) [process, below of=in3, yshift=-0.5cm] {Wait for user confirmation};
+        \node (out2) [io, right of=start, xshift=4cm] {"I am learning a new object"};
+        \node (pro6) [process, below of=out2] {Turn table clockwise};
+        \node (in4) [io, below of=pro6] {"Please remove the object"};
+        \node (pro6a) [process, below of=in4] {Wait for user confirmation};
+        \node (pro7) [process, below of=pro6a] {Store table};
+        \node (pro8) [process, below of=pro7] {Look straight};
+        \node (in5) [io, below of=pro8] {Ask for name of object};
+        \node (pro9) [process, below of=in5] {Show happy emotion};
+        \node (out3) [io, below of=pro9] {"Thank you, now I know what [XY] is"};
+        \node (stop) [startstop, below of=out3] {Stop};
+        \draw [arrow] (start) -- (pro1);
+        \draw [arrow] (pro1) -- (in1);
+        \draw [arrow] (in1) -- (pro2);
+        \draw [arrow] (pro2) -- (pro3);
+        \draw [arrow] (pro3) -- (out1);
+        \draw [arrow] (out1) -- (pro4);
+        \draw [arrow] (pro4) -- (in3);
+        \draw [arrow] (in3) -- (pro5);
+        \draw (pro5) -| (3,0);
+        \draw [arrow] (3,0) -- (out2);
+        \draw [arrow] (out2) -- (pro6);
+        \draw [arrow] (pro6) -- (in4);
+        \draw [arrow] (in4) -- (pro6a);
+        \draw [arrow] (pro6a) -- (pro7);
+        \draw [arrow] (pro7) -- (pro8);
+        \draw [arrow] (pro8) -- (in5);
+        \draw [arrow] (in5) -- (pro9);
+        \draw [arrow] (pro9) -- (out3);
+        \draw [arrow] (out3) -- (stop);
+
+    \end{tikzpicture}
+    \caption{Flowchart of first use case} \label{fig:FirstUserCaseFlow}
 \end{figure}
 
 The use case can be described as follows: First \hobbit{} should grab the turntable from its storing position. Then a message on its tablet should be shown to ask the user to put an object on the table. After the user confirmed the placement, \hobbit{} should look at the object on the turntable and tell the user "I'm learning a new object" via its tablet interface. The table should turn clockwise first, before the user should be asked to place the the object upside down on the table. Again, the robot should wait for confirmation, then telling "I'm learning a new object" wihle rotating the table counterclockwise. After that, the user should be asked to remove the object and confirm this. Then \hobbit{} should look straight, store the table and ask for the name of the object. Finally \hobbit{} should show a happy emotion and tell "Thank you, now I know what \textit{X} is", where \textit{X} is the name of the object. The whole desired workflow is visualed in \prettyref{fig:FirstUserCaseFlow}. Furhter, \prettyref{tab:FirstUseCaseSpecs} breaks down the complexitivity of the first use case. It is necessary to publish to two different topics, implementing one action client and calling one service.
 
 \begin{table}
-	\centering
-	\begin{tabular}{l l l c}
-		\toprule
-        Action & Type & Specification & Calls \\
+    \centering
+    \begin{tabular}{l l l c}
+        \toprule
+        Action           & Type    & Specification & Calls \\
         \midrule
-        Move head & Topic & /head/move  & 2 \\
-        Show emotion & Topic & /head/emo  & 1 \\
-        Move arm & Action & hobbit\_arm & 4 \\
-        User interaction & Service & /MMUI & 7 \\
-		\bottomrule
-	\end{tabular}
-	\caption{ROS patterns used for implementing first use case}
-	\label{tab:FirstUseCaseSpecs}
+        Move head        & Topic   & /head/move    & 2     \\
+        Show emotion     & Topic   & /head/emo     & 1     \\
+        Move arm         & Action  & hobbit\_arm   & 4     \\
+        User interaction & Service & /MMUI         & 7     \\
+        \bottomrule
+    \end{tabular}
+    \caption{ROS patterns used for implementing first use case}
+    \label{tab:FirstUseCaseSpecs}
 \end{table}
 
 \subsubsection*{Bringing objects from another person}
@@ -142,30 +189,74 @@ The second use case was perform by using the \toolname{} environment. There were
 
 The task was to implement a programm to ask the user repetitively if \hobbit{} should bring an object from another person, which is located at another place. First the user should be asked which objects should be picked up (e.g. "Which object do you want?"). The user then should use the robot's tablet to enter the name of the requested object. After that, \hobbit{} should navigate to the second person. The exact location, specified by the coordinates and pose, was provided in advance to the participants. The second user then should be asked to handover the desired object. If it is answerd positively, the object should be placed on \hobbit{} tray and the robot navigates back to its previous location telling the user "Here you are" and placing the object on the table. If the object has not been handed over, an appropriate message should be displayed on the tablet (e.g. "I'm sorry, your partner couldn't handover the object") after navigating back. Afterwards the user should be asked, if \hobbit{} should bring another item. The whole procedure should be performed as long as the user does not request another object. After the final decline \hobbit{} should show a happy emotion again. For a better understanding \prettyref{fig:SecondUserCaseFlow} provides the flowchart of this use case. \\
 
+% \begin{figure}[!htbp]
+% 	\centering
+% 	\begin{overpic}[width=0.9\linewidth]{./graphics/Flowchart2}
+% 	\end{overpic}
+%     \caption{Flowchart of second use case}%
+% 	\label{fig:SecondUserCaseFlow}%
+% \end{figure}
+
 \begin{figure}[!htbp]
-	\centering
-	\begin{overpic}[width=0.9\linewidth]{./graphics/Flowchart2}
-	\end{overpic}
-    \caption{Flowchart of second use case}%
-	\label{fig:SecondUserCaseFlow}%
+    \centering
+    \begin{tikzpicture}[node distance=2cm]
+        \node (start) [startstop] {Start};
+        \node (in1) [io, below of=start,] {"Which object do you want?"};
+        \node (pro1) [process, below of=in1] {Navigate to User B};
+        \node (out1) [io, below of=pro1] {"Would you please give me [XY]?"};
+        \node (dec1) [decision, below of=out1, yshift=-1cm] {Object handed over?};
+        \node (pro3) [process, below of=dec1, yshift=-1cm] {Navigate to User A};
+        \node (out2) [io, below of=pro3] {"I am sorry, [XY] wasn't handed over."};
+        \node (out3) [io, right of=start, xshift=4cm] {"Please place object on tray"};
+        \node (pro4) [process, below of=out3] {Wait for user confirmation};
+        \node (pro5) [process, below of=pro4] {Navigate to User A};
+        \node (pro6) [process, below of=pro5] {Place object on table};
+        \node (out4) [io, below of=pro6] {"Here you are"};
+        \node (out5) [io, below of=out4] {"Should I bring you another object"};
+        \node (dec2) [decision, below of=out5, yshift=-1cm] {Object requested?};
+        \node (pro7) [process, below of=dec2, yshift=-1cm] {Show happy emotion};
+        \node (stop) [startstop, below of=pro7] {Stop};
+        \draw [arrow] (start) -- (in1);
+        \draw [arrow] (in1) -- (pro1);
+        \draw [arrow] (pro1) -- (out1);
+        \draw [arrow] (out1) -- (dec1);
+        \draw [arrow] (dec1) -- node[anchor=east] {no} (pro3);
+        \draw [arrow] (pro3) -- (out2);
+        \draw (out2) -| (2.8,-10);
+        \draw [arrow] (2.8,-10) -- (out5);
+        \draw (dec1) -| node[anchor=north, xshift=-0.5cm] {yes} (2.8,0);
+        \draw [arrow] (2.8,0) -- (out3);
+        \draw [arrow] (out3) -- (pro4);
+        \draw [arrow] (pro4) -- (pro5);
+        \draw [arrow] (pro5) -- (pro6);
+        \draw [arrow] (pro6) -- (out4);
+        \draw [arrow] (out4) -- (out5);
+        \draw [arrow] (out5) -- (dec2);
+        \draw [arrow] (dec2) -- node[anchor=east] {no} (pro7);
+        \draw [arrow] (pro7) -- (stop);
+        \draw (dec2) -| node[anchor=north, xshift=-2cm] {yes} (10,2);
+        \draw (10,2) -| (-3,-2);
+        \draw [arrow] (-3,-2) --  (in1);
+    \end{tikzpicture}
+    \caption{Flowchart of second use case} \label{fig:SecondUserCaseFlow}
 \end{figure}
 
 \prettyref{tab:SecondUseCaseSpecs} breaks down the complexitivity of this use case. It is necessary to publish to one topic, make calls from two different action clients and use one service. So the number of different \gls{ros} communication types is equal to the first use case. The total number of necessary calls differ slightly (14 in the first use case, 13 in the second). This should be compensated by asking for implementing just one action server for the first use case and publishing to two topics (compared to two actions and one topic for the second use case), since this actions are seen as the most difficult \gls{ros} pattern and topics the most simple ones.
 
 \begin{table}
-	\centering
-	\begin{tabular}{l l l c}
-		\toprule
-        Action & Type & Specification & Calls \\
+    \centering
+    \begin{tabular}{l l l c}
+        \toprule
+        Action           & Type    & Specification      & Calls \\
         \midrule
-        Show emotion & Topic & /head/emo  & 1 \\
-        Move arm & Action & hobbit\_arm & 4 \\
-        Navigation & Action & move\_base\_simple & 2 \\
-        User interaction & Service & /MMUI & 6 \\
-		\bottomrule
-	\end{tabular}
-	\caption{ROS patterns used for implementing first second case}
-	\label{tab:SecondUseCaseSpecs}
+        Show emotion     & Topic   & /head/emo          & 1     \\
+        Move arm         & Action  & hobbit\_arm        & 4     \\
+        Navigation       & Action  & move\_base\_simple & 2     \\
+        User interaction & Service & /MMUI              & 6     \\
+        \bottomrule
+    \end{tabular}
+    \caption{ROS patterns used for implementing first second case}
+    \label{tab:SecondUseCaseSpecs}
 \end{table}
 
 % \subsubsection*{Flowcharts}
@@ -188,5 +279,99 @@ The task was to implement a programm to ask the user repetitively if \hobbit{} s
 % \end{figure}
 
 \section{Results}
+This section presents the results of the experiment. At first a qualitative analysis comparing the results with and without the tool is performed. After that follows the examination of the questionnaire, including the experience, feedback and workload questions as well as the textual feedback.
+
+\subsection{Qualitive Analysis}
+As described in \prettyref{sub:ExprimentDesign} the participants was provided with a customized editor for each task, which collected several data. This data is used to perform a qualitive analysis on the results. First, the solutions are analyzed in order to evaluate whether solutions can be found easier using the developed tool. And if so, if solutions can be found even faster by using it. Then a deeper look is provided by analysing the workflow of the participants. This is achieved by analysing the pauses they made during working on the tasks.
+
+\subsubsection*{Success rate}
+At the first step the overall success rate for each use case is examined. This simply means that the submitted solution of each participant is checked for semantic correctness as well as for feasibility. \prettyref{tab:SucessRateBlocklyUseCase1} and \prettyref{tab:SucessRateCodeUseCase1} showing the outcomes of both use cases for each participant's solutions with and without the tool. 90\% of the participants submitted at least an executable code when using \toolname{}, which means all used blocks were connected syntactically correct within the workspace of blocky. Furthermore, seven out of the ten participants were able to produce a program which would lead to correct behaviour of the robot. The success rate of participants using the manual approach - meaning they have to manually implement the code - is 0. Moreover, nobody was able to provide an executable solution and none of the participants' coding solutions included all necessary \gls{ros} communication calls (as listed in \prettyref{tab:FirstUseCaseSpecs} and \prettyref{tab:SecondUseCaseSpecs}). The tables also show the time each participant needed to come up with a solution along with the average task completion time for each task. If only the successful cases (executable and correct behaviour) are considered, the average task completion time is 15:08.
+
+\begin{table}[htbp]
+    \begin{minipage}{0.8\textwidth}
+        \centering
+        \begin{tabular}{l c c c}
+            \toprule
+            Participant & Executable & Correct behaviour & time\footnote{MM:SS}\\
+            \midrule
+            82vpvx10alv & yes & no & 06:37 \\
+            gexodojo2j8 & yes & yes & 10:52 \\
+            i1w1yz7uz3i & yes & yes & 10:55 \\
+            ti296ea8esh & yes & yes & 08:16 \\
+            txz7a1o57h & yes & yes & 14:44 \\
+            3g2hzdk3jlb & yes & no & 22:18 \\
+            hwq1pmsgh2l & yes & no & 24:53 \\
+            k4ryhnzae5n & no & no & 13:04 \\
+            qayvpk407vf & yes & yes & 23:38 \\
+            i3lpzjw4n9m & yes & yes & 22:25 \\
+            \bottomrule
+            & 90\% & 70\% & 15:46
+        \end{tabular}
+        \caption{Outcomes of participants tool supported solutions}
+        \label{tab:SucessRateBlocklyUseCase1}
+    \end{minipage}
+\end{table}
+
+\begin{table}[htbp]
+    \begin{minipage}{0.8\textwidth}
+    \centering
+        \begin{tabular}{l c c c}
+            \toprule
+            Participant & executable & correct behaviour & time\footnote{MM:SS} \\
+            \midrule
+            82vpvx10alv & no & no & 28:18 \\
+            gexodojo2j8  & no & no & 29:06 \\
+            i1w1yz7uz3i  & no & no & 30:55 \\
+            ti296ea8esh  & no & no & 29:37 \\
+            txz7a1o57h & no & no & 25:59 \\
+            3g2hzdk3jlb  & no & no & 20:37 \\
+            hwq1pmsgh2l  & no & no & 30:51 \\
+            k4ryhnzae5n  & no & no & 19:48 \\
+            qayvpk407vf  & no & no & 30:54 \\
+            i3lpzjw4n9m  & no & no & 28:13\\
+            \bottomrule
+            & 0\% & 0\% & 21:21
+        \end{tabular}
+        \caption{Outcomes of participants coding solutions}
+        \label{tab:SucessRateCodeUseCase1}
+    \end{minipage}
+\end{table}
+
+\subsubsection*{Pauses}
+As discribed in \prettyref{sub:ExprimentDesign}, both editors tracked changes during the participants were working. Pauses are identified as such if there was no change of the programm within at least two seconds. The distributions of the pauses, clustered into 5-seconds-interval-bins, are shown in \prettyref{fig:PausesDist}. For both tasks the majority of the pauses lasted for under 10 seconds - 68.7\% when the participants were manually coding and 72.3\% when they were supported by the tool. There is a bigger difference when looking at longer pauses: while 99\% of pauses made when working with the tool had a duration of 60 seconds and below, the share for the same pauses was only 92.6\% during the coding task. The longest recorded pause was 117.5 seconds when finding a tool supported solution and 1093.1 when there was no support. To demonstrate this, optionally, a histogram using bigger sized 20-seconds-interval-bins is shown in \prettyref{fig:PausesDist}.
+
+\begin{figure}[htbp]
+	\centering
+	\begin{overpic}[width=\linewidth]{./graphics/evaluation/pausesDist}
+	\end{overpic}
+    \caption{Distribution of pauses clustered into 5s intervals (>270s not shown)}%
+	\label{fig:PausesDist}%
+\end{figure}
+
+\begin{figure}[htbp]
+	\centering
+	\begin{overpic}[width=\linewidth]{./graphics/evaluation/pausesDist_bin20}
+	\end{overpic}
+    \caption{Distribution of pauses clustered into 20s intervals (>270s not shown)}%
+	\label{fig:PausesDist20}%
+\end{figure}
+
+\begin{figure}[htbp]
+	\centering
+	\begin{overpic}[width=\linewidth]{./graphics/evaluation/pausesDist_bin20}
+	\end{overpic}
+    \caption{Distribution of pauses clustered into 20s intervals (>270s not shown)}%
+	\label{fig:PausesDist20}%
+\end{figure}
+
+
+
+\subsection{Questions}
+
+\subsubsection*{Experience}
+
+\subsubsection*{Feedback}
+
+\subsubsection*{Workload}
 
 \section{Discussion}

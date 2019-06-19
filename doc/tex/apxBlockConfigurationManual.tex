@@ -1,79 +1,79 @@
 \chapter{Block configuration manual} \label{apx:BlockConfigManual}
-This appendix shows step-by-step examples for configuring custom blocks using \toolname{}'s block configurator for each of the following \gls{ros} communication patterns:
-\begin{itemize}
-    \item Topic
-    \item Service
-    \item Action
-\end{itemize}
+% This appendix shows step-by-step examples for configuring custom blocks using \toolname{}'s block configurator for each of the following \gls{ros} communication patterns:
+% \begin{itemize}
+%     \item Topic
+%     \item Service
+%     \item Action
+% \end{itemize}
 
-\section*{Custom block publishing to a topic} \label{sec:CustomTopic}
-This example creates a custom block, which sending a message to a \gls{ros} based robot. The filled form is shown in \prettyref{fig:ExTopicForm}, the final design is shown in \prettyref{fig:ExTopicBlock}.
+% \section*{Custom block publishing to a topic} \label{sec:CustomTopic}
+% This example creates a custom block, which sending a message to a \gls{ros} based robot. The filled form is shown in \prettyref{fig:ExTopicForm}, the final design is shown in \prettyref{fig:ExTopicBlock}.
 
-\begin{figure}[htbp]
-	\centering
-	\begin{overpic}[width=\linewidth]{./graphics/manual/ExTopicForm}
-	\end{overpic}
-	\caption{Filled form to create a custom block publishing to a topic}%
-	\label{fig:ExTopicForm}%
-\end{figure}
+% \begin{figure}[htbp]
+% 	\centering
+% 	\begin{overpic}[width=\linewidth]{./graphics/manual/ExTopicForm}
+% 	\end{overpic}
+% 	\caption{Filled form to create a custom block publishing to a topic}%
+% 	\label{fig:ExTopicForm}%
+% \end{figure}
 
-\begin{figure}[htbp]
-	\centering
-	\begin{overpic}[width=0.2\linewidth]{./graphics/manual/ExTopicBlock}
-	\end{overpic}
-	\caption{Resulting custom block using the block configuration shown in \prettyref{fig:ExTopicForm}}%
-	\label{fig:ExTopicBlock}%
-\end{figure}
+% \begin{figure}[htbp]
+% 	\centering
+% 	\begin{overpic}[width=0.2\linewidth]{./graphics/manual/ExTopicBlock}
+% 	\end{overpic}
+% 	\caption{Resulting custom block using the block configuration shown in \prettyref{fig:ExTopicForm}}%
+% 	\label{fig:ExTopicBlock}%
+% \end{figure}
 
-\begin{figure}[h]
-	\lstinputlisting[label={lst:ExTopicCode},caption={Examplary generated code using the block shown in \prettyref{fig:ExTopicBlock}}, language={Python}]{./listings/ExTopicCode.py}
-\end{figure}
+% \begin{figure}[h]
+% 	\lstinputlisting[label={lst:ExTopicCode},caption={Examplary generated code using the block shown in \prettyref{fig:ExTopicBlock}}, language={Python}]{./listings/ExTopicCode.py}
+% \end{figure}
 
-The given title and inputs of the block are can be observed, when looking at the block. The tooltip only appears on mouseover events. All other information is used to generate the code. The value of an input - which is passed by connecting the corresponding input - can be used for the message creation by putting a placeholder \lstinline!$n$! (with n being the n-th input in the list - counting top down) to it. It is possible to put any code to the \textit{message} field, but it is necessary that it includes an assignment of the \lstinline!message! value. Assuming the value \textit{1} is passed to the \textit{\metres} input, the code shown in \prettyref{lst:ExTopicCode} will be generated.
+% The given title and inputs of the block are can be observed, when looking at the block. The tooltip only appears on mouseover events. All other information is used to generate the code. The value of an input - which is passed by connecting the corresponding input - can be used for the message creation by putting a placeholder \lstinline!$n$! (with n being the n-th input in the list - counting top down) to it. It is possible to put any code to the \textit{message} field, but it is necessary that it includes an assignment of the \lstinline!message! value. Assuming the value \textit{1} is passed to the \textit{\metres} input, the code shown in \prettyref{lst:ExTopicCode} will be generated.
 
-\section*{Custom block calling a service}
-Within this section the creation of an example block, which calls a service, is shown. The block can be used to ask a question to the the user and use the response as output, so that the block can be connected as input to another block. The configuration form for this block is shown in \prettyref{fig:ExServiceForm}.
+% \section*{Custom block calling a service}
+% Within this section the creation of an example block, which calls a service, is shown. The block can be used to ask a question to the the user and use the response as output, so that the block can be connected as input to another block. The configuration form for this block is shown in \prettyref{fig:ExServiceForm}.
 
-\begin{figure}[ht]
-	\centering
-	\begin{overpic}[width=\linewidth]{./graphics/manual/ExServiceForm}
-	\end{overpic}
-	\caption{Filled form to create a custom block calling a service}%
-	\label{fig:ExServiceForm}%
-\end{figure}
+% \begin{figure}[ht]
+% 	\centering
+% 	\begin{overpic}[width=\linewidth]{./graphics/manual/ExServiceForm}
+% 	\end{overpic}
+% 	\caption{Filled form to create a custom block calling a service}%
+% 	\label{fig:ExServiceForm}%
+% \end{figure}
 
-Besides the choice to use \textit{Service} as communication pattern and pass the service's response, there's no noteworthy difference compared to \prettyref{sec:CustomTopic}. In the service-specific section first the service's name (\textit{/MMUI}) and message type (\textit{hobbit\_msgs/Request}) are set, then the request message fields are configured. There are two different ways of doing that:
+% Besides the choice to use \textit{Service} as communication pattern and pass the service's response, there's no noteworthy difference compared to \prettyref{sec:CustomTopic}. In the service-specific section first the service's name (\textit{/MMUI}) and message type (\textit{hobbit\_msgs/Request}) are set, then the request message fields are configured. There are two different ways of doing that:
 
-\begin{itemize}
-	\item providing a key-value pair, or
-	\item using a code block.
-\end{itemize}
+% \begin{itemize}
+% 	\item providing a key-value pair, or
+% 	\item using a code block.
+% \end{itemize}
 
-In the first case the key-value pair is just translated into a String containing the given info. If the latter one is used, it is necessary that the code includes a explicit assignment of the corresponding request message field. In the given example \lstinline!parr! is set via a code block. Note that the name of the field is identically the same as the variable's name. By the way, the same effect could be achieved using a key-value pair with the following value: 
+% In the first case the key-value pair is just translated into a String containing the given info. If the latter one is used, it is necessary that the code includes a explicit assignment of the corresponding request message field. In the given example \lstinline!parr! is set via a code block. Note that the name of the field is identically the same as the variable's name. By the way, the same effect could be achieved using a key-value pair with the following value: 
 
-\lstinline![Parameter('type','D_YES_NO'),Parameter('text',$1$),Parameter('speak',$1$)]!.
+% \lstinline![Parameter('type','D_YES_NO'),Parameter('text',$1$),Parameter('speak',$1$)]!.
 
-Again, using the values of the blocks connected to the inputs can be included by putting the placeholder to the corresponding field, as explained in \prettyref{sec:CustomTopic}. A exemplary use of the just created custom block is presented in \prettyref{fig:ExServiceBlock} with \prettyref{lst:ExServiceCode} showing the generated code.
+% Again, using the values of the blocks connected to the inputs can be included by putting the placeholder to the corresponding field, as explained in \prettyref{sec:CustomTopic}. A exemplary use of the just created custom block is presented in \prettyref{fig:ExServiceBlock} with \prettyref{lst:ExServiceCode} showing the generated code.
 
-\begin{figure}[hbp]
-	\lstinputlisting[label={lst:ExServiceCode},caption={Generated code of the block connections shown in \prettyref{fig:ExServiceBlock}}, language={Python}]{./listings/ExServiceCode.py}
-\end{figure}
+% \begin{figure}[hbp]
+% 	\lstinputlisting[label={lst:ExServiceCode},caption={Generated code of the block connections shown in \prettyref{fig:ExServiceBlock}}, language={Python}]{./listings/ExServiceCode.py}
+% \end{figure}
 
-\begin{figure}[htbp]
-	\centering
-	\begin{overpic}[width=0.5\linewidth]{./graphics/manual/ExServiceBlock}
-	\end{overpic}
-	\caption{Exemplary us of the custom block created using the block configuration shown in \prettyref{fig:ExServiceForm}}%
-	\label{fig:ExServiceBlock}%
-\end{figure}
+% \begin{figure}[htbp]
+% 	\centering
+% 	\begin{overpic}[width=0.5\linewidth]{./graphics/manual/ExServiceBlock}
+% 	\end{overpic}
+% 	\caption{Exemplary us of the custom block created using the block configuration shown in \prettyref{fig:ExServiceForm}}%
+% 	\label{fig:ExServiceBlock}%
+% \end{figure}
 
-\section*{Custom block using actionlib}
-\prettyref{fig:ExActionForm} shows how a custom block can be defined, if it is desired that the block should send a goal to an action server.
+% \section*{Custom block using actionlib}
+% \prettyref{fig:ExActionForm} shows how a custom block can be defined, if it is desired that the block should send a goal to an action server.
 
-\begin{figure}[htbp]
-	\centering
-	\begin{overpic}[width=\linewidth]{./graphics/manual/ExActionForm}
-	\end{overpic}
-	\caption{Filled form to create a custom block using actionlib}%
-	\label{fig:ExActionForm}%
-\end{figure}
+% \begin{figure}[htbp]
+% 	\centering
+% 	\begin{overpic}[width=\linewidth]{./graphics/manual/ExActionForm}
+% 	\end{overpic}
+% 	\caption{Filled form to create a custom block using actionlib}%
+% 	\label{fig:ExActionForm}%
+% \end{figure}
